@@ -16,12 +16,10 @@ class FloorPlan extends Component {
 
     interval;
     reset;
+    beacons3 = [];
 
     constructor(props) {
         super(props);
-        this.state = {
-            beaconsToShow: []
-        }
 
     }
 
@@ -30,7 +28,8 @@ class FloorPlan extends Component {
         this.interval = setInterval(async () => {
             if (this.props.scanner.beaconsOnRange.length > 0) {
                 let area = this._calculatePosition();
-                let center = centerAreaCalculator({area: area});
+                let center = null;
+                area.length > 0 ? center = centerAreaCalculator({area: area}) : null;
                 await this.props.updatePosition(area, center);
                 this.setState();
             }
@@ -52,36 +51,31 @@ class FloorPlan extends Component {
         if (index < 8) {
             return null;
         }
-        let iconWidth, iconHeight;
         return (
             <View style={{flex: 1, flexDirection: 'row'}}>
                 {
                     row.map((x, index) => {
-                    switch (x) {
-                        case 1: //Camino transitable
-                            return (<View key={index} style={{flex: 1, backgroundColor: '#f0f3fd'}}/>);
-                        case 0: // Camino no transitable
-                            return (<View key={index} style={{flex: 1, backgroundColor: '#7c7d8d'}}/>);
-                        // Posición actual
-                        case 5:
-                            return (<View key={index} style={{flex: 1, backgroundColor: 'yellow'}}/>);
-                        case 6:
-                            return (
-                                <View onLayout={(event) => {
-                                    iconWidth  = event.nativeEvent.layout.width;
-                                    iconHeight = event.nativeEvent.layout.height;
-                                    console.log("height :", iconHeight , "width: ",iconWidth);
-                                }} key={index} style={{flex: 1, backgroundColor: 'f0f3fd'}}>
-                                    <Image source={require('../../../assets/images/placeholder.png')}
-                                           resizeMode={"center"}
-                                           resizeMethod={"resize"}
-                                           style={{flex:1, height: undefined, width: undefined}}
+                        switch (x) {
+                            case 1: //Camino transitable
+                                return (<View key={index} style={{flex: 1, backgroundColor: '#f0f3fd'}}/>);
+                            case 0: // Camino no transitable
+                                return (<View key={index} style={{flex: 1, backgroundColor: '#7c7d8d'}}/>);
+                            // Posición actual
+                            case 5:
+                                return (<View key={index} style={{flex: 1, backgroundColor: 'yellow'}}/>);
+                            case 6:
+                                return (
+                                    <View key={index} style={{flex: 1, backgroundColor: 'f0f3fd'}}>
+                                        <Image source={require('../../../assets/images/placeholder.png')}
+                                               resizeMode={"center"}
+                                               resizeMethod={"resize"}
+                                               style={{flex: 1, height: undefined, width: undefined}}
 
-                                    />
+                                        />
 
-                                </View>);
-                    }
-                })}
+                                    </View>);
+                        }
+                    })}
             </View>
         )
     };
@@ -90,50 +84,38 @@ class FloorPlan extends Component {
     _getBeaconsOnPriority = () => {
         let result = [];
         this.props.scanner.beaconsOnRange.forEach((beacon) => {
-            10 ** ((-50 - beacon.rssi) / 35) <= 10 ? result.push(beacon) : null;
+            10 ** ((-50 - beacon.rssi) / 35) < 8 ? result.push(beacon) : null;
         });
         return result;
     };
 
     _calculatePosition = () => {
-
         let beacons = this._getBeaconsOnPriority();
-        console.log("Beaacons to show: ", beacons);
-        this.setState({
-            beaconsToShow: beacons
-        });
-        let finder = [];
+        console.log("Beacons to show: ", beacons);
+        let beaconFinder = [];
         for (let i = 0; i < beacons.length; i++) {
-            // distance : Formula para calcular distancia entre beacon y movil a partir de el rssi esperado a un metro ( -50) y una
-            //constante en 20 y 40 ( 35 ). Los valores dados salen después de calcular varias posibilidades.
-            let distance = Math.round(10 ** ((-50 - beacons[i].rssi) / 35));
-            //Si la distancia es 0.algo la redondeamos a 1 para que los calculos funcionen. A efectos prácticos es lo mismo
-            distance === 0 ? distance = 1 : null;
+
             let beaconPosition = this.props.mapRedux.beaconsList[beacons[i].name];
-            finder[i] = {x: beaconPosition.x, y: beaconPosition.y, distance: distance};
+            beaconFinder.push({x: beaconPosition.x, y: beaconPosition.y, rssi: beacons[i].rssi});
+
         }
-        console.log("Finder: ", finder);
+        console.log("beaconFinder: ", beaconFinder);
         let areas = PriorityAreaCalculator({
-            beaconsOnPriority: finder,
+            beaconsOnPriority: beaconFinder,
             plan: this.props.mapRedux.plan
         });
         console.log("These are the areas: ", areas);
-        return PriorityLocation({
-            areas: areas
-        })
-
-
-    };
-
-    _showBeaconsForCalculation = () => {
-        if (this.state.beaconsToShow.length > 0) {
-            return this.state.beaconsToShow.map((beacon) => {
-                return <Text>{beacon.name} --- {10 ** ((-50 - beacon.rssi) / 35)}</Text>
+        if (areas.priority1.length > 0 || areas.priority2.length > 0) {
+            return PriorityLocation({
+                areas: areas
             })
-        } else {
-            return null;
+        }else {
+            return [];
         }
+
+
     };
+
 
     _renderButton = (text, onPress) => (
         <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -146,13 +128,18 @@ class FloorPlan extends Component {
         return (
             <View style={{flex: 12, flexDirection: 'column'}}>
                 <AuxModule/>
-                <View style={{flex: 11}}>
+                <View style={{flex: 9}}>
                     {this.props.mapRedux.plan.map((row, index) => {
                         return this.renderRow(row, index)
                     })}
                 </View>
                 <View style={styles.buttonContainer}>
                     {this._renderButton('Start scanning', startScan)}
+                </View>
+                <View style={{flex:2}}>
+                    {this.beacons3.map((beacon) =>{
+                        return(<Text>{beacon.name} --> {beacon.distance}</Text>)
+                    })}
                 </View>
             </View>
         )
