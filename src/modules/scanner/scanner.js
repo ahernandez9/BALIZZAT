@@ -30,7 +30,8 @@ const {
 
 const namespace1 = {
     instanceId: "Any instance ID",
-    namespace: "acfd065e1a514932ac01",
+    namespace: "00112233445566778899",
+    //namespace: "acfd065e1a514932ac01", // BlueUp beacons
     identifier: "Everywheres"
 };
 
@@ -82,7 +83,7 @@ export const resetScan = () => {
 };
 
 
-class AuxModule extends Component {
+class Scanner extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -136,7 +137,7 @@ class AuxModule extends Component {
                     let depurator = false;
                     let x = this.state.eddystones;
                     x.map((beacon) => {
-                        if (AuxModule.equals(beacon, eddystone)) {
+                        if (Scanner.equals(beacon, eddystone)) {
                             depurator = true;
                         }
                     });
@@ -165,7 +166,7 @@ class AuxModule extends Component {
                 let beacons = this.props.beaconArray.beaconsOnRange;
                 eddystones.forEach(updatedBeacon => {
                     const index = beacons.findIndex(beacon =>
-                        AuxModule.equals(updatedBeacon, beacon)
+                        Scanner.equals(updatedBeacon, beacon)
                     );
                     this.setState({
                         eddystones: beacons.reduce((result, val, ind) => {
@@ -187,7 +188,7 @@ class AuxModule extends Component {
 
                 const {eddystones} = this.state;
                 const index = eddystones.findIndex(beacon =>
-                    AuxModule.equals(lostEddystone, beacon)
+                    Scanner.equals(lostEddystone, beacon)
                 );
                 this.setState({
                     eddystones: eddystones.reduce((result, val, ind) => {
@@ -228,7 +229,7 @@ class AuxModule extends Component {
         const {eddystones} = this.state;
         eddystones.map((beacon, index) => {
             for(i = index + 1; i < eddystones.size; i++){
-                   if(AuxModule.equals(beacon, eddystones[i])){
+                   if(Scanner.equals(beacon, eddystones[i])){
                        restartScanning()
                            .catch(error => console.log('[restartScanning]', error));
                        reboot = true;
@@ -240,7 +241,7 @@ class AuxModule extends Component {
 
 
     static equals(b1, b2) {
-        return (b1.name === b2.name);
+        return (b1.address === b2.address);
 
     }
 
@@ -271,4 +272,4 @@ const mapStateToProps = state => {
 const mapStateToPropsAction = {addRange, empty};
 
 
-export default connect(mapStateToProps, mapStateToPropsAction)(AuxModule);
+export default connect(mapStateToProps, mapStateToPropsAction)(Scanner);

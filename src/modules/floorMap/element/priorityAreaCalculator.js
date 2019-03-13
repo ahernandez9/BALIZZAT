@@ -8,10 +8,10 @@ export const PriorityAreaCalculator = (Props) => {
         plan
     } = Props;
 
-    // distance : Formula para calcular distancia entre beacon y movil a partir de el rssi esperado a un metro ( -50) y una
+    // distance : Formula para calcular distancia entre beacon y movil a partir de el rssi esperado a un metro ( -68) y una
     //constante en 20 y 40 ( 35 ). Los valores dados salen después de calcular varias posibilidades.
     function calculateDistance(rssi) {
-        let distance = Math.round(10 ** ((-50 - rssi) / 35));
+        let distance = Math.round(10 ** ((-68 - rssi) / 30));
 
         //Si la distancia es 0.algo la redondeamos a 1 para que los calculos funcionen. A efectos prácticos es lo mismo
         return distance === 0 ? 1 : distance;

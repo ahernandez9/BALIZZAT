@@ -11,7 +11,6 @@ class Home extends Component {
 
         console.log("Descargando lista de beacons");
         this.props.downloadBeaconList();
-        console.log("Chungo bro");
         this.props.downloadMap();
 
     }

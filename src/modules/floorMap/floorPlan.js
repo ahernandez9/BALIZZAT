@@ -4,8 +4,8 @@ import {StyleSheet, View, Text, TouchableOpacity, Image, PermissionsAndroid} fro
 import {downloadMap, downloadBeaconList, updatePosition} from "./actions/mapAction";
 import {PriorityLocation, centerAreaCalculator} from "./element/priorityLocation";
 import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
-import {resetScan, startScan, currentlyScanning} from "../auxModule/auxModule";
-import AuxModule from "../auxModule/auxModule";
+import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
+import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
@@ -20,25 +20,26 @@ class FloorPlan extends Component {
 
     constructor(props) {
         super(props);
-
+A
     }
 
     async componentDidMount(): void {
         Orientation.lockToLandscape();
-        try {
-            await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH,
-                {
-                    'title': 'Bluetooth',
-                    'message': 'Beacon Scanner needs access to your bluetooth ' +
-                        'so you we are able to find the beacons.'
-                })
-        }catch (err) {
-            console.warn(err)
-        }
+        // try {
+        //     await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH,
+        //         {
+        //             'title': 'Bluetooth',
+        //             'message': 'Beacon Scanner needs access to your bluetooth ' +
+        //                 'so you we are able to find the beacons.'
+        //         })
+        // }catch (err) {
+        //     console.warn(err)
+        // }
     }
 
     componentWillMount(): void {
         this.interval = setInterval(async () => {
+            console.log("Beacons en rango", this.props.scanner.beaconsOnRange);
             if (this.props.scanner.beaconsOnRange.length > 0) {
                 let area = this._calculatePosition();
                 let center = null;
@@ -94,7 +95,7 @@ class FloorPlan extends Component {
     _getBeaconsOnPriority = () => {
         let result = [];
         this.props.scanner.beaconsOnRange.forEach((beacon) => {
-            10 ** ((-50 - beacon.rssi) / 35) < 8 ? result.push(beacon) : null;
+            10 ** ((-68 - beacon.rssi) / 35) < 8 ? result.push(beacon) : null;
         });
         return result;
     };
@@ -106,9 +107,9 @@ class FloorPlan extends Component {
         let beaconFinder = [];
         for (let i = 0; i < beacons.length; i++) {
 
-            let beaconPosition = this.props.mapRedux.beaconsList[beacons[i].name];
+            let beaconPosition = this.props.mapRedux.beaconsList[beacons[i].address];
             beaconFinder.push({x: beaconPosition.x, y: beaconPosition.y, rssi: beacons[i].rssi});
-            this.beacons3.push({name: beacons[i].name, distance: 10 ** ((-50 - beacons[i].rssi) / 35)})
+            this.beacons3.push({name: beacons[i].address, distance: 10 ** ((-68 - beacons[i].rssi) / 35)})
 
         }
         console.log("beaconFinder: ", beaconFinder);
@@ -135,11 +136,11 @@ class FloorPlan extends Component {
         </TouchableOpacity>
     );
 
-    //Poner el auxmodule de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
         return (
             <View style={{flex: 12, flexDirection: 'column'}}>
-                <AuxModule/>
+                <Scanner/>
                 <View style={{flex: 9}}>
                     {this.props.mapRedux.plan.map((row, index) => {
                         return this.renderRow(row, index)
