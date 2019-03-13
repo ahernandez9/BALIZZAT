@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux";
-import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Image, PermissionsAndroid} from 'react-native';
 import {downloadMap, downloadBeaconList, updatePosition} from "./actions/mapAction";
 import {PriorityLocation, centerAreaCalculator} from "./element/priorityLocation";
 import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
@@ -23,8 +23,21 @@ class FloorPlan extends Component {
 
     }
 
-    componentDidMount(): void {
+    async componentDidMount(): void {
         Orientation.lockToLandscape();
+        try {
+            await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH,
+                {
+                    'title': 'Bluetooth',
+                    'message': 'Beacon Scanner needs access to your bluetooth ' +
+                        'so you we are able to find the beacons.'
+                })
+        }catch (err) {
+            console.warn(err)
+        }
+    }
+
+    componentWillMount(): void {
         this.interval = setInterval(async () => {
             if (this.props.scanner.beaconsOnRange.length > 0) {
                 let area = this._calculatePosition();
@@ -37,8 +50,7 @@ class FloorPlan extends Component {
         this.reset = setInterval(() => {
             resetScan();
             this.setState({});
-        }, 7000);
-
+        }, 8000);
     }
 
     componentWillUnmount(): void {
@@ -67,8 +79,6 @@ class FloorPlan extends Component {
                                 return (
                                     <View key={index} style={{flex: 1, backgroundColor: 'f0f3fd'}}>
                                         <Image source={require('../../../assets/images/placeholder.png')}
-                                               resizeMode={"center"}
-                                               resizeMethod={"resize"}
                                                style={{flex: 1, height: undefined, width: undefined}}
 
                                         />
@@ -92,11 +102,13 @@ class FloorPlan extends Component {
     _calculatePosition = () => {
         let beacons = this._getBeaconsOnPriority();
         console.log("Beacons to show: ", beacons);
+        this.beacons3 = [];
         let beaconFinder = [];
         for (let i = 0; i < beacons.length; i++) {
 
             let beaconPosition = this.props.mapRedux.beaconsList[beacons[i].name];
             beaconFinder.push({x: beaconPosition.x, y: beaconPosition.y, rssi: beacons[i].rssi});
+            this.beacons3.push({name: beacons[i].name, distance: 10 ** ((-50 - beacons[i].rssi) / 35)})
 
         }
         console.log("beaconFinder: ", beaconFinder);
@@ -109,7 +121,7 @@ class FloorPlan extends Component {
             return PriorityLocation({
                 areas: areas
             })
-        }else {
+        } else {
             return [];
         }
 
@@ -136,9 +148,9 @@ class FloorPlan extends Component {
                 <View style={styles.buttonContainer}>
                     {this._renderButton('Start scanning', startScan)}
                 </View>
-                <View style={{flex:2}}>
-                    {this.beacons3.map((beacon) =>{
-                        return(<Text>{beacon.name} --> {beacon.distance}</Text>)
+                <View style={{flex: 2}}>
+                    {this.beacons3.map((beacon) => {
+                        return (<Text>{beacon.name} --> {beacon.distance}</Text>)
                     })}
                 </View>
             </View>

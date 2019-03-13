@@ -18,7 +18,7 @@ export const PriorityAreaCalculator = (Props) => {
     }
 
     //Todo se multiplica x 2 de nuevo porque cada metro son dos posiciones del array
-    function calculateAreaPriority1(beacon, distance) {
+    function calculateAreaPriority(beacon, distance) {
         let result = [];
         //let distance = calculateDistance(beacon.rssi);
         let rowStart = beacon.x - (distance * 2) + 1;
@@ -37,30 +37,12 @@ export const PriorityAreaCalculator = (Props) => {
         return result;
     }
 
-    function calculateAreaPriority2(beacon){
-        //Buscamos toda el area que ocupa y le extraemos el area de prioridad 1
-        let area = calculateAreaPriority1(beacon , calculateDistance(beacon.rssi));
-        let  subtractArea = calculateAreaPriority1(beacon, 3);
-        let result = [];
-
-        for(let i = 0; i < area.length; i++){
-            !subtractArea.some((position) => {
-                return (position[0] === area[i][0] && position[1] === area[i][1]);
-            }) ? result.push(area[i]) : null;
-        }
-
-        return result;
-
-
-    }
-
-
     function calculatePriorities(beaconsOnPriority) {
         console.log("Entrando a priorityArea", beaconsOnPriority);
         let beaconPriority1 = [], priority1 = [];
         let beaconPriority2 = [], priority2 = [];
         beaconsOnPriority.forEach((beacon) => {
-            calculateDistance(beacon.rssi) < 4 ? beaconPriority1.push(beacon) : beaconPriority2.push(beacon)
+            calculateDistance(beacon.rssi) <= 4 ? beaconPriority1.push(beacon) : beaconPriority2.push(beacon)
         });
 
         //Si tenemos mas de una prioridad 1 cojemos la que esté mas cerca
@@ -70,7 +52,7 @@ export const PriorityAreaCalculator = (Props) => {
             });
         }
         if (beaconPriority1.length > 0) {
-            priority1.push(calculateAreaPriority1(beaconPriority1[0], calculateDistance(beaconPriority1[0].rssi)))
+            priority1.push(calculateAreaPriority(beaconPriority1[0], calculateDistance(beaconPriority1[0].rssi)))
         }
         if (beaconPriority2.length > 1) {
             beaconPriority2.sort((a, b) => {
@@ -79,7 +61,7 @@ export const PriorityAreaCalculator = (Props) => {
         }
         if (beaconPriority2.length > 0) {
             beaconPriority2.map((beacon) => {
-                priority2.push(calculateAreaPriority2(beacon));
+                priority2.push(calculateAreaPriority(beacon), calculateDistance(beacon.rssi));
             })
         }
         console.log({

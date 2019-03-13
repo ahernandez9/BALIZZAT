@@ -12,20 +12,17 @@ export const PriorityLocation = (Props) => {
         let areasPriority1 = areas.priority1[0];
         console.log("areasPriority1: ", areasPriority1);
 
-        for (let j = 0; j < areas.priority2[0].length; j++) {
-            // areasPriority1.includes(areas.priority2[i][j]) ?
-            //     !result.includes(areas.priority2[i][j]) ? result.push(areas.priority2[i][j]) : null : null;
-            areasPriority1.some((element) => {
-                return element[0] === areas.priority2[0][j][0] && element[1] === areas.priority2[0][j][1]
-            }) ? result.push(areas.priority2[0][j]) : null;
+        if (areas.priority2.length > 0) {
+            for (let j = 0; j < areas.priority2[0].length; j++) {
+                areasPriority1.some((element) => {
+                    return element[0] === areas.priority2[0][j][0] && element[1] === areas.priority2[0][j][1]
+                }) ? result.push(areas.priority2[0][j]) : null;
+            }
+            console.log("Result: ", result);
+            if (result.length > 0) {
+                return result;
+            }
         }
-
-
-        console.log("Result: ", result);
-        if (result.length > 0) {
-            return result;
-        }
-
         return areasPriority1;
 
     }

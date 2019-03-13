@@ -122,8 +122,9 @@ export const updatePosition = (position, center) => async (dispatch, getState) =
             });
         }
         prevPosition = [];
+        center !== null && newMap[center[0]][center[1]] !== 0 ? prevPosition[0] = [newMap[center[0]][center[1]], center[0], center[1]] : null;
         // Posicion 0 = valor del mapa, posición 1 = eje x, posicion 2 = eje Y
-        for (let i = 0; i < position.length; i++) {
+        for (let i = 1; i < position.length; i++) {
             prevPosition[i] = [newMap[position[i][0]][position[i][1]], position[i][0], position[i][1]];
             newMap[position[i][0]][position[i][1]] = 5;
         }
