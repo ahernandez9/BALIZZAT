@@ -3,15 +3,16 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {downloadBeaconList, downloadMap} from "../floorMap/actions/mapAction";
 import {connect} from "react-redux";
+import SplashScreen from 'react-native-splash-screen'
 
 
 class Home extends Component {
 
-    componentDidMount(): void {
-
+    async componentDidMount(): void {
         console.log("Descargando lista de beacons");
-        this.props.downloadBeaconList();
-        this.props.downloadMap();
+        await this.props.downloadBeaconList();
+        await this.props.downloadMap();
+        SplashScreen.hide();
 
     }
 

@@ -108,7 +108,6 @@ export const downloadBeaconList = () => async (dispatch) => {
         "AC:23:3F:26:0B:6F": {x: 19, y: 7, distance: NaN},
         "AC:23:3F:27:0A:D4": {x: 7, y: 21, distance: NaN},
         "AC:23:3F:27:0A:E4": {x: 17, y: 35, distance: NaN}
-
     };
 
     dispatch({

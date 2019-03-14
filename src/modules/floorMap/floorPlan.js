@@ -20,7 +20,7 @@ class FloorPlan extends Component {
 
     constructor(props) {
         super(props);
-A
+
     }
 
     async componentDidMount(): void {
