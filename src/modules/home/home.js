@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {downloadBeaconList, downloadMap} from "../floorMap/actions/mapAction";
 import {connect} from "react-redux";
+import Population from "../pathFinder/element/Population";
 
 
 class Home extends Component {
@@ -16,12 +17,37 @@ class Home extends Component {
 
     }
 
+    tryGenetic() {
+        let population = new Population(this.props.mapRedux.beaconsList["BlueUp-04-025412"],this.props.mapRedux.beaconsList["BlueUp-04-025420"], this.props.mapRedux.beaconsList,
+            0.1, 50);
+        //Nos resta iterar sobre la poblacion con seleccion natural, mutacion y crossovers
+
+        //for ( numero de iteraciones para que converja en solucion optima) {
+            // Generate weighed mating pool with the fittest members
+            population.naturalSelection();
+
+            // Generate new population of children from parents in the mating pool
+            population.generate();
+
+            // Calculate fitness score of the new population
+            population.calcPopulationFitness();
+
+            // Get the best route in the population
+            population.evaluate();
+        // }
+
+        console.log("Heeeeecho", population.best);
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 {this.props.mapRedux.plan.length > 0 ? <Text> Todo ok </Text>: null}
 
-                <TouchableOpacity onPress={Actions.FloorPlan}>
+                <TouchableOpacity onPress={
+                    /*Actions.FloorPlan*/
+                    () => this.tryGenetic()
+                }>
                     <View style={styles.circle}>
                         <Text style={styles.text}>
                             TAP TO PLAY

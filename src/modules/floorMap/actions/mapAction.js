@@ -97,9 +97,21 @@ export const downloadMap = () => async (dispatch) => {
 // Descarga las posiciones absolutas de las balizas en el mapa. Cualquier modificación en nombre o posición HACERLA AQUI
 export const downloadBeaconList = () => async (dispatch) => {
     let beaconsList = {
-        "BlueUp-04-025410": {x: 19, y: 7, distance: NaN},
-        "BlueUp-04-025411": {x: 7, y: 21, distance: NaN},
-        "BlueUp-04-025412": {x: 17, y: 35, distance: NaN}
+        "BlueUp-04-025410": {x: 19, y: 7, distance: NaN, nearbyBeacons: ["BlueUp-04-025411", "BlueUp-04-025412", "BlueUp-04-025413"]},
+        "BlueUp-04-025411": {x: 7, y: 21, distance: NaN, nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025412"]},
+        "BlueUp-04-025412": {x: 17, y: 35, distance: NaN, nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025411"]},
+        //Nuevos de pasillo y tal
+        "BlueUp-04-025413": {x: 24, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025414"]},
+        "BlueUp-04-025414": {x: 25, y: 20, distance: NaN, nearbyBeacons: ["BlueUp-04-025413", "BlueUp-04-025415", "BlueUp-04-025422"]},
+        "BlueUp-04-025415": {x: 30, y: 40, distance: NaN, nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416", "BlueUp-04-025417", "BlueUp-04-025422", "BlueUp-04-025418"]},
+        "BlueUp-04-025416": {x: 50, y: 30, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025417", "BlueUp-04-025418"]},
+        "BlueUp-04-025417": {x: 38, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025416"]},
+        //Nuevo modulaso 2.0 pa mujeres
+        "BlueUp-04-025418": {x: 45, y: 40, distance: NaN, nearbyBeacons: ["BlueUp-04-025416", "BlueUp-04-025419", "BlueUp-04-025420"]},
+        "BlueUp-04-025419": {x: 35, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025420", "BlueUp-04-025421"]},
+        "BlueUp-04-025420": {x: 48, y: 70, distance: NaN, nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025419", "BlueUp-04-025421"]},
+        "BlueUp-04-025421": {x: 30, y: 70, distance: NaN, nearbyBeacons: ["BlueUp-04-025419", "BlueUp-04-025420", "BlueUp-04-025422"]},
+        "BlueUp-04-025422": {x: 25, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025421", "BlueUp-04-025415", "BlueUp-04-025414"]}
     };
     console.log("BeaconsList: ", beaconsList);
 
