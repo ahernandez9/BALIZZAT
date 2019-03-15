@@ -14,7 +14,6 @@ class IndexNavigation extends Component{
                     <Scene
                         key="Home"
                         component={Home}
-                        initial
                         hideNavBar
                     />
                     <Scene

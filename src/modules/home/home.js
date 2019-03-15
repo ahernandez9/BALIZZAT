@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import SplashScreen from 'react-native-splash-screen'
 
 
+
 class Home extends Component {
 
     async componentDidMount(): void {
@@ -21,7 +22,7 @@ class Home extends Component {
             <View style={styles.container}>
                 {this.props.mapRedux.plan.length > 0 ? <Text> Todo ok </Text>: null}
 
-                <TouchableOpacity onPress={Actions.FloorPlan}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('FloorPlan')}>
                     <View style={styles.circle}>
                         <Text style={styles.text}>
                             TAP TO PLAY

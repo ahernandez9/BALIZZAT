@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux";
-import {StyleSheet, View, Text, TouchableOpacity, Image, PermissionsAndroid} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Image, PermissionsAndroid, TextInput} from 'react-native';
 import {downloadMap, downloadBeaconList, updatePosition} from "./actions/mapAction";
 import {PriorityLocation, centerAreaCalculator} from "./element/priorityLocation";
 import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
 import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
 import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
+
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
 // valor 1 = Camino transitable. (Azul)
@@ -24,7 +25,7 @@ class FloorPlan extends Component {
     }
 
     async componentDidMount(): void {
-        Orientation.lockToLandscape();
+        //Orientation.lockToLandscape();
         // try {
         //     await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH,
         //         {
@@ -139,20 +140,34 @@ class FloorPlan extends Component {
     //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
         return (
-            <View style={{flex: 12, flexDirection: 'column'}}>
+            <View style={{flex: 12}}>
                 <Scanner/>
-                <View style={{flex: 9}}>
+                <View style={{flex: 10, flexDirection:'column'}}>
                     {this.props.mapRedux.plan.map((row, index) => {
                         return this.renderRow(row, index)
                     })}
+
                 </View>
-                <View style={styles.buttonContainer}>
-                    {this._renderButton('Start scanning', startScan)}
+                <View style={styles.buttonGroup}>
+                    <TouchableOpacity style={[styles.circle, {borderColor: 'gray', borderWidth: 1}]}>
+                        <Image
+                            style={styles.circleIcon}
+                            source={require('../../../assets/images/gps-fixed-indicator.png')}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.circle, {backgroundColor: '#FF9800'}]}>
+                        <Image
+                            style={styles.circleIcon}
+                            source={require('../../../assets/images/forward-arrow.png')}
+                        />
+                        <Text>Go</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={{flex: 2}}>
-                    {this.beacons3.map((beacon) => {
-                        return (<Text>{beacon.name} --> {beacon.distance}</Text>)
-                    })}
+                <View style={styles.searcherContainer}>
+                        <TextInput
+                            style={[{height: 40, borderColor: 'gray', borderWidth: 1}, styles.searcher]}
+                            placeholder={"Search your room here.  Eg: 101"}
+                        />
                 </View>
             </View>
         )
@@ -184,6 +199,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
 
     },
+    buttonGroup:{
+        flexDirection: 'column',
+        bottom: 6,
+        position: 'absolute',
+        right: 0.5,
+    },
     iconContainer: {
         flex: 1,
         backgroundColor: '#f0f3fd',
@@ -194,6 +215,35 @@ const styles = StyleSheet.create({
         height: '50%',
         width: '50%'
     },
+    circle: {
+        width: 30,
+        height: 30,
+        borderRadius: 30/ 2,
+        justifyContent: 'center',
+        alignItems: 'stretch',
+    },
+    circleIcon: {
+        width: 15,
+        height: 15,
+    },
+    searcherContainer: {
+        flex: 2,
+        flexDirection:'row',
+        position: 'absolute',
+        bottom: 0.5,
+        width: "100%",
+        marginBottom: 36,
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+    },
+    searcher: {
+        flex: 1,
+        borderRadius: 10,
+        width: '60%',
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignSelf: 'center'
+    }
 });
 
 const
