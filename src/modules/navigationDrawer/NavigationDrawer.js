@@ -40,6 +40,7 @@ const Custom_Side_Menu = props => (
 
                     <Image source={require("../../../assets/images/route.png")}
                            style={styles.sideMenuProfileIcon}/>
+                    <Text style={{fontsize: 20, textAlign: 'center', fontWeight:'bold'}}>BALIZZAT</Text>
 
                     <View style={{width: '100%', height: 1, backgroundColor: '#e2e2e2', marginTop: 15}}/>
 

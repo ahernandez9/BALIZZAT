@@ -27,7 +27,7 @@ export default (state = INITIAL_STATE, action) => {
             return{
                 ...state,
                 topPlaces: action.payload
-            }
+            };
         default:
             return state
     }
