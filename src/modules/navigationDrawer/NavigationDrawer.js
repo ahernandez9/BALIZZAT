@@ -8,6 +8,7 @@ import {
 } from 'react-navigation';
 import Home from "../home/home"
 import FloorPlan from "../floorMap/floorPlan"
+import TopPlaces from "../topPlaces/topPlaces"
 
 class NavigationDrawer extends Component {
 
@@ -43,6 +44,16 @@ const Custom_Side_Menu = props => (
                     <View style={{width: '100%', height: 1, backgroundColor: '#e2e2e2', marginTop: 15}}/>
 
                     <View style={{width: '100%'}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+
+                            <Image source={require("../../../assets/images/icon.png")}
+                                   style={styles.sideMenuIcon}/>
+
+                            <Text style={styles.menuText} onPress={() => {
+                                props.navigation.navigate('Home')
+                            }}> Home </Text>
+
+                        </View>
 
                         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
 
@@ -57,12 +68,12 @@ const Custom_Side_Menu = props => (
 
                         <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
 
-                            <Image source={require("../../../assets/images/icon.png")}
+                            <Image source={require("../../../assets/images/point-of-interest.png")}
                                    style={styles.sideMenuIcon}/>
 
                             <Text style={styles.menuText} onPress={() => {
-                                props.navigation.navigate('Home')
-                            }}> Home </Text>
+                                props.navigation.navigate('TopPlaces')
+                            }}> TopPlaces </Text>
 
                         </View>
 
@@ -105,10 +116,23 @@ const FloorPlan_StackNavigator = createStackNavigator({
         }),
     },
 });
+const TopPlaces_StackNavigator = createStackNavigator({
+    TopPlaces: {
+        screen: TopPlaces,
+        navigationOptions: ({navigation}) => ({
+            title: 'TopPlaces',
+            headerLeft: <NavigationDrawer navigationProps={navigation}/>,
+            headerStyle: {
+                backgroundColor: '#FF9800',
+            },
+            headerTintColor: '#fff',
+        }),
+    },
+});
 
 const DrawerNavigator = createDrawerNavigator({
     //Drawer Optons and indexing
-    Screen1: {
+    Home: {
         //Title
         screen: Home_StackNavigator,
         navigationOptions: {
@@ -116,11 +140,18 @@ const DrawerNavigator = createDrawerNavigator({
         },
     },
 
-    Screen2: {
+    FloorPlan: {
         //Title
         screen: FloorPlan_StackNavigator,
         navigationOptions: {
             drawerLabel: 'FloorPlan',
+        },
+    },
+    TopPlaces: {
+        //Title
+        screen: TopPlaces_StackNavigator,
+        navigationOptions: {
+            drawerLabel: 'TopPlaces',
         },
     },
 

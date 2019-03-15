@@ -5,7 +5,6 @@ import {StatusBar} from 'react-native';
 import {PersistGate} from 'redux-persist/integration/react'
 
 const {persistor, store} = configureStore();
-import IndexNavigation from "./src/modules/navigation"
 import DrawerNavigator from "./src/modules/navigationDrawer/NavigationDrawer";
 
 

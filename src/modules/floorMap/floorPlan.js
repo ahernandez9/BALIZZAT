@@ -142,32 +142,40 @@ class FloorPlan extends Component {
         return (
             <View style={{flex: 12}}>
                 <Scanner/>
-                <View style={{flex: 10, flexDirection:'column'}}>
+                <View style={{flex: 10, flexDirection: 'column'}}>
                     {this.props.mapRedux.plan.map((row, index) => {
                         return this.renderRow(row, index)
                     })}
 
                 </View>
                 <View style={styles.buttonGroup}>
-                    <TouchableOpacity style={[styles.circle, {borderColor: 'gray', borderWidth: 1}]}>
+                    <TouchableOpacity style={[styles.circle, {marginBottom: 2}]}>
                         <Image
-                            style={styles.circleIcon}
+                            style={{
+                                width: 25,
+                                height: 25,
+                                justifyContent: "center"
+                            }}
                             source={require('../../../assets/images/gps-fixed-indicator.png')}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.circle, {backgroundColor: '#FF9800'}]}>
+                    <TouchableOpacity style={[styles.circle, {backgroundColor: '#FF9800', marginBottom: 5}]}>
                         <Image
-                            style={styles.circleIcon}
+                            style={{
+                                width: 15,
+                                height: 15,
+                                justifyContent: "center"
+                            }}
                             source={require('../../../assets/images/forward-arrow.png')}
                         />
                         <Text>Go</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.searcherContainer}>
-                        <TextInput
-                            style={[{height: 40, borderColor: 'gray', borderWidth: 1}, styles.searcher]}
-                            placeholder={"Search your room here.  Eg: 101"}
-                        />
+                    <TextInput
+                        style={[{height: 40, borderColor: 'gray', borderWidth: 1}, styles.searcher]}
+                        placeholder={"Search your room here.  Eg: 101"}
+                    />
                 </View>
             </View>
         )
@@ -199,9 +207,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
 
     },
-    buttonGroup:{
+    buttonGroup: {
         flexDirection: 'column',
-        bottom: 6,
+        bottom: 1,
+        marginBottom: 85,
+        marginRight: 20,
         position: 'absolute',
         right: 0.5,
     },
@@ -216,30 +226,30 @@ const styles = StyleSheet.create({
         width: '50%'
     },
     circle: {
-        width: 30,
-        height: 30,
-        borderRadius: 30/ 2,
+        padding: 2,
+        width: 50,
+        height: 50,
+        borderRadius: 50 / 2,
         justifyContent: 'center',
-        alignItems: 'stretch',
+        alignItems: 'center',
+        borderColor: 'gray',
+        borderWidth: 1
     },
-    circleIcon: {
-        width: 15,
-        height: 15,
-    },
+    circleIcon: {},
     searcherContainer: {
         flex: 2,
-        flexDirection:'row',
+        flexDirection: 'row',
         position: 'absolute',
         bottom: 0.5,
         width: "100%",
         marginBottom: 36,
         backgroundColor: 'transparent',
         alignItems: 'center',
+        justifyContent: 'center'
     },
     searcher: {
-        flex: 1,
         borderRadius: 10,
-        width: '60%',
+        width: '90%',
         backgroundColor: 'white',
         justifyContent: 'center',
         alignSelf: 'center'

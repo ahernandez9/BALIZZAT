@@ -3,6 +3,7 @@ const INITIAL_STATE = {
     prevPosition: [],
     plan: [],
     beaconsList: {},
+    topPlaces: {}
 };
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -22,6 +23,11 @@ export default (state = INITIAL_STATE, action) => {
                 plan: action.payload.newMap,
                 prevPosition: action.payload.prevPosition
             };
+        case 'DOWNLOAD_TOPPLACES':
+            return{
+                ...state,
+                topPlaces: action.payload
+            }
         default:
             return state
     }
