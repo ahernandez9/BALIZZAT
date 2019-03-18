@@ -39,20 +39,20 @@ class FloorPlan extends Component {
     }
 
     componentWillMount(): void {
-        this.interval = setInterval(async () => {
-            console.log("Beacons en rango", this.props.scanner.beaconsOnRange);
-            if (this.props.scanner.beaconsOnRange.length > 0) {
-                let area = this._calculatePosition();
-                let center = null;
-                area.length > 0 ? center = centerAreaCalculator({area: area}) : null;
-                await this.props.updatePosition(area, center);
-                this.setState();
-            }
-        }, 2000);
-        this.reset = setInterval(() => {
-            resetScan();
-            this.setState({});
-        }, 8000);
+        // this.interval = setInterval(async () => {
+        //     console.log("Beacons en rango", this.props.scanner.beaconsOnRange);
+        //     if (this.props.scanner.beaconsOnRange.length > 0) {
+        //         let area = this._calculatePosition();
+        //         let center = null;
+        //         area.length > 0 ? center = centerAreaCalculator({area: area}) : null;
+        //         await this.props.updatePosition(area, center);
+        //         this.setState();
+        //     }
+        // }, 2000);
+        // this.reset = setInterval(() => {
+        //     resetScan();
+        //     this.setState({});
+        // }, 8000);
     }
 
     componentWillUnmount(): void {
@@ -65,6 +65,7 @@ class FloorPlan extends Component {
         if (index < 8) {
             return null;
         }
+        console.log(row);
         return (
             <View style={{flex: 1, flexDirection: 'row'}}>
                 {
