@@ -20,15 +20,6 @@ export const downloadMap = () => async (dispatch) => {
     }
 
     function isPointInTriangle(apexA, apexB, apexC, point) {
-        // let denominator = ((apexB.y - apexC.y) * (apexA.x - apexC.x) + (apexC.x - apexB.x) * (apexA.y - apexC.y));
-        //
-        // let alpha = ((apexB.y - apexC.y) * (point.x - apexC.x) + (apexC.x - apexB.x) * (point.y - apexC.y)) / denominator;
-        //
-        // let beta = ((apexC.y - apexA.y) * (point.x - apexC.x) + (apexA.x - apexC.x) * (point.y - apexC.y)) / denominator;
-        //
-        // let gamma = 1.0 - alpha - beta;
-        //
-        // return (0 <= alpha&& 0 <= beta && 0 <= gamma) ? true : isPointInEdgeTriangule(apexA, apexB, apexC, point);
 
         let area = calculateTriangleArea(apexA, apexB , apexC);
         let area1 = calculateTriangleArea(point, apexB, apexC);
@@ -43,11 +34,11 @@ export const downloadMap = () => async (dispatch) => {
 
     // ===============================================================================================================================
     // Fórmula general para poner RECTANGULOS en el mapa: Debemos localizar tres puntos del rectangulo , como en la siguiente figura:
+    // punto A|---------------| Punto C
+    //        |               |
+    //        |               |     RECORDAR QUE EL EJE Y ESTA AL REVES, EMPIEZA EN EL PUNTO MÁS GRANDE Y ACABA EN [0,0]
+    //        |               |
     // punto B|---------------|
-    //        |               |  RECORDAR QUE EL EJE Y ESTA AL REVES, EMPIEZA EN EL PUNTO MÁS GRANDE Y ACABA EN [0,0]
-    //        |               |
-    //        |               |
-    // punto A|---------------|Punto C
     //
     // Una vez tenemos esos punto podemos la siguiente condición if en el constructor del mapa:
     //
@@ -58,10 +49,73 @@ export const downloadMap = () => async (dispatch) => {
     }
 
     let map = [];
-    for (let row = 19; row >= 0; row--) {
+    // for (let row = 19; row >= 0; row--) {
+    //     let rowMap = [];
+    //     for (let column = 0; column < 36; column++) {
+    //         isPointInRectangle({x: 0, y: 8}, {x: 0, y: 17}, {x: 15, y: 8}, {
+    //             x: column,
+    //             y: row
+    //         }) ? rowMap[column] = 0 : null;
+    //
+    //         isPointInTriangle({x: 0, y: 0}, {x: 0, y: 35}, {x: 13, y: 35}, {
+    //             x: row,
+    //             y: column
+    //         }) ? rowMap[column] = 0 : null;
+    //
+    //         isPointInTriangle({x: 8, y:25 }, {x: 11, y: 25}, {x: 11, y: 35}, {
+    //             x: row,
+    //             y: column
+    //         }) ? rowMap[column] = 0 : null;
+    //
+    //         isPointInTriangle({x: 11, y: 25}, {x: 11, y: 35},{x: 15, y: 35},   {
+    //             x: row,
+    //             y: column
+    //         }) ? rowMap[column] = 0 : null;
+    //
+    //         rowMap[column] !== 0 ? rowMap[column] = 1 : null;
+    //
+    //
+    //     }
+    //     map[row] = rowMap;
+    // }
+    for (let row = 50; row >= 0; row--) {
         let rowMap = [];
-        for (let column = 0; column < 36; column++) {
+        for (let column = 0; column < 71; column++) {
+            //Izquierda
+            //Primero de arriba a abajo
             isPointInRectangle({x: 0, y: 8}, {x: 0, y: 17}, {x: 15, y: 8}, {
+                x: column,
+                y: row
+            }) ? rowMap[column] = 0 : null;
+            //Segundo de arriba a abajo
+            isPointInRectangle({x: 7, y: 20}, {x: 7, y: 25}, {x: 35, y: 20}, {
+                x: column,
+                y: row
+            }) ? rowMap[column] = 0 : null;
+            //Tercero de arriba a abajo
+            isPointInRectangle({x: 0, y: 30}, {x: 0, y: 40}, {x: 25, y: 30}, {
+                x: column,
+                y: row
+            }) ? rowMap[column] = 0 : null;
+
+            //Derecha
+            //Primero de arriba a abajo
+            isPointInRectangle({x: 36, y: 0}, {x: 36, y: 25}, {x: 70, y: 0}, {
+                x: column,
+                y: row
+            }) ? rowMap[column] = 0 : null;
+            //Segundo de arriba a abajo
+            isPointInRectangle({x: 35, y: 30}, {x: 35, y: 40}, {x: 60, y: 30}, {
+                x: column,
+                y: row
+            }) ? rowMap[column] = 0 : null;
+            //Tercero de arriba a abajo
+            isPointInRectangle({x: 35, y: 41}, {x: 35, y: 44}, {x: 45, y: 41}, {
+                x: column,
+                y: row
+            }) ? rowMap[column] = 0 : null;
+            //Cuarto de arriba a abajo
+            isPointInRectangle({x: 35, y: 48}, {x: 35, y: 50}, {x: 45, y: 48}, {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
@@ -103,11 +157,11 @@ export const downloadBeaconList = () => async (dispatch) => {
         //Nuevos de pasillo y tal
         "BlueUp-04-025413": {x: 24, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025414"]},
         "BlueUp-04-025414": {x: 25, y: 20, distance: NaN, nearbyBeacons: ["BlueUp-04-025413", "BlueUp-04-025415", "BlueUp-04-025422"]},
-        "BlueUp-04-025415": {x: 30, y: 40, distance: NaN, nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416", "BlueUp-04-025417", "BlueUp-04-025422", "BlueUp-04-025418"]},
+        "BlueUp-04-025415": {x: 35, y: 35, distance: NaN, nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416", "BlueUp-04-025417", "BlueUp-04-025422", "BlueUp-04-025418"]},
         "BlueUp-04-025416": {x: 50, y: 30, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025417", "BlueUp-04-025418"]},
-        "BlueUp-04-025417": {x: 38, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025416"]},
+        "BlueUp-04-025417": {x: 43, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025416"]},
         //Nuevo modulaso 2.0 pa mujeres
-        "BlueUp-04-025418": {x: 45, y: 40, distance: NaN, nearbyBeacons: ["BlueUp-04-025416", "BlueUp-04-025419", "BlueUp-04-025420"]},
+        "BlueUp-04-025418": {x: 47, y: 40, distance: NaN, nearbyBeacons: ["BlueUp-04-025416", "BlueUp-04-025419", "BlueUp-04-025420"]},
         "BlueUp-04-025419": {x: 35, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025420", "BlueUp-04-025421"]},
         "BlueUp-04-025420": {x: 48, y: 70, distance: NaN, nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025419", "BlueUp-04-025421"]},
         "BlueUp-04-025421": {x: 30, y: 70, distance: NaN, nearbyBeacons: ["BlueUp-04-025419", "BlueUp-04-025420", "BlueUp-04-025422"]},
