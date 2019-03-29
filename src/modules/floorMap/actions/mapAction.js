@@ -143,7 +143,7 @@ export const downloadMap = () => async (dispatch) => {
     }
     dispatch({
         type: 'DOWNLOAD_MAP',
-        payload: map
+            payload: map
     })
 };
 

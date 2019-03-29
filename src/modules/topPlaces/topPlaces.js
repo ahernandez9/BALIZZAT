@@ -12,6 +12,8 @@ import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
 import {downloadTopPlaces} from "./actions/topPlacesActions";
 import connect from "react-redux/es/connect/connect";
+import {TopPlaceHeader} from "./elements/topPlaceHeader";
+import {TopPlaceContent} from "./elements/topPlaceContent";
 
 const BACON_IPSUM =
     'Bacon ipsum dolor amet chuck turducken landjaeger tongue spare ribs. Picanha beef prosciutto meatball turkey shoulder shank salami cupim doner jowl pork belly cow. Chicken shankle rump swine tail frankfurter meatloaf ground round flank ham hock tongue shank andouille boudin brisket. ';
@@ -19,47 +21,45 @@ const BACON_IPSUM =
 
 const CONTENT = [
     {
-        title: 'First',
+        title: 'Bar Tiki-Tiki',
         content: BACON_IPSUM,
+        image: require('../../../assets/images/bar_tiki.jpg'),
+        floor: '2º Planta'
     },
     {
-        title: 'Second',
+        title: 'Piscina',
         content: BACON_IPSUM,
+        image: require('../../../assets/images/piscina-hotel.jpg'),
+        floor: '1º Planta'
     },
     {
-        title: 'Third',
+        title: 'Parque Infantil',
         content: BACON_IPSUM,
+        image: require('../../../assets/images/parque-infantil.jpg'),
+        floor: '3º Planta'
     },
     {
-        title: 'Fourth',
+        title: 'Restaurante',
         content: BACON_IPSUM,
+        image: require('../../../assets/images/restaurante-panogtiramico.jpg'),
+        floor: '1º Planta'
     },
-    {
-        title: 'Fifth',
-        content: BACON_IPSUM,
-    },
+
 ];
 
-const SELECTORS = [
-    {
-        title: 'First',
-        value: 0,
-    },
-    {
-        title: 'Third',
-        value: 2,
-    },
-    {
-        title: 'None',
-    },
-];
 
 class TopPlaces extends Component {
-    state = {
-        activeSections: [],
-        collapsed: true,
-        multipleSelect: false,
-    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeSections: [],
+            collapsed: true,
+            multipleSelect: false,
+        };
+    }
+
+
 
     toggleExpanded = () => {
         this.setState({ collapsed: !this.state.collapsed });
@@ -73,30 +73,31 @@ class TopPlaces extends Component {
 
     renderHeader = (section, _, isActive) => {
         return (
-            <Animatable.View
-                duration={400}
-                style={[styles.header, isActive ? styles.active : styles.inactive]}
-                transition="backgroundColor"
-            >
-                <Text style={styles.headerText}>{section.title}</Text>
-            </Animatable.View>
+            <TopPlaceHeader section={section} isActive={isActive}/>
+
         );
     };
-
-    renderContent(section, _, isActive) {
+// <Animatable.View
+    //     duration={400}
+    //     style={[styles.header, isActive ? styles.active : styles.inactive]}
+    //     transition="backgroundColor"
+    // >
+    //     <Text style={styles.headerText}>{section.title}</Text>
+    // </Animatable.View>
+    renderContent =(section, _, isActive) => {
         return (
-            <Animatable.View
-                duration={400}
-                style={[styles.content, isActive ? styles.active : styles.inactive]}
-                transition="backgroundColor"
-            >
-                <Animatable.Text animation={isActive ? 'bounceIn' : undefined}>
-                    {section.content}
-                </Animatable.Text>
-            </Animatable.View>
+            <TopPlaceContent section={section} isActive={isActive}/>
         );
-    }
-
+    };
+// <Animatable.View
+// duration={400}
+// style={[styles.content, isActive ? styles.active : styles.inactive]}
+// transition="backgroundColor"
+// >
+// <Animatable.Text animation={isActive ? 'bounceIn' : undefined}>
+// {section.content}
+// </Animatable.Text>
+// </Animatable.View>
     render() {
         const { multipleSelect, activeSections } = this.state;
 

@@ -7,7 +7,6 @@ import {PersistGate} from 'redux-persist/integration/react'
 const {persistor, store} = configureStore();
 import DrawerNavigator from "./src/modules/navigationDrawer/NavigationDrawer";
 
-
 export default class App extends Component {
 
 
@@ -24,6 +23,7 @@ export default class App extends Component {
             </Provider>
         );
     }
+
 }
 
 
