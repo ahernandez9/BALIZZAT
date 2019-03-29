@@ -25,7 +25,7 @@ export class TopPlaceHeader extends Component {
                             <Text style={styles.title}>{this.props.section.title}</Text>
                             <Text style={styles.floorText}>{this.props.section.floor}</Text>
                         </View>
-                        <View style={styles.iconContainer}>
+                        <View style={[styles.iconContainer, {justifyContent: 'flex-end'}]}>
                             <Image
                                 source={require("../../../../assets/images/down-arrow.png")}
                                 style={{height: 20, width: 20}}
@@ -34,10 +34,10 @@ export class TopPlaceHeader extends Component {
                     </View> :
                     <View style={[styles.mainContainerCollapsed, {flex: 3}]}>
                             <Text style={styles.titleCollapsed}>{this.props.section.title}</Text>
-                            <View style={[styles.iconContainer, {alignSelf: 'flex-end'}]}>
+                            <View style={[styles.iconContainer, {alignSelf: 'flex-end',justifyContent: 'flex-end', marginBottom: 5}]}>
                                 <Image
                                     source={require("../../../../assets/images/up-arrow.png")}
-                                    style={{height: 20, width: 20}}
+                                    style={{height: 15, width: 15}}
                                 />
                             </View>
                     </View>
@@ -102,7 +102,8 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
         flex: 1,
-        justifyContent: 'center',
+        flexDirection: 'row',
         alignItems: 'center',
+        marginRight: 10
     }
 });

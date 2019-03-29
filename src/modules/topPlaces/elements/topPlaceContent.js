@@ -24,22 +24,19 @@ export class TopPlaceContent extends Component {
                         <View style={styles.textContainer}>
                             <Text style={styles.text}>{this.props.section.content}</Text>
                         </View>
-                        <View style={{flex:1}}>
-                            <Button title={"Directions"} onPress={() => {}}/>
+                        <View style={styles.buttonContainer}>
+                            <Button title={"Directions"} onPress={() => {} }/>
                         </View>
                     </View>
                 </View>
         )
     }
-};
+}
 
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 3,
         flexDirection: 'row',
-        borderRadius: 5,
-        borderWidth: 2,
-        borderColor: '#ff8a00',
         marginTop: 1,
         marginBottom: 1
     },
@@ -51,20 +48,27 @@ const styles = StyleSheet.create({
     image: {
         height: '90%',
         width: '90%',
-        paddingTop: 5,
-        paddingLeft: 3
+        marginLeft: 3,
+        marginTop:5
 
     },
     textContainer: {
         flex: 1,
         justifyContent: 'center',
+        margin: 2
 
     },
     text: {
+        color:'black',
         textAlign: 'justify',
-        fontSize: 10,
+        fontSize: 15,
     },
-    floorText: {
-        color: 'grey'
+    buttonContainer:{
+        width: '60%',
+        margin: 2,
+        marginBottom: 4,
+        justifyContent:'center',
+        alignItems: 'center',
+        alignSelf: 'flex-end'
     }
 });

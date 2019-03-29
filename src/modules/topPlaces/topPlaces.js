@@ -41,7 +41,7 @@ const CONTENT = [
     {
         title: 'Restaurante',
         content: BACON_IPSUM,
-        image: require('../../../assets/images/restaurante-panoramico.jpg'),
+        image: require('../../../assets/images/restaurante-panogtiramico.jpg'),
         floor: '1º Planta'
     },
 
