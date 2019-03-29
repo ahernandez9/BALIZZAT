@@ -36,7 +36,6 @@ export default function configureStore() {
 
     return {persistor, store};
 
-
 }
 
 

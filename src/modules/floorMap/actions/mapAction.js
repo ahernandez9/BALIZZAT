@@ -1,4 +1,4 @@
-export const downloadMap = () => async (dispatch) => {
+export const downloadMap = () => async (dispatch, getState) => {
 
     /*
     =============================================================================================================
@@ -141,6 +141,13 @@ export const downloadMap = () => async (dispatch) => {
         }
         map[row] = rowMap;
     }
+
+    //Recorremos la lista de beacons, poniendo un 7 en las posiciones del mapa que ocupan las mismas para ponerlas en negro
+    let beaconlist = getState().MapReducer.beaconsList;
+    for (const [beaconKey, beacon] of Object.entries(beaconlist)) {
+        map[beacon.x][beacon.y] = 7;
+    }
+
     dispatch({
         type: 'DOWNLOAD_MAP',
         payload: map
@@ -162,7 +169,7 @@ export const downloadBeaconList = () => async (dispatch) => {
         "BlueUp-04-025417": {x: 43, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025416"]},
         //Nuevo modulaso 2.0 pa mujeres
         "BlueUp-04-025418": {x: 47, y: 40, distance: NaN, nearbyBeacons: ["BlueUp-04-025416", "BlueUp-04-025419", "BlueUp-04-025420"]},
-        "BlueUp-04-025419": {x: 35, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025420", "BlueUp-04-025421"]},
+        "BlueUp-04-025419": {x: 40, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025420", "BlueUp-04-025421"]},
         "BlueUp-04-025420": {x: 48, y: 70, distance: NaN, nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025419", "BlueUp-04-025421"]},
         "BlueUp-04-025421": {x: 30, y: 70, distance: NaN, nearbyBeacons: ["BlueUp-04-025419", "BlueUp-04-025420", "BlueUp-04-025422"]},
         "BlueUp-04-025422": {x: 25, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025421", "BlueUp-04-025415", "BlueUp-04-025414"]}
@@ -185,7 +192,7 @@ export const updatePosition = (position, center) => async (dispatch, getState) =
     if (position !== undefined) {
         // console.log("Green point", center);
         // console.log("Position point", position);
-        let newMap = getState().MapReducer.plan;
+        let newMap = getState().MapReducer.plan.slice();
         let prevPosition = getState().MapReducer.prevPosition;
         if (prevPosition.length > 0) {
             prevPosition.forEach((oldPosition) => {
@@ -209,4 +216,9 @@ export const updatePosition = (position, center) => async (dispatch, getState) =
             payload: {newMap: newMap, prevPosition: prevPosition}
         })
     }
+};
+
+//Actualizamos el mapa con la posicion de las balizas a 7 (negro)
+export const colorBeacons = (position, center) => async (dispatch, getState) => {
+
 };

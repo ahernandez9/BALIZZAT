@@ -31,7 +31,6 @@ const util = {
 
         //Vamos añadiendo beacons a la ruta hasta llegar al beacon target
         while (!this.compareBeacons(currentBeacon, target)) {
-            //console.log("route beacons: ", route);
             nextBeacon = this.nextBeacon(beaconList, currentBeacon);
             visitedBeacons.push(nextBeacon);
 
@@ -39,7 +38,6 @@ const util = {
             while (this.containsBeacon(route, nextBeacon)) {
                 nextBeacon = this.nextBeacon(beaconList, currentBeacon);
                 visitedBeacons.push(nextBeacon);
-                //console.log("nextBeac: ", nextBeacon);
                 if (visitedBeacons.length > currentBeacon.nearbyBeacons.length) return null;
             }
             route.push(nextBeacon);

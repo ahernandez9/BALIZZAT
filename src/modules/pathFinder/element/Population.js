@@ -36,6 +36,7 @@ class Population {
         this.population.forEach(member => {
             maxFitness = member.fitness < maxFitness ? member.fitness : maxFitness;
         });
+
         console.log(maxFitness);
         // Based on fitness, each member is added to the mating pool a weighed number of times
         // higher fitness = more instance in pool = more likely to be picked as a parent

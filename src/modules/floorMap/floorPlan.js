@@ -1,18 +1,22 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux";
-import {StyleSheet, View, Text, TouchableOpacity, Image, PermissionsAndroid, TextInput} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Image, PermissionsAndroid, TextInput } from 'react-native';
 import {downloadMap, downloadBeaconList, updatePosition} from "./actions/mapAction";
 import {PriorityLocation, centerAreaCalculator} from "./element/priorityLocation";
 import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
 import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
 import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
+import Population from "../pathFinder/element/Population";
+import Svg, {Line} from "react-native-svg";
 
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
 // valor 1 = Camino transitable. (Azul)
 // valor 0 = Camino no transitable. (Rojo)
 // valor 2 = Escaleras o ascensores
+
+// valor 7 = balizas
 class FloorPlan extends Component {
 
     interval;
@@ -65,7 +69,7 @@ class FloorPlan extends Component {
         if (index < 8) {
             return null;
         }
-        console.log(row);
+        //console.log(row);
         return (
             <View style={{flex: 1, flexDirection: 'row'}}>
                 {
@@ -78,6 +82,7 @@ class FloorPlan extends Component {
                             // Posición actual
                             case 5:
                                 return (<View key={index} style={{flex: 1, backgroundColor: 'yellow'}}/>);
+
                             case 6:
                                 return (
                                     <View key={index} style={{flex: 1, backgroundColor: 'f0f3fd'}}>
@@ -87,6 +92,9 @@ class FloorPlan extends Component {
                                         />
 
                                     </View>);
+                                //Baliza
+                            case 7:
+                                return (<View key={index} style={{flex: 1, backgroundColor: 'black'}}/>);
                         }
                     })}
             </View>
@@ -138,16 +146,60 @@ class FloorPlan extends Component {
         </TouchableOpacity>
     );
 
+    //RENDER OPTIMISED ROUTE
+    renderRoute = (populationFittest) => {
+
+    };
+
+    //GENETIC ALGORITHM
+    tryGenetic = () => {
+        let population = new Population(
+            this.props.mapRedux.beaconsList["BlueUp-04-025412"],
+            this.props.mapRedux.beaconsList["BlueUp-04-025420"],
+            this.props.mapRedux.beaconsList,
+            0.1, 50
+        );
+
+        //Nos resta iterar sobre la poblacion con seleccion natural, mutacion y crossovers
+        let iterationLimit = 1;
+
+        // Generate weighed mating pool with the fittest members
+        population.naturalSelection();
+
+        for ( let i = 0; i<iterationLimit; i++) {
+            // Generate new population of children from parents in the mating pool
+            population.generate();
+
+            // Calculate fitness score of the new population
+            population.calcPopulationFitness();
+
+            // Get the best route in the population
+            population.evaluate();
+        }
+        console.log("Heeeeecho", population.best);
+    };
+
+    //PA BUSCAR HABITACIONEEEES
+    // renderBuscador() {
+    //     return (
+    //         <View style={styles.searcherContainer}>
+    //             <TextInput
+    //                 style={[{height: 40, borderColor: 'gray', borderWidth: 1}, styles.searcher]}
+    //                 placeholder={"Search your room here.  Eg: 101"}
+    //             />
+    //         </View>
+    //     )
+    // }
+
     //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
         return (
             <View style={{flex: 12}}>
-                <Scanner/>
+
                 <View style={{flex: 10, flexDirection: 'column'}}>
                     {this.props.mapRedux.plan.map((row, index) => {
                         return this.renderRow(row, index)
                     })}
-
                 </View>
                 <View style={styles.buttonGroup}>
                     <TouchableOpacity style={[styles.circle, {marginBottom: 2}]}>
@@ -160,7 +212,10 @@ class FloorPlan extends Component {
                             source={require('../../../assets/images/gps-fixed-indicator.png')}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.circle, {backgroundColor: '#FF9800', marginBottom: 5}]}>
+                    <TouchableOpacity
+                        style={[styles.circle, {backgroundColor: '#FF9800', marginBottom: 5}]}
+                        onPress={this.tryGenetic}
+                    >
                         <Image
                             style={{
                                 width: 15,
@@ -172,17 +227,11 @@ class FloorPlan extends Component {
                         <Text>Go</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.searcherContainer}>
-                    <TextInput
-                        style={[{height: 40, borderColor: 'gray', borderWidth: 1}, styles.searcher]}
-                        placeholder={"Search your room here.  Eg: 101"}
-                    />
-                </View>
+
             </View>
         )
     }
 }
-
 
 const styles = StyleSheet.create({
     button: {
