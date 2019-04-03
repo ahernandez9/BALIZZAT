@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     contentContainer: {
-        height: 1080,
-        width: 1080,
+        height: 1000,
+        width: 1400,
     },
     rowLabelsContainer: {
         position: 'absolute',

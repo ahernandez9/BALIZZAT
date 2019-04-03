@@ -28,14 +28,14 @@ export default class MapContent extends Component {
     _renderCell(cell: Cell) {
         switch (cell.type) {
             case 1: //Camino transitable
-                return (<View key={cell.id} style={{flex: 1, backgroundColor: '#f0f3fd', width: 20, height: 20}}/>);
+                return (<View key={cell.id} style={{flex: 1, backgroundColor: '#f0f3fd', width: 10, height: 10}}/>);
             case 0: // Camino no transitable
-                return (<View key={cell.id} style={{flex: 1, backgroundColor: '#7c7d8d', width: 20, height: 20}}/>);
+                return (<View key={cell.id} style={{flex: 1, backgroundColor: '#7c7d8d', width: 10, height: 10}}/>);
             case 5: // Posición actual
-                return (<View key={cell.id} style={{flex: 1, backgroundColor: 'yellow', width: 20, height: 20}}/>);
+                return (<View key={cell.id} style={{flex: 1, backgroundColor: 'yellow', width: 10, height: 10}}/>);
             case 6: //Centro
                 return (
-                    <View key={index} style={{flex: 1, backgroundColor: 'f0f3fd', width: 5, height: 5}}>
+                    <View key={index} style={{flex: 1, backgroundColor: 'f0f3fd', width: 10, height: 10}}>
                         <Image source={require('../../../../assets/images/placeholder.png')}
                                style={{flex: 1, height: undefined, width: undefined}}/>
                     </View>);
