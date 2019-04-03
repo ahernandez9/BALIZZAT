@@ -7,6 +7,8 @@ export const downloadMap = () => async (dispatch) => {
     triangulos con el punto que queremos calcular si esta dentro del triangulo y los tres vertices. Si el area total del
     triangulo es igual a la suma de los tres triangulos que hemos sacado a partir del punto , el punto esta dentro.
 
+    X => FILAS
+    Y => COLUMNAS
     ================================================================================================================
      */
 
@@ -78,10 +80,73 @@ export const downloadMap = () => async (dispatch) => {
     //     }
     //     map[row] = rowMap;
     // }
+    // for (let row = 50; row >= 0; row--) {
+    //     let rowMap = [];
+    //     for (let column = 0; column < 71; column++) {
+    //         //Izquierda
+    //         //Primero de arriba a abajo
+    //         isPointInRectangle({x: 0, y: 8}, {x: 0, y: 17}, {x: 15, y: 8}, {
+    //             x: column,
+    //             y: row
+    //         }) ? rowMap[column] = 0 : null;
+    //         //Segundo de arriba a abajo
+    //         isPointInRectangle({x: 7, y: 20}, {x: 7, y: 25}, {x: 35, y: 20}, {
+    //             x: column,
+    //             y: row
+    //         }) ? rowMap[column] = 0 : null;
+    //         //Tercero de arriba a abajo
+    //         isPointInRectangle({x: 0, y: 30}, {x: 0, y: 40}, {x: 25, y: 30}, {
+    //             x: column,
+    //             y: row
+    //         }) ? rowMap[column] = 0 : null;
+    //
+    //         //Derecha
+    //         //Primero de arriba a abajo
+    //         isPointInRectangle({x: 36, y: 0}, {x: 36, y: 25}, {x: 70, y: 0}, {
+    //             x: column,
+    //             y: row
+    //         }) ? rowMap[column] = 0 : null;
+    //         //Segundo de arriba a abajo
+    //         isPointInRectangle({x: 35, y: 30}, {x: 35, y: 40}, {x: 60, y: 30}, {
+    //             x: column,
+    //             y: row
+    //         }) ? rowMap[column] = 0 : null;
+    //         //Tercero de arriba a abajo
+    //         isPointInRectangle({x: 35, y: 41}, {x: 35, y: 44}, {x: 45, y: 41}, {
+    //             x: column,
+    //             y: row
+    //         }) ? rowMap[column] = 0 : null;
+    //         //Cuarto de arriba a abajo
+    //         isPointInRectangle({x: 35, y: 48}, {x: 35, y: 50}, {x: 45, y: 48}, {
+    //             x: column,
+    //             y: row
+    //         }) ? rowMap[column] = 0 : null;
+    //
+    //         isPointInTriangle({x: 0, y: 0}, {x: 0, y: 35}, {x: 13, y: 35}, {
+    //             x: row,
+    //             y: column
+    //         }) ? rowMap[column] = 0 : null;
+    //
+    //         isPointInTriangle({x: 8, y:25 }, {x: 11, y: 25}, {x: 11, y: 35}, {
+    //             x: row,
+    //             y: column
+    //         }) ? rowMap[column] = 0 : null;
+    //
+    //         isPointInTriangle({x: 11, y: 25}, {x: 11, y: 35},{x: 15, y: 35},   {
+    //             x: row,
+    //             y: column
+    //         }) ? rowMap[column] = 0 : null;
+    //
+    //         rowMap[column] !== 0 ? rowMap[column] = 1 : null;
+    //
+    //
+    //     }
+    //     map[row] = rowMap;
+    // }
+
     for (let row = 50; row >= 0; row--) {
         let rowMap = [];
         for (let column = 0; column < 71; column++) {
-            //Izquierda
             //Primero de arriba a abajo
             isPointInRectangle({x: 0, y: 8}, {x: 0, y: 17}, {x: 15, y: 8}, {
                 x: column,
@@ -195,7 +260,7 @@ export const updatePosition = (position, center) => async (dispatch, getState) =
         prevPosition = [];
         center !== null && newMap[center[0]][center[1]] !== 0 ? prevPosition[0] = [newMap[center[0]][center[1]], center[0], center[1]] : null;
         // Posicion 0 = valor del mapa, posición 1 = eje x, posicion 2 = eje Y
-        for (let i = 1; i < position.length; i++) {
+        for (let i = 0; i < position.length; i++) {
             prevPosition[i] = [newMap[position[i][0]][position[i][1]], position[i][0], position[i][1]];
             newMap[position[i][0]][position[i][1]] = 5;
         }

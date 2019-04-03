@@ -3,6 +3,7 @@ package com.pruebalocationbeacon;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rnds.DirectedScrollViewPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.github.yamill.orientation.OrientationPackage;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new DirectedScrollViewPackage(),
             new RNGestureHandlerPackage(),
             new VectorIconsPackage(),
             new OrientationPackage(),

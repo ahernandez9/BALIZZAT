@@ -1,12 +1,24 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux";
-import {StyleSheet, View, Text, TouchableOpacity, Image, PermissionsAndroid, TextInput} from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    PermissionsAndroid,
+    TextInput,
+    SafeAreaView,
+    //ScrollView,
+    ____TransformStyle_Internal as transform
+} from 'react-native';
 import {downloadMap, downloadBeaconList, updatePosition} from "./actions/mapAction";
 import {PriorityLocation, centerAreaCalculator} from "./element/priorityLocation";
 import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
 import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
 import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
+import Map from "./element/Map";
 
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
@@ -61,39 +73,6 @@ class FloorPlan extends Component {
         clearInterval(this.reset);
     }
 
-    renderRow = (row, index) => {
-        if (index < 8) {
-            return null;
-        }
-        console.log(row);
-        return (
-            <View style={{flex: 1, flexDirection: 'row'}}>
-                {
-                    row.map((x, index) => {
-                        switch (x) {
-                            case 1: //Camino transitable
-                                return (<View key={index} style={{flex: 1, backgroundColor: '#f0f3fd'}}/>);
-                            case 0: // Camino no transitable
-                                return (<View key={index} style={{flex: 1, backgroundColor: '#7c7d8d'}}/>);
-                            // Posición actual
-                            case 5:
-                                return (<View key={index} style={{flex: 1, backgroundColor: 'yellow'}}/>);
-                            case 6:
-                                return (
-                                    <View key={index} style={{flex: 1, backgroundColor: 'f0f3fd'}}>
-                                        <Image source={require('../../../assets/images/placeholder.png')}
-                                               style={{flex: 1, height: undefined, width: undefined}}
-
-                                        />
-
-                                    </View>);
-                        }
-                    })}
-            </View>
-        )
-    };
-
-
     _getBeaconsOnPriority = () => {
         let result = [];
         this.props.scanner.beaconsOnRange.forEach((beacon) => {
@@ -131,6 +110,13 @@ class FloorPlan extends Component {
 
     };
 
+    async colorRandomPosition()  {
+        let x = Math.floor(Math.random() * 50) ;
+        let y = Math.floor(Math.random() * 70) ;
+        console.log("position: ", x, y);
+        await this.props.updatePosition([[x,y]], null);
+        this.setState()
+    };
 
     _renderButton = (text, onPress) => (
         <TouchableOpacity style={styles.button} onPress={onPress}>
@@ -138,19 +124,16 @@ class FloorPlan extends Component {
         </TouchableOpacity>
     );
 
+    //<Scanner/>
     //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
         return (
-            <View style={{flex: 12}}>
-                <Scanner/>
-                <View style={{flex: 10, flexDirection: 'column'}}>
-                    {this.props.mapRedux.plan.map((row, index) => {
-                        return this.renderRow(row, index)
-                    })}
-
-                </View>
+            <SafeAreaView style={styles.containerScrollView}>
+                <Map/>
                 <View style={styles.buttonGroup}>
-                    <TouchableOpacity style={[styles.circle, {marginBottom: 2}]}>
+                    <TouchableOpacity
+                        style={[styles.circle, {marginBottom: 2}]}
+                        onPress={() => this.colorRandomPosition()}>
                         <Image
                             style={{
                                 width: 25,
@@ -178,12 +161,12 @@ class FloorPlan extends Component {
                         placeholder={"Search your room here.  Eg: 101"}
                     />
                 </View>
-            </View>
+            </SafeAreaView>
         )
     }
 }
-
-
+/*
+*/
 const styles = StyleSheet.create({
     button: {
         textAlign: 'center',
@@ -254,6 +237,16 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'center',
         alignSelf: 'center'
+    },
+    containerScrollView: {
+        flex: 1
+    },
+    contentContainer: {
+        height: 1080,
+        width: 1080,
+    },
+    scrollViewPutilla: {
+        transform: [{ rotate: '-12deg' }]
     }
 });
 
