@@ -9,7 +9,7 @@ import {
     PermissionsAndroid,
     TextInput,
     SafeAreaView,
-    //ScrollView,
+    Alert,
     ____TransformStyle_Internal as transform
 } from 'react-native';
 import {downloadMap, downloadBeaconList, updatePosition, colorPosition} from "./actions/mapAction";
@@ -19,6 +19,7 @@ import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
 import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
 import Map from "./element/Map";
+import Population from "../pathFinder/element/Population";
 
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
@@ -138,6 +139,38 @@ class FloorPlan extends Component {
         this.pollas.scrollTo(2000, 700, true)
     };
 
+    tryGenetic() {
+        let population = new Population(this.props.mapRedux.beaconsList["BlueUp-04-025412"],this.props.mapRedux.beaconsList["BlueUp-04-025420"], this.props.mapRedux.beaconsList,
+            0.1, 50);
+        //Nos resta iterar sobre la poblacion con seleccion natural, mutacion y crossovers
+
+        // Generate weighed mating pool with the fittest members
+        population.naturalSelection();
+
+        let generations = 100;
+
+        for (let i = 0; i < generations; i++) {
+            // Generate new population of children from parents in the mating pool
+            population.generate();
+
+            // Calculate fitness score of the new population
+            population.calcPopulationFitness();
+
+            // Get the best route in the population
+            population.evaluate();
+        }
+        let message = 'Distancia optima entre el 12 y el 20: ' + population.best.fitness + ", numero de balizas: " + population.best.beacons.length;
+        Alert.alert(
+            'Algoritmo genetico finalizado',
+            message,
+            [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            {cancelable: false},
+        );
+        console.log("Heeeeecho", population.best);
+    }
+
     //<Scanner/>
     //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
@@ -162,7 +195,7 @@ class FloorPlan extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.circle, {backgroundColor: '#FF9800', marginBottom: 5}]}
-                        onPress={this.scrollToPosition}
+                        onPress={() => this.tryGenetic()}
                     >
                         <Image
                             style={{

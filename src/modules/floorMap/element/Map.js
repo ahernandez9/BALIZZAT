@@ -22,7 +22,7 @@ class Map extends Component {
                 bounces={false}
                 bouncesZoom={false}
                 maximumZoomScale={1.5}
-                minimumZoomScale={0.5}
+                minimumZoomScale={0.4}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.contentContainer}
