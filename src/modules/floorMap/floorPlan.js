@@ -12,7 +12,7 @@ import {
     //ScrollView,
     ____TransformStyle_Internal as transform
 } from 'react-native';
-import {downloadMap, downloadBeaconList, updatePosition} from "./actions/mapAction";
+import {downloadMap, downloadBeaconList, updatePosition, colorPosition} from "./actions/mapAction";
 import {PriorityLocation, centerAreaCalculator} from "./element/priorityLocation";
 import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
 import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
@@ -30,6 +30,8 @@ class FloorPlan extends Component {
     interval;
     reset;
     beacons3 = [];
+    pollas = {};
+    flipaManito = {};
 
     constructor(props) {
         super(props);
@@ -68,7 +70,7 @@ class FloorPlan extends Component {
     }
 
     componentWillUnmount(): void {
-        Orientation.unlockAllOrientations();
+       // Orientation.unlockAllOrientations();
         clearInterval(this.interval);
         clearInterval(this.reset);
     }
@@ -111,10 +113,12 @@ class FloorPlan extends Component {
     };
 
     async colorRandomPosition()  {
-        let x = Math.floor(Math.random() * 50) ;
-        let y = Math.floor(Math.random() * 70) ;
+        let x = Math.floor(Math.random() * 116) ;
+        let y = Math.floor(Math.random() * 275) ;
         console.log("position: ", x, y);
-        await this.props.updatePosition([[x,y]], null);
+        this.flipaManito = {x: x, y: y};
+        await this.props.colorPosition(this.flipaManito);
+        //await this.props.updatePosition([[x,y]], null);
         this.setState()
     };
 
@@ -124,12 +128,25 @@ class FloorPlan extends Component {
         </TouchableOpacity>
     );
 
+    setReference = (reference) => {
+        this.pollas = reference;
+    };
+
+    scrollToPosition = () => {
+        console.log("estas pasando flaco?", this.pollas);
+        //Esta es la mierda que nos ocupa ahora
+        this.pollas.scrollTo(2000, 700, true)
+    };
+
     //<Scanner/>
     //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
         return (
             <SafeAreaView style={styles.containerScrollView}>
-                <Map/>
+                <Map
+                    //callbackFromParent={(reference) => this.setReference(reference)}
+                />
+                <Scanner/>
                 <View style={styles.buttonGroup}>
                     <TouchableOpacity
                         style={[styles.circle, {marginBottom: 2}]}
@@ -143,7 +160,10 @@ class FloorPlan extends Component {
                             source={require('../../../assets/images/gps-fixed-indicator.png')}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.circle, {backgroundColor: '#FF9800', marginBottom: 5}]}>
+                    <TouchableOpacity
+                        style={[styles.circle, {backgroundColor: '#FF9800', marginBottom: 5}]}
+                        onPress={this.scrollToPosition}
+                    >
                         <Image
                             style={{
                                 width: 15,
@@ -155,17 +175,18 @@ class FloorPlan extends Component {
                         <Text>Go</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.searcherContainer}>
-                    <TextInput
-                        style={[{height: 40, borderColor: 'gray', borderWidth: 1}, styles.searcher]}
-                        placeholder={"Search your room here.  Eg: 101"}
-                    />
-                </View>
+
             </SafeAreaView>
         )
     }
 }
 /*
+ <View style={styles.searcherContainer}>
+                    <TextInput
+                        style={[{height: 40, borderColor: 'gray', borderWidth: 1}, styles.searcher]}
+                        placeholder={"Search your room here.  Eg: 101"}
+                    />
+                </View>
 */
 const styles = StyleSheet.create({
     button: {
@@ -259,7 +280,12 @@ const
         }
     };
 
-const mapStateToPropsAction = {downloadMap, downloadBeaconList, updatePosition};
+const mapStateToPropsAction = {
+    downloadMap,
+    downloadBeaconList,
+    updatePosition,
+    colorPosition
+};
 
 
 export default connect(mapStateToProps, mapStateToPropsAction)(FloorPlan);

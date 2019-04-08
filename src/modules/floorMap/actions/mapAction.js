@@ -144,9 +144,9 @@ export const downloadMap = () => async (dispatch) => {
     //     map[row] = rowMap;
     // }
 
-    for (let row = 50; row >= 0; row--) {
+    for (let row = 58; row >= 0; row--) {
         let rowMap = [];
-        for (let column = 0; column < 71; column++) {
+        for (let column = 0; column < 138; column++) {
             //Primero de arriba a abajo
             isPointInRectangle({x: 0, y: 8}, {x: 0, y: 17}, {x: 15, y: 8}, {
                 x: column,
@@ -274,4 +274,13 @@ export const updatePosition = (position, center) => async (dispatch, getState) =
             payload: {newMap: newMap, prevPosition: prevPosition}
         })
     }
+};
+
+export const colorPosition = (position) => async (dispatch, getState) => {
+
+
+    dispatch({
+        type: 'UPDATE_POSITION',
+        payload: position
+    })
 };

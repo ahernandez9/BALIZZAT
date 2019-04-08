@@ -1,17 +1,22 @@
 /* @flow */
 
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import ScrollView, { ScrollViewChild } from 'react-native-directed-scrollview';
 import MapContent from './MapContent';
 import { getCellsByRow } from './data';
 import {connect} from "react-redux";
+import MapCordial from '../../../../assets/images/cropped_cordial_map.png'
 
 class Map extends Component {
 
-    render() {
-        const cellsByRow = getCellsByRow(this.props.mapRedux.plan);
+    componentDidMount(): void {
+        //this.props.callbackFromParent(this.reference);
+        console.log(this.reference);
+        this.reference.scrollTo(2000, 700, true)
+    }
 
+    render() {
         return (
             <ScrollView
                 bounces={false}
@@ -22,9 +27,10 @@ class Map extends Component {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.contentContainer}
                 style={styles.container}
+                ref={ref => { this.reference = ref}}
             >
                 <ScrollViewChild scrollDirection={'both'}>
-                    <MapContent cellsByRow={cellsByRow} />
+                    <MapContent/>
                 </ScrollViewChild>
             </ScrollView>
         );
@@ -36,23 +42,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     contentContainer: {
-        height: 1000,
-        width: 1400,
-    },
-    rowLabelsContainer: {
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: 100,
-    },
-    columnLabelsContainer: {
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        right: 0,
-        height: 30,
-    },
+        height: 1160,
+        width: 2750,
+    }
 });
 
 const mapStateToProps = state => {
@@ -60,6 +52,5 @@ const mapStateToProps = state => {
             mapRedux: state.MapReducer
         }
     };
-
 
 export default connect(mapStateToProps)(Map);

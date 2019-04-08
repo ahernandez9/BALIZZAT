@@ -3,18 +3,38 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import type {Row, Cell} from './data';
+import {connect} from "react-redux";
 
-export default class MapContent extends Component {
-    props: {
-        cellsByRow: Array<Row>
-    };
+class MapContent extends Component {
+    // props: {
+    //     cellsByRow: Array<Row>
+    // };
 
     render() {
+        // return (
+        //     <View>
+        //         {this.props.cellsByRow.map(row => this._renderRow(row))}
+        //     </View>
+        // );
+        let currentPosition = this.props.mapRedux.currentPosition;
+        console.log('position: ', currentPosition);
         return (
             <View>
-                {this.props.cellsByRow.map(row => this._renderRow(row))}
+                <Image
+                    source={require('../../../../assets/images/cropped_cordial_map.png')}
+                    resizeMode={'contain'}
+                    //style={{flex:1}}
+                />
+                { currentPosition &&
+                    <View style={{flex: 1, backgroundColor: 'transparent', width: 50, height: 50,
+                        position: 'absolute', top: currentPosition.x * 10, left: currentPosition.y * 10}}>
+                        <Image source={require('../../../../assets/images/placeholder.png')}
+                               style={{flex: 1, height: undefined, width: undefined}}/>
+                    </View>
+                }
             </View>
-        );
+
+        )
     }
 
     _renderRow(row: Row) {
@@ -24,6 +44,7 @@ export default class MapContent extends Component {
             </View>
         );
     }
+
 
     _renderCell(cell: Cell) {
         switch (cell.type) {
@@ -56,3 +77,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'lightgrey',
     },
 });
+
+const mapStateToProps = state => {
+    return {
+        mapRedux: state.MapReducer
+    }
+};
+
+
+export default connect(mapStateToProps)(MapContent);

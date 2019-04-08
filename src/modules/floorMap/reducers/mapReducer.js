@@ -3,7 +3,8 @@ const INITIAL_STATE = {
     prevPosition: [],
     plan: [],
     beaconsList: {},
-    topPlaces: {}
+    topPlaces: {},
+    currentPosition: {}
 };
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -27,6 +28,11 @@ export default (state = INITIAL_STATE, action) => {
             return{
                 ...state,
                 topPlaces: action.payload
+            };
+        case 'UPDATE_POSITION':
+            return{
+                ...state,
+                currentPosition: action.payload
             };
         default:
             return state
