@@ -1,15 +1,15 @@
 import {connect} from "react-redux";
-import util from './Utilities';
+import util from './LogicUtilities';
 import {downloadBeaconList} from "../../floorMap/actions/mapAction";
 
-class Route {
+class LogicRoute {
     constructor(beaconList, origin, target, newRouteNeeded){
 
         // The genetic sequence
         this.beacons = [];
         this.fitness = 0;
 
-        // Random Route generated from characters
+        // Random LogicRoute generated from characters
         if (newRouteNeeded) {
             this.beacons = Array(beaconList.length).fill(null);
             this.beacons = this.generateRoute(beaconList, origin, target);
@@ -28,7 +28,7 @@ class Route {
     calculateTotalFitness() {
         let distance = 0;
         for (let i = 0; i < this.beacons.length - 1; i++) {
-            distance += Route.calculateDualFitness(this.beacons[i], this.beacons[i+1])
+            distance += LogicRoute.calculateDualFitness(this.beacons[i], this.beacons[i+1])
         }
 
         this.fitness = distance;
@@ -40,16 +40,16 @@ class Route {
     }
 
     //ESTO HAY QUE CAMBIARLO JODEEEEEEEEEO
-    // Cross Route with partner to produce child
+    // Cross LogicRoute with partner to produce child
     // Select the first coincidence in the route beacons and cross the routes using that point. Probability?
     crossover(partner) {
 
         // Initialise new child
-        const child = new Route(null, null, null, false);
+        const child = new LogicRoute(null, null, null, false);
         //const midpoint = util.randomInt(0, this.beacons.length - 1);
         const crossoverPoint = util.matchingPosition(this, partner);
 
-        // Cross Route from two parents from each side of midpoint
+        // Cross LogicRoute from two parents from each side of midpoint
         this.beacons.forEach((beacon, i) => {
 
             if (i > crossoverPoint) {
@@ -74,4 +74,4 @@ class Route {
     }
 }
 
-export default Route;
+export default LogicRoute;

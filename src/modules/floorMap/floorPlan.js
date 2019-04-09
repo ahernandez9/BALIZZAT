@@ -7,8 +7,7 @@ import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
 import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
 import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
-import Population from "../pathFinder/element/Population";
-import Svg, {Line} from "react-native-svg";
+import Population from "../pathFinder/beaconRoute/LogicPopulation";
 
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
@@ -151,7 +150,7 @@ class FloorPlan extends Component {
 
     };
 
-    //GENETIC ALGORITHM
+    //GENETIC ALGORITHM FOR BEACONS
     tryGenetic = () => {
         let population = new Population(
             this.props.mapRedux.beaconsList["BlueUp-04-025412"],
