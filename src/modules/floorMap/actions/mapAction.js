@@ -163,16 +163,16 @@ export const downloadBeaconList = () => async (dispatch) => {
         "BlueUp-04-025412": {x: 17, y: 35, distance: NaN, nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025411"]},
         //Nuevos de pasillo y tal
         "BlueUp-04-025413": {x: 24, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025414"]},
-        "BlueUp-04-025414": {x: 25, y: 20, distance: NaN, nearbyBeacons: ["BlueUp-04-025413", "BlueUp-04-025415", "BlueUp-04-025422"]},
-        "BlueUp-04-025415": {x: 35, y: 35, distance: NaN, nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416", "BlueUp-04-025417", "BlueUp-04-025422", "BlueUp-04-025418"]},
+        "BlueUp-04-025414": {x: 26, y: 20, distance: NaN, nearbyBeacons: ["BlueUp-04-025413", "BlueUp-04-025415", "BlueUp-04-025422"]},
+        "BlueUp-04-025415": {x: 35, y: 34, distance: NaN, nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416", "BlueUp-04-025417", "BlueUp-04-025422", "BlueUp-04-025418"]},
         "BlueUp-04-025416": {x: 50, y: 30, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025417", "BlueUp-04-025418"]},
         "BlueUp-04-025417": {x: 43, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025416"]},
         //Nuevo modulaso 2.0 pa mujeres
         "BlueUp-04-025418": {x: 47, y: 40, distance: NaN, nearbyBeacons: ["BlueUp-04-025416", "BlueUp-04-025419", "BlueUp-04-025420"]},
-        "BlueUp-04-025419": {x: 40, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025420", "BlueUp-04-025421"]},
+        "BlueUp-04-025419": {x: 41, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025420", "BlueUp-04-025421"]},
         "BlueUp-04-025420": {x: 48, y: 70, distance: NaN, nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025419", "BlueUp-04-025421"]},
         "BlueUp-04-025421": {x: 30, y: 70, distance: NaN, nearbyBeacons: ["BlueUp-04-025419", "BlueUp-04-025420", "BlueUp-04-025422"]},
-        "BlueUp-04-025422": {x: 25, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025421", "BlueUp-04-025415", "BlueUp-04-025414"]}
+        "BlueUp-04-025422": {x: 26, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025421", "BlueUp-04-025415", "BlueUp-04-025414"]}
     };
     // let beaconsList = {
     //     "AC:23:3F:26:0B:6F": {x: 19, y: 7, distance: NaN},
@@ -219,6 +219,15 @@ export const updatePosition = (position, center) => async (dispatch, getState) =
 };
 
 //Actualizamos el mapa con la posicion de las balizas a 7 (negro)
-export const colorBeacons = (position, center) => async (dispatch, getState) => {
+export const colorPositions = (positions, color) => async (dispatch, getState) => {
+    let newMap = getState().MapReducer.plan.slice();
 
+    for (let position of positions) {
+        newMap[position.x][position.y] = color;
+    }
+
+    dispatch({
+        type: 'DOWNLOAD_MAP',
+        payload: newMap
+    })
 };

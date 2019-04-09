@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux";
 import {StyleSheet, View, Text, TouchableOpacity, Image, PermissionsAndroid, TextInput } from 'react-native';
-import {downloadMap, downloadBeaconList, updatePosition} from "./actions/mapAction";
+import {downloadMap, downloadBeaconList, updatePosition, colorPositions} from "./actions/mapAction";
 import {PriorityLocation, centerAreaCalculator} from "./element/priorityLocation";
 import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
 import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
 import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
 import Population from "../pathFinder/beaconRoute/LogicPopulation";
+import RenderRoute from "../pathFinder/mapRoute/RenderRoute";
 
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
@@ -78,6 +79,9 @@ class FloorPlan extends Component {
                                 return (<View key={index} style={{flex: 1, backgroundColor: '#f0f3fd'}}/>);
                             case 0: // Camino no transitable
                                 return (<View key={index} style={{flex: 1, backgroundColor: '#7c7d8d'}}/>);
+                            // Camino
+                            case 4:
+                                return (<View key={index} style={{flex: 1, backgroundColor: 'blue'}}/>);
                             // Posición actual
                             case 5:
                                 return (<View key={index} style={{flex: 1, backgroundColor: 'yellow'}}/>);
@@ -147,14 +151,31 @@ class FloorPlan extends Component {
 
     //RENDER OPTIMISED ROUTE
     renderRoute = (populationFittest) => {
+        console.log(populationFittest);
+            //Render del 16 al 17
+        for (let i = 0; i < populationFittest.length - 1; i++) {
+            let start = {x: populationFittest[i].x, y: populationFittest[i].y};
+            let target = {x: populationFittest[i+1].x, y: populationFittest[i+1].y};
+            let route = new RenderRoute(
+                this.props.mapRedux.plan,
+                start,
+                target,
+                true
+            );
+            console.log('route', route);
+            this.props.colorPositions(route.positions, 4);
+        }
 
+
+
+            this.setState()
     };
 
     //GENETIC ALGORITHM FOR BEACONS
     tryGenetic = () => {
         let population = new Population(
             this.props.mapRedux.beaconsList["BlueUp-04-025412"],
-            this.props.mapRedux.beaconsList["BlueUp-04-025420"],
+            this.props.mapRedux.beaconsList["BlueUp-04-025417"],
             this.props.mapRedux.beaconsList,
             0.1, 50
         );
@@ -176,6 +197,9 @@ class FloorPlan extends Component {
             population.evaluate();
         }
         console.log("Heeeeecho", population.best);
+
+        this.renderRoute(population.best.beacons)
+
     };
 
     //PA BUSCAR HABITACIONEEEES
@@ -314,7 +338,7 @@ const
         }
     };
 
-const mapStateToPropsAction = {downloadMap, downloadBeaconList, updatePosition};
+const mapStateToPropsAction = {downloadMap, downloadBeaconList, updatePosition, colorPositions};
 
 
 export default connect(mapStateToProps, mapStateToPropsAction)(FloorPlan);
