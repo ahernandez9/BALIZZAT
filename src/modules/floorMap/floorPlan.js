@@ -114,10 +114,15 @@ class FloorPlan extends Component {
     };
 
     async colorRandomPosition()  {
-        let x = Math.floor(Math.random() * 116) ;
-        let y = Math.floor(Math.random() * 275) ;
-        console.log("position: ", x, y);
+        let x = Math.floor(Math.random() * 58) ;
+        let y = Math.floor(Math.random() * 138) ;
         this.flipaManito = {x: x, y: y};
+        while(this.props.mapRedux.plan[this.flipaManito.x][this.flipaManito.y] === 0) {
+            let x = Math.floor(Math.random() * 58) ;
+            let y = Math.floor(Math.random() * 138) ;
+            this.flipaManito = {x: x, y: y};
+        }
+        console.log("position: ", x, y);
         await this.props.colorPosition(this.flipaManito);
         //await this.props.updatePosition([[x,y]], null);
         this.setState()
@@ -179,7 +184,6 @@ class FloorPlan extends Component {
                 <Map
                     //callbackFromParent={(reference) => this.setReference(reference)}
                 />
-                <Scanner/>
                 <View style={styles.buttonGroup}>
                     <TouchableOpacity
                         style={[styles.circle, {marginBottom: 2}]}
@@ -208,7 +212,12 @@ class FloorPlan extends Component {
                         <Text>Go</Text>
                     </TouchableOpacity>
                 </View>
-
+                <View style={styles.searcherContainer}>
+                    <TextInput
+                        style={[{height: 40, borderColor: 'gray', borderWidth: 1}, styles.searcher]}
+                        placeholder={"Search your room here.  Eg: 101"}
+                    />
+                </View>
             </SafeAreaView>
         )
     }
