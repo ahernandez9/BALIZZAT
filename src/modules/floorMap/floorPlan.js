@@ -10,16 +10,20 @@ import {
     TextInput,
     SafeAreaView,
     Alert,
-    ____TransformStyle_Internal as transform
 } from 'react-native';
-import {downloadMap, downloadBeaconList, updatePosition, colorPosition} from "./actions/mapAction";
+import {
+    downloadMap,
+    downloadBeaconList,
+    colorPositions,
+    updateCurrentPosition,
+    updateOptimalRoute
+} from "./actions/mapAction";
 import {PriorityLocation, centerAreaCalculator} from "./element/priorityLocation";
 import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
 import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
 import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
 import Map from "./element/Map";
-import Population from "../pathFinder/element/Population";
 import Population from "../pathFinder/beaconRoute/Population";
 import RenderRoute from "../pathFinder/mapRoute/RenderRoute";
 
@@ -30,6 +34,7 @@ import RenderRoute from "../pathFinder/mapRoute/RenderRoute";
 // valor 2 = Escaleras o ascensores
 
 // valor 7 = balizas
+
 class FloorPlan extends Component {
 
     interval;
@@ -117,17 +122,17 @@ class FloorPlan extends Component {
 
     };
 
-    async colorRandomPosition()  {
-        let x = Math.floor(Math.random() * 58) ;
-        let y = Math.floor(Math.random() * 138) ;
+    async colorRandomPosition() {
+        let x = Math.floor(Math.random() * 58);
+        let y = Math.floor(Math.random() * 138);
         this.flipaManito = {x: x, y: y};
-        while(this.props.mapRedux.plan[this.flipaManito.x][this.flipaManito.y] === 0) {
-            let x = Math.floor(Math.random() * 58) ;
-            let y = Math.floor(Math.random() * 138) ;
+        while (this.props.mapRedux.plan[this.flipaManito.x][this.flipaManito.y] === 0) {
+            let x = Math.floor(Math.random() * 58);
+            let y = Math.floor(Math.random() * 138);
             this.flipaManito = {x: x, y: y};
         }
         console.log("position: ", x, y);
-        await this.props.colorPosition(this.flipaManito);
+        await this.props.updateCurrentPosition(this.flipaManito);
         //await this.props.updatePosition([[x,y]], null);
         this.setState()
     };
@@ -151,10 +156,11 @@ class FloorPlan extends Component {
     //RENDER OPTIMISED ROUTE
     renderRoute = (populationFittest) => {
         console.log(populationFittest);
+        let optimalRoute = [];
         //Render del 16 al 17
         for (let i = 0; i < populationFittest.length - 1; i++) {
             let start = {x: populationFittest[i].x, y: populationFittest[i].y};
-            let target = {x: populationFittest[i+1].x, y: populationFittest[i+1].y};
+            let target = {x: populationFittest[i + 1].x, y: populationFittest[i + 1].y};
             let route = new RenderRoute(
                 this.props.mapRedux.plan,
                 start,
@@ -162,11 +168,10 @@ class FloorPlan extends Component {
                 true
             );
             console.log('route', route);
-            this.props.colorPositions(route.positions, 4);
+            optimalRoute.push.apply(optimalRoute, route.positions);
+            //this.props.colorPositions(route.positions, 4);
         }
-
-
-
+        this.props.updateOptimalRoute(optimalRoute);
         this.setState()
     };
 
@@ -185,7 +190,7 @@ class FloorPlan extends Component {
         // Generate weighed mating pool with the fittest members
         population.naturalSelection();
 
-        for ( let i = 0; i<iterationLimit; i++) {
+        for (let i = 0; i < iterationLimit; i++) {
             // Generate new population of children from parents in the mating pool
             population.generate();
 
@@ -247,6 +252,7 @@ class FloorPlan extends Component {
         )
     }
 }
+
 /*
  <View style={styles.searcherContainer}>
                     <TextInput
@@ -334,7 +340,7 @@ const styles = StyleSheet.create({
         width: 1080,
     },
     scrollViewPutilla: {
-        transform: [{ rotate: '-12deg' }]
+        transform: [{rotate: '-12deg'}]
     }
 });
 
@@ -350,8 +356,9 @@ const
 const mapStateToPropsAction = {
     downloadMap,
     downloadBeaconList,
-    updatePosition,
-    colorPosition
+    colorPositions,
+    updateCurrentPosition,
+    updateOptimalRoute
 };
 
 

@@ -1,23 +1,15 @@
-/* @flow */
-
 import React, {Component} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import type {Row, Cell} from './data';
 import {connect} from "react-redux";
 
 class MapContent extends Component {
-    // props: {
-    //     cellsByRow: Array<Row>
-    // };
 
     render() {
-        // return (
-        //     <View>
-        //         {this.props.cellsByRow.map(row => this._renderRow(row))}
-        //     </View>
-        // );
         let currentPosition = this.props.mapRedux.currentPosition;
+        let optimalRoute = this.props.mapRedux.optimalRoute;
         console.log('position: ', currentPosition);
+        console.log('route: ', optimalRoute);
         return (
             <View>
                 <Image
@@ -32,35 +24,25 @@ class MapContent extends Component {
                                style={{flex: 1, height: undefined, width: undefined}}/>
                     </View>
                 }
+                { optimalRoute.length > 0 &&
+                    optimalRoute.map((position) => {
+                        return (
+                            <View key={position.id}
+                                style={{
+                                    flex: 1,
+                                    backgroundColor: 'black',
+                                    width: 10,
+                                    height: 10,
+                                    position: 'absolute',
+                                    top: position.x * 10,
+                                    left: position.y * 10
+                                }}
+                            />
+                            )
+                    })
+                }
             </View>
-
         )
-    }
-
-    _renderRow(row: Row) {
-        return (
-            <View key={row.id} style={styles.rowContainer}>
-                {row.cells.map(cell => this._renderCell(cell))}
-            </View>
-        );
-    }
-
-
-    _renderCell(cell: Cell) {
-        switch (cell.type) {
-            case 1: //Camino transitable
-                return (<View key={cell.id} style={{flex: 1, backgroundColor: '#f0f3fd', width: 10, height: 10}}/>);
-            case 0: // Camino no transitable
-                return (<View key={cell.id} style={{flex: 1, backgroundColor: '#7c7d8d', width: 10, height: 10}}/>);
-            case 5: // Posición actual
-                return (<View key={cell.id} style={{flex: 1, backgroundColor: 'yellow', width: 10, height: 10}}/>);
-            case 6: //Centro
-                return (
-                    <View key={index} style={{flex: 1, backgroundColor: 'f0f3fd', width: 10, height: 10}}>
-                        <Image source={require('../../../../assets/images/placeholder.png')}
-                               style={{flex: 1, height: undefined, width: undefined}}/>
-                    </View>);
-        }
     }
 }
 

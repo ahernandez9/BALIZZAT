@@ -144,9 +144,9 @@ export const downloadMap = () => async (dispatch, getState) => {
     //     map[row] = rowMap;
     // }
 
-    for (let row = 58; row >= 0; row--) {
+    for (let row = 116; row >= 0; row--) {
         let rowMap = [];
-        for (let column = 0; column < 138; column++) {
+        for (let column = 0; column < 275; column++) {
             //Primero de arriba a abajo
             isPointInRectangle({x: 0, y: 8}, {x: 0, y: 17}, {x: 15, y: 8}, {
                 x: column,
@@ -283,14 +283,20 @@ export const updatePosition = (position, center) => async (dispatch, getState) =
     }
 };
 
-export const colorPosition = (position) => async (dispatch, getState) => {
-
-
+export const updateCurrentPosition = (position) => async (dispatch, getState) => {
     dispatch({
         type: 'UPDATE_POSITION',
         payload: position
     })
 };
+
+export const updateOptimalRoute = (route) => async (dispatch, getState) => {
+    dispatch({
+        type: 'UPDATE_ROUTE',
+        payload: route
+    })
+};
+
 
 //Actualizamos el mapa con la posicion de las balizas a 7 (negro)
 export const colorPositions = (positions, color) => async (dispatch, getState) => {
