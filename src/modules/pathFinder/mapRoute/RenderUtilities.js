@@ -2,11 +2,10 @@ const utils = {
 
     newRoute: function(map, origin, target){
         /**
-         * Localizamos las posiciones origen y destino, y a partir de ellas montamos rutas aleatorias recorriendo
-         * solo las posiciones colindantes no recorridas de cada uno.
+         * Localizamos las posiciones origen y destino, y a partir de ellas buscamos la ruta óptima recorriendo
+         * solo las posiciones colindantes transitables, eligiendo para cada paso la que nos acerca mas al
+         * objetivo.
          **/
-        //La primera posicion es la unica que tiene 4 posibilidades, las otras tienen 3 porque vienen de otra
-        // let isFirstPosition = true;
             //Creamos la ruta vacia y añadimos el primer elemento
         let route = [];
         let currentPosition = origin;
@@ -15,8 +14,8 @@ const utils = {
 
         //Vamos añadiendo beacons a la ruta hasta llegar al beacon target
         while (!this.comparePositions(currentPosition, target)) {
-            nextPosition = this.nextPosition(map, currentPosition, target/*, relativeSituation*/);
-            console.log('Next position: ', nextPosition);
+            nextPosition = this.nextPosition(map, currentPosition, target);
+            if (nextPosition === {}) return null; // Por que no funciona con los ternarios?
             route.push(nextPosition);
             currentPosition = nextPosition;
         }
@@ -24,75 +23,42 @@ const utils = {
         return route;
     },
 
-    getPosibilities: function(map, position/*, relativeSituation*/) {
+    getPosibilities: function(map, position) {
         let posibilities = [];
-        console.log('position', position);
-        // map[position.x + 1] && map[position.x + 1][position.y] && map[position.x + 1][position.y] === 1 ? posibilities.push(map[position.x + 1][position.y]) : null;
-        // map[position.x - 1] && map[position.x - 1][position.y] && map[position.x + 1][position.y] === 1 ? posibilities.push(map[position.x - 1][position.y]) : null;
-        // map[position.x] && map[position.x][position.y + 1] && map[position.x + 1][position.y] === 1 ? posibilities.push(map[position.x][position.y + 1]) : null : null : null;
-        // map[position.x] && map[position.x][position.y - 1] && map[position.x + 1][position.y] === 1 ? posibilities.push(map[position.x][position.y - 1]) : null : null : null;
-        // //Abajo
-        // // if(relativeSituation === 3 || relativeSituation === 4) {
-        //     if (map[position.x + 1] !== undefined) {
-        //         if (map[position.x + 1][position.y] !== undefined) {
-        //             if (map[position.x + 1][position.y] !== 0) {
-        //                 posibilities.push({x: position.x + 1, y: position.y})
-        //             }
-        //         }
-        //     }
-        // // }
-        // //Arriba
-        // // if (relativeSituation === 1 || relativeSituation === 2) {
-        //     if (map[position.x - 1] !== undefined) {
-        //         if (map[position.x - 1][position.y] !== undefined) {
-        //             if (map[position.x - 1][position.y] !== 0) {
-        //                 posibilities.push({x: position.x - 1, y: position.y})
-        //             }
-        //         }
-        //     }
-        // // }
-        // //A la derecha
-        // // if (relativeSituation === 2 || relativeSituation === 4) {
-        //     if (map[position.x] !== undefined) {
-        //         if (map[position.x][position.y + 1] !== undefined) {
-        //             if (map[position.x][position.y + 1] !== 0) {
-        //                 posibilities.push({x: position.x, y: position.y + 1})
-        //             }
-        //         }
-        //     }
-        // // }
-        // //A la izquierda
-        // // if (relativeSituation === 1 || relativeSituation === 3) {
-        //     if (map[position.x] !== undefined) {
-        //         if (map[position.x][position.y - 1] !== undefined) {
-        //             if (map[position.x][position.y - 1] !== 0) {
-        //                 posibilities.push({x: position.x, y: position.y - 1})
-        //             }
-        //         }
-        //     }
-        // // }
-        map[position.x + 1] !== undefined && map[position.x + 1][position.y] !== undefined && map[position.y + 1][position.x] === 1 ?
-            posibilities.push(map[position.x + 1][position.y]) : null;
-        map[position.x - 1] !== undefined && map[position.x - 1][position.y] !== undefined  && map[position.x + 1][position.y] === 1 ?
-            posibilities.push(map[position.x - 1][position.y]) : null;
-        map[position.x] !== undefined && map[position.x][position.y + 1] !== undefined && map[position.x + 1][position.y] === 1 ?
-            posibilities.push(map[position.x][position.y + 1]) : null;
-        map[position.x] !== undefined && map[position.x][position.y - 1] !== undefined && map[position.x + 1][position.y] === 1 ?
-            posibilities.push(map[position.x][position.y - 1]) : null;
+        // Arriba
+        (map[position.x + 1] !== undefined && map[position.x + 1][position.y] !== undefined && map[position.y + 1][position.x] !== 0) ?
+            posibilities.push({x: position.x + 1, y: position.y}) : null;
+        // Abajo
+        (map[position.x - 1] !== undefined && map[position.x - 1][position.y] !== undefined  && map[position.x + 1][position.y] !== 0) ?
+            posibilities.push({x: position.x - 1, y: position.y}) : null;
+        // Derecha
+        (map[position.x] !== undefined && map[position.x][position.y + 1] !== undefined && map[position.x][position.y + 1] !== 0) ?
+            posibilities.push({x: position.x, y: position.y + 1}) : null;
+        // Izquierda
+        (map[position.x] !== undefined && map[position.x][position.y - 1] !== undefined && map[position.x][position.y - 1] !== 0) ?
+            posibilities.push({x: position.x, y: position.y - 1}) : null;
+
+        //Diagonales
+        (map[position.x + 1] !== undefined && map[position.x + 1][position.y + 1] !== undefined && map[position.x + 1][position.y + 1] !== 0) ?
+            posibilities.push({x: position.x + 1, y: position.y + 1}) : null;
+        (map[position.x + 1] !== undefined && map[position.x + 1][position.y - 1] !== undefined && map[position.x + 1][position.y - 1] !== 0) ?
+            posibilities.push({x: position.x + 1, y: position.y - 1}) : null;
+        (map[position.x - 1] !== undefined && map[position.x - 1][position.y + 1] !== undefined && map[position.x - 1][position.y + 1] !== 0) ?
+            posibilities.push({x: position.x - 1, y: position.y + 1}) : null;
+        (map[position.x - 1] !== undefined && map[position.x - 1][position.y - 1] !== undefined && map[position.x - 1][position.y - 1] !== 0) ?
+            posibilities.push({x: position.x - 1, y: position.y - 1}) : null;
         return posibilities
     },
 
     //Elegimos una posicion aleatoria TRANSITABLE que salga de la posicion actual
-    nextPosition: function(map, position, target/*, relativeSituation*/) {
-        //Sacamos las 4 posiciones pegadas a la actual
+    nextPosition: function(map, position, target) {
+        //Sacamos las (máximo) 8 posiciones pegadas a la actual
         let posibilities = this.getPosibilities(map, position);
-        console.log(posibilities);
 
-        //Elegimos una que nos acerque al objetivo
+        //Elegimos la que mas nos acerque al objetivo
         let distance = 10000000;
         let nextPosition = {};
         for (let posibility of posibilities) {
-            console.log('posibility: ', posibility);
             let newDistance = this.manhattanDistance(posibility, target);
             if (newDistance < distance) {
                 distance = newDistance;

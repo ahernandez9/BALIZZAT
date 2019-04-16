@@ -7,7 +7,7 @@ import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
 import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
 import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
-import Population from "../pathFinder/beaconRoute/LogicPopulation";
+import Population from "../pathFinder/beaconRoute/Population";
 import RenderRoute from "../pathFinder/mapRoute/RenderRoute";
 
 
@@ -71,7 +71,7 @@ class FloorPlan extends Component {
         }
         //console.log(row);
         return (
-            <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{flex: 1, flexDirection: 'row'}} key={index}>
                 {
                     row.map((x, index) => {
                         switch (x) {

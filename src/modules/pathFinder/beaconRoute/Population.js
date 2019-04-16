@@ -1,7 +1,7 @@
-import LogicRoute from './LogicRoute';
+import Route from './Route';
 import util from './LogicUtilities';
 
-class LogicPopulation {
+class Population {
     constructor(initialBeacon, finalBeacon, beaconList, m, populationSize) {
         this.origin = initialBeacon;
         this.target = finalBeacon;
@@ -14,7 +14,7 @@ class LogicPopulation {
 
         // Fill population with DNA instances
         this.population = Array(populationSize).fill(null);
-        this.population = this.population.map(() => new LogicRoute(beaconList, this.origin, this.target, true));
+        this.population = this.population.map(() => new Route(beaconList, this.origin, this.target, true));
 
         this.calcPopulationFitness();
     }
@@ -122,4 +122,4 @@ class LogicPopulation {
     }
 }
 
-export default LogicPopulation;
+export default Population;
