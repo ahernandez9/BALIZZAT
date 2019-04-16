@@ -20,12 +20,16 @@ import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
 import Map from "./element/Map";
 import Population from "../pathFinder/element/Population";
+import Population from "../pathFinder/beaconRoute/Population";
+import RenderRoute from "../pathFinder/mapRoute/RenderRoute";
 
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
 // valor 1 = Camino transitable. (Azul)
 // valor 0 = Camino no transitable. (Rojo)
 // valor 2 = Escaleras o ascensores
+
+// valor 7 = balizas
 class FloorPlan extends Component {
 
     interval;
@@ -71,7 +75,7 @@ class FloorPlan extends Component {
     }
 
     componentWillUnmount(): void {
-       // Orientation.unlockAllOrientations();
+        Orientation.unlockAllOrientations();
         clearInterval(this.interval);
         clearInterval(this.reset);
     }
@@ -144,17 +148,44 @@ class FloorPlan extends Component {
         this.pollas.scrollTo(2000, 700, true)
     };
 
-    tryGenetic() {
-        let population = new Population(this.props.mapRedux.beaconsList["BlueUp-04-025412"],this.props.mapRedux.beaconsList["BlueUp-04-025420"], this.props.mapRedux.beaconsList,
-            0.1, 50);
+    //RENDER OPTIMISED ROUTE
+    renderRoute = (populationFittest) => {
+        console.log(populationFittest);
+        //Render del 16 al 17
+        for (let i = 0; i < populationFittest.length - 1; i++) {
+            let start = {x: populationFittest[i].x, y: populationFittest[i].y};
+            let target = {x: populationFittest[i+1].x, y: populationFittest[i+1].y};
+            let route = new RenderRoute(
+                this.props.mapRedux.plan,
+                start,
+                target,
+                true
+            );
+            console.log('route', route);
+            this.props.colorPositions(route.positions, 4);
+        }
+
+
+
+        this.setState()
+    };
+
+    //GENETIC ALGORITHM FOR BEACONS
+    tryGenetic = () => {
+        let population = new Population(
+            this.props.mapRedux.beaconsList["BlueUp-04-025412"],
+            this.props.mapRedux.beaconsList["BlueUp-04-025417"],
+            this.props.mapRedux.beaconsList,
+            0.1, 50
+        );
+
         //Nos resta iterar sobre la poblacion con seleccion natural, mutacion y crossovers
+        let iterationLimit = 1;
 
         // Generate weighed mating pool with the fittest members
         population.naturalSelection();
 
-        let generations = 100;
-
-        for (let i = 0; i < generations; i++) {
+        for ( let i = 0; i<iterationLimit; i++) {
             // Generate new population of children from parents in the mating pool
             population.generate();
 
@@ -164,17 +195,11 @@ class FloorPlan extends Component {
             // Get the best route in the population
             population.evaluate();
         }
-        let message = 'Distancia optima entre el 12 y el 20: ' + population.best.fitness + ", numero de balizas: " + population.best.beacons.length;
-        Alert.alert(
-            'Algoritmo genetico finalizado',
-            message,
-            [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            {cancelable: false},
-        );
         console.log("Heeeeecho", population.best);
-    }
+
+        this.renderRoute(population.best.beacons)
+
+    };
 
     //<Scanner/>
     //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

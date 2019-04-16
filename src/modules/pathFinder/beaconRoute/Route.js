@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import util from './Utilities';
+import util from './LogicUtilities';
 import {downloadBeaconList} from "../../floorMap/actions/mapAction";
 
 class Route {

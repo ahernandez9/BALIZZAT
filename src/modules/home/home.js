@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {Actions} from 'react-native-router-flux';
 import {downloadBeaconList, downloadMap} from "../floorMap/actions/mapAction";
 import {connect} from "react-redux";
 import SplashScreen from 'react-native-splash-screen'
@@ -58,11 +57,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         mapRedux: state.MapReducer,
-
     }
 };
 
 const mapStateToPropsAction = {downloadMap, downloadBeaconList};
-
 
 export default connect(mapStateToProps, mapStateToPropsAction)(Home);

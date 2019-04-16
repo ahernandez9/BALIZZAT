@@ -1,5 +1,5 @@
 import Route from './Route';
-import util from './Utilities';
+import util from './LogicUtilities';
 
 class Population {
     constructor(initialBeacon, finalBeacon, beaconList, m, populationSize) {
@@ -7,7 +7,7 @@ class Population {
         this.target = finalBeacon;
         this.mutationRate = m;
         this.generations = 0;
-        this.perfectScore = 1;
+        //this.perfectScore = 1;
         this.finished = false;
         this.matingPool = [];
         this.best = 0;
@@ -36,6 +36,7 @@ class Population {
         this.population.forEach(member => {
             maxFitness = member.fitness < maxFitness ? member.fitness : maxFitness;
         });
+
         console.log(maxFitness);
         // Based on fitness, each member is added to the mating pool a weighed number of times
         // higher fitness = more instance in pool = more likely to be picked as a parent
