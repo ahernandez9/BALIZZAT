@@ -33,6 +33,7 @@ class MapContent extends Component {
                                     backgroundColor: 'black',
                                     width: 10,
                                     height: 10,
+                                    //try border-radius: 5,
                                     position: 'absolute',
                                     top: position.x * 10,
                                     left: position.y * 10
