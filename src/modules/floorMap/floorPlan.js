@@ -10,6 +10,7 @@ import {
     TextInput,
     SafeAreaView,
     Alert,
+    ActivityIndicator
 } from 'react-native';
 import {
     downloadMap,
@@ -46,6 +47,9 @@ class FloorPlan extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            loading: false
+        }
     }
 
     async componentDidMount(): void {
@@ -172,11 +176,12 @@ class FloorPlan extends Component {
             //this.props.colorPositions(route.positions, 4);
         }
         this.props.updateOptimalRoute(optimalRoute);
-        this.setState()
+        this.setState({loading: false});
     };
 
     //GENETIC ALGORITHM FOR BEACONS
     tryGenetic = () => {
+        this.setState({loading: true});
         let population = new Population(
             this.props.mapRedux.beaconsList["BlueUp-04-025412"],
             this.props.mapRedux.beaconsList["BlueUp-04-025417"],
@@ -207,13 +212,14 @@ class FloorPlan extends Component {
     };
 
     //<Scanner/>
+// <Map
+    //callbackFromParent={(reference) => this.setReference(reference)}
+// />
     //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
         return (
             <SafeAreaView style={styles.containerScrollView}>
-                <Map
-                    //callbackFromParent={(reference) => this.setReference(reference)}
-                />
+                <Map/>
                 <View style={styles.buttonGroup}>
                     <TouchableOpacity
                         style={[styles.circle, {marginBottom: 2}]}
@@ -248,6 +254,12 @@ class FloorPlan extends Component {
                         placeholder={"Search your room here.  Eg: 101"}
                     />
                 </View>
+                {this.state.loading &&
+                    <View style={styles.containerLoading}>
+                        <Text style={styles.loadingText}>Realizado la petición de registro, por favor espere</Text>
+                        <ActivityIndicator size="large"/>
+                    </View>
+                }
             </SafeAreaView>
         )
     }
@@ -339,9 +351,14 @@ const styles = StyleSheet.create({
         height: 1080,
         width: 1080,
     },
-    scrollViewPutilla: {
-        transform: [{rotate: '-12deg'}]
-    }
+    containerLoading: {
+        alignItems: 'center',
+        margin: 15,
+    },
+    loadingText: {
+        fontSize: 18,
+        fontWeight: '700',
+    },
 });
 
 const

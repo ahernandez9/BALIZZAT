@@ -4,19 +4,19 @@ import React, {Component} from "react";
 import {PersistGate} from 'redux-persist/integration/react';
 import {StatusBar} from 'react-native';
 const {persistor, store} = configureStore();
-import DrawerNavigator from "./src/modules/navigationDrawer/NavigationDrawer";
+import IndexNavigation from "./src/modules/navigation/IndexNavigation";
 
 export default class App extends Component {
 
     render() {
         return (
             <Provider store={store}>
-                <PersistGate persistor={persistor} onBeforeLift={this._onBeforeLift}>
+                <PersistGate persistor={persistor}>
                     <StatusBar
                         //backgroundColor={colors.primaryColor}
                         barStyle="dark-content"
                     />
-                    <DrawerNavigator/>
+                    <IndexNavigation/>
                 </PersistGate>
             </Provider>
         );

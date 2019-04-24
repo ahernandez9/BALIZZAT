@@ -1,7 +1,7 @@
 /* @flow */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Text } from 'react-native';
 import ScrollView, { ScrollViewChild } from 'react-native-directed-scrollview';
 import MapContent from './MapContent';
 import { getCellsByRow } from './data';
@@ -11,9 +11,9 @@ import MapCordial from '../../../../assets/images/cropped_cordial_map.png'
 class Map extends Component {
 
     componentDidMount(): void {
-        //this.props.callbackFromParent(this.reference);
-        console.log(this.reference);
-        this.reference.scrollTo(2000, 700, true)
+        // this.props.callbackFromParent(this.reference);
+        // console.log(this.reference);
+        // this.reference.scrollTo(2000, 700, true)
     }
 
     render() {

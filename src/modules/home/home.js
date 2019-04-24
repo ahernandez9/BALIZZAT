@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {downloadBeaconList, downloadMap} from "../floorMap/actions/mapAction";
 import {connect} from "react-redux";
 import SplashScreen from 'react-native-splash-screen'
-
+import {Actions} from 'react-native-router-flux'
 
 class Home extends Component {
 
@@ -19,7 +19,7 @@ class Home extends Component {
             <View style={styles.container}>
                 {this.props.mapRedux.plan.length > 0 ? <Text> Todo ok </Text>: null}
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('FloorPlan')}>
+                <TouchableOpacity onPress={() => Actions.FloorPlan()}>
                     <View style={styles.circle}>
                         <Text style={styles.text}>
                             TAP TO PLAY
