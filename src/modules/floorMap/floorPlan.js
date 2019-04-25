@@ -141,12 +141,6 @@ class FloorPlan extends Component {
         this.setState()
     };
 
-    _renderButton = (text, onPress) => (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.buttonText}>{text}</Text>
-        </TouchableOpacity>
-    );
-
     setReference = (reference) => {
         this.pollas = reference;
     };
@@ -256,7 +250,7 @@ class FloorPlan extends Component {
                 </View>
                 {this.state.loading &&
                     <View style={styles.containerLoading}>
-                        <Text style={styles.loadingText}>Realizado la petición de registro, por favor espere</Text>
+                        <Text style={styles.loadingText}>Optimizando su ruta</Text>
                         <ActivityIndicator size="large"/>
                     </View>
                 }
@@ -274,21 +268,6 @@ class FloorPlan extends Component {
                 </View>
 */
 const styles = StyleSheet.create({
-    button: {
-        textAlign: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 15,
-        backgroundColor: 'transparent',
-        borderWidth: 3,
-        borderColor: 'black',
-        borderRadius: 10,
-        width: '90%',
-        height: '40%'
-    },
-    buttonText: {
-        color: '#323232',
-    },
     buttonContainer: {
         flex: 1,
         marginVertical: 10,

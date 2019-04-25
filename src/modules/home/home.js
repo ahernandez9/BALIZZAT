@@ -10,7 +10,7 @@ class Home extends Component {
     async componentDidMount(): void {
         console.log("Descargando lista de beacons");
         await this.props.downloadBeaconList();
-        await this.props.downloadMap();
+        //await this.props.downloadMap();
         SplashScreen.hide();
     }
 

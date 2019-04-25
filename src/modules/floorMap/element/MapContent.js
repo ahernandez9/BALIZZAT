@@ -8,6 +8,9 @@ class MapContent extends Component {
     render() {
         let currentPosition = this.props.mapRedux.currentPosition;
         let optimalRoute = this.props.mapRedux.optimalRoute;
+        //Prev optimal route === optimalRoute entonces pintamos de transparente
+        //Luego prev = null
+        //SI prev = null eliminamos ruta
         console.log('position: ', currentPosition);
         console.log('route: ', optimalRoute);
         return (
