@@ -51,102 +51,10 @@ export const downloadMap = () => async (dispatch, getState) => {
     }
 
     let map = [];
-    // for (let row = 19; row >= 0; row--) {
-    //     let rowMap = [];
-    //     for (let column = 0; column < 36; column++) {
-    //         isPointInRectangle({x: 0, y: 8}, {x: 0, y: 17}, {x: 15, y: 8}, {
-    //             x: column,
-    //             y: row
-    //         }) ? rowMap[column] = 0 : null;
-    //
-    //         isPointInTriangle({x: 0, y: 0}, {x: 0, y: 35}, {x: 13, y: 35}, {
-    //             x: row,
-    //             y: column
-    //         }) ? rowMap[column] = 0 : null;
-    //
-    //         isPointInTriangle({x: 8, y:25 }, {x: 11, y: 25}, {x: 11, y: 35}, {
-    //             x: row,
-    //             y: column
-    //         }) ? rowMap[column] = 0 : null;
-    //
-    //         isPointInTriangle({x: 11, y: 25}, {x: 11, y: 35},{x: 15, y: 35},   {
-    //             x: row,
-    //             y: column
-    //         }) ? rowMap[column] = 0 : null;
-    //
-    //         rowMap[column] !== 0 ? rowMap[column] = 1 : null;
-    //
-    //
-    //     }
-    //     map[row] = rowMap;
-    // }
-    // for (let row = 50; row >= 0; row--) {
-    //     let rowMap = [];
-    //     for (let column = 0; column < 71; column++) {
-    //         //Izquierda
-    //         //Primero de arriba a abajo
-    //         isPointInRectangle({x: 0, y: 8}, {x: 0, y: 17}, {x: 15, y: 8}, {
-    //             x: column,
-    //             y: row
-    //         }) ? rowMap[column] = 0 : null;
-    //         //Segundo de arriba a abajo
-    //         isPointInRectangle({x: 7, y: 20}, {x: 7, y: 25}, {x: 35, y: 20}, {
-    //             x: column,
-    //             y: row
-    //         }) ? rowMap[column] = 0 : null;
-    //         //Tercero de arriba a abajo
-    //         isPointInRectangle({x: 0, y: 30}, {x: 0, y: 40}, {x: 25, y: 30}, {
-    //             x: column,
-    //             y: row
-    //         }) ? rowMap[column] = 0 : null;
-    //
-    //         //Derecha
-    //         //Primero de arriba a abajo
-    //         isPointInRectangle({x: 36, y: 0}, {x: 36, y: 25}, {x: 70, y: 0}, {
-    //             x: column,
-    //             y: row
-    //         }) ? rowMap[column] = 0 : null;
-    //         //Segundo de arriba a abajo
-    //         isPointInRectangle({x: 35, y: 30}, {x: 35, y: 40}, {x: 60, y: 30}, {
-    //             x: column,
-    //             y: row
-    //         }) ? rowMap[column] = 0 : null;
-    //         //Tercero de arriba a abajo
-    //         isPointInRectangle({x: 35, y: 41}, {x: 35, y: 44}, {x: 45, y: 41}, {
-    //             x: column,
-    //             y: row
-    //         }) ? rowMap[column] = 0 : null;
-    //         //Cuarto de arriba a abajo
-    //         isPointInRectangle({x: 35, y: 48}, {x: 35, y: 50}, {x: 45, y: 48}, {
-    //             x: column,
-    //             y: row
-    //         }) ? rowMap[column] = 0 : null;
-    //
-    //         isPointInTriangle({x: 0, y: 0}, {x: 0, y: 35}, {x: 13, y: 35}, {
-    //             x: row,
-    //             y: column
-    //         }) ? rowMap[column] = 0 : null;
-    //
-    //         isPointInTriangle({x: 8, y:25 }, {x: 11, y: 25}, {x: 11, y: 35}, {
-    //             x: row,
-    //             y: column
-    //         }) ? rowMap[column] = 0 : null;
-    //
-    //         isPointInTriangle({x: 11, y: 25}, {x: 11, y: 35},{x: 15, y: 35},   {
-    //             x: row,
-    //             y: column
-    //         }) ? rowMap[column] = 0 : null;
-    //
-    //         rowMap[column] !== 0 ? rowMap[column] = 1 : null;
-    //
-    //
-    //     }
-    //     map[row] = rowMap;
-    // }
-
     for (let row = 116; row >= 0; row--) {
         let rowMap = [];
         for (let column = 0; column < 275; column++) {
+            //Izquierda
             //Primero de arriba a abajo
             isPointInRectangle({x: 0, y: 8}, {x: 0, y: 17}, {x: 15, y: 8}, {
                 x: column,
@@ -239,11 +147,7 @@ export const downloadBeaconList = () => async (dispatch) => {
         "BlueUp-04-025421": {x: 30, y: 70, distance: NaN, nearbyBeacons: ["BlueUp-04-025419", "BlueUp-04-025420", "BlueUp-04-025422"]},
         "BlueUp-04-025422": {x: 26, y: 50, distance: NaN, nearbyBeacons: ["BlueUp-04-025421", "BlueUp-04-025415", "BlueUp-04-025414"]}
     };
-    // let beaconsList = {
-    //     "AC:23:3F:26:0B:6F": {x: 19, y: 7, distance: NaN},
-    //     "AC:23:3F:27:0A:D4": {x: 7, y: 21, distance: NaN},
-    //     "AC:23:3F:27:0A:E4": {x: 17, y: 35, distance: NaN}
-    // };
+
     console.log("BeaconsList: ", beaconsList);
 
     dispatch({
@@ -273,9 +177,6 @@ export const updatePosition = (position, center) => async (dispatch, getState) =
         }
         center !== null && newMap[center[0]][center[1]] !== 0 ? newMap[center[0]][center[1]] = 6 : null;
         console.log("PrevPosition: ", prevPosition);
-        // console.log("Vamos a ver: ", prevPosition);
-        // console.log("NewMap : ", newMap);
-        // console.log("PrevPosition : ",prevPosition);
         dispatch({
             type: 'UPDATE_MAP',
             payload: {newMap: newMap, prevPosition: prevPosition}
