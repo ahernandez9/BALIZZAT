@@ -54,85 +54,87 @@ export const downloadMap = () => async (dispatch, getState) => {
         return (apexA.y <= point.y) && (point.y <= apexB.y) && (point.x >= apexA.x) && (point.x <= apexC.x);
     }
 
-    let map = [];
-    for (let row = 116; row >= 0; row--) {
-        let rowMap = [];
-        for (let column = 0; column < 275; column++) {
-            //Izquierda
-            //Primero de arriba a abajo
-            isPointInRectangle({x: 124, y: 10}, {x: 124, y: 20}, {x: 187, y: 10}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            isPointInRectangle({x: 124, y: 22}, {x: 124, y: 32}, {x: 187, y: 22}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            //Segundo de arriba a abajo
-            isPointInRectangle({x: 124, y: 69}, {x: 124, y: 79}, {x: 187, y: 69}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            isPointInRectangle({x: 124, y: 57}, {x: 124, y: 67}, {x: 187, y: 57}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            //Tercero de arriba a abajo
-            isPointInRectangle({x: 147, y: 53}, {x: 147, y: 57}, {x: 164, y: 53}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
+    function mapaFabio() {
+        let map = [];
+        for (let row = 116; row >= 0; row--) {
+            let rowMap = [];
+            for (let column = 0; column < 275; column++) {
+                //Izquierda
+                //Primero de arriba a abajo
+                isPointInRectangle({x: 124, y: 10}, {x: 124, y: 20}, {x: 187, y: 10}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                isPointInRectangle({x: 124, y: 22}, {x: 124, y: 32}, {x: 187, y: 22}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                //Segundo de arriba a abajo
+                isPointInRectangle({x: 124, y: 69}, {x: 124, y: 79}, {x: 187, y: 69}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                isPointInRectangle({x: 124, y: 57}, {x: 124, y: 67}, {x: 187, y: 57}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                //Tercero de arriba a abajo
+                isPointInRectangle({x: 147, y: 53}, {x: 147, y: 57}, {x: 164, y: 53}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
 
-            //Derecha
-            //Primero de arriba a abajo
-            isPointInRectangle({x: 147, y: 32}, {x: 147, y: 35}, {x: 164, y: 32}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            //Segundo de arriba a abajo
-            isPointInRectangle({x: 189, y: 7}, {x: 189, y: 35}, {x: 199, y: 7}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            //Tercero de arriba a abajo
-            isPointInRectangle({x: 189, y: 53}, {x: 189, y: 81},{x: 199, y: 53} , {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            //Cuarto de arriba a abajo
-            isPointInRectangle({x: 153, y: 41}, {x: 153, y: 48}, {x: 225, y: 41}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            isPointInRectangle({x: 206, y: 57}, {x: 206, y: 74}, {x: 231, y: 57}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            isPointInRectangle({x: 231, y: 62}, {x: 231, y: 76}, {x: 248, y: 62}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            isPointInRectangle({x: 267, y: 59}, {x: 267, y: 76}, {x: 270, y: 59}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            isPointInRectangle({x: 248, y: 76}, {x: 248, y: 79}, {x: 267, y: 76}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            isPointInRectangle({x: 225, y: 24}, {x: 225, y: 53}, {x: 248, y: 24}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            isPointInRectangle({x: 262, y: 39}, {x: 262, y: 50}, {x: 273, y: 39}, {
-                x: column,
-                y: row
-            }) ? rowMap[column] = 0 : null;
-            isPointInCircle({x:236,y:16}, 5, {x:column,y:row}) ? rowMap[column] = 0 : null;
+                //Derecha
+                //Primero de arriba a abajo
+                isPointInRectangle({x: 147, y: 32}, {x: 147, y: 35}, {x: 164, y: 32}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                //Segundo de arriba a abajo
+                isPointInRectangle({x: 189, y: 7}, {x: 189, y: 35}, {x: 199, y: 7}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                //Tercero de arriba a abajo
+                isPointInRectangle({x: 189, y: 53}, {x: 189, y: 81}, {x: 199, y: 53}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                //Cuarto de arriba a abajo
+                isPointInRectangle({x: 153, y: 41}, {x: 153, y: 48}, {x: 225, y: 41}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                isPointInRectangle({x: 206, y: 57}, {x: 206, y: 74}, {x: 231, y: 57}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                isPointInRectangle({x: 231, y: 62}, {x: 231, y: 76}, {x: 248, y: 62}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                isPointInRectangle({x: 267, y: 59}, {x: 267, y: 76}, {x: 270, y: 59}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                isPointInRectangle({x: 248, y: 76}, {x: 248, y: 79}, {x: 267, y: 76}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                isPointInRectangle({x: 225, y: 24}, {x: 225, y: 53}, {x: 248, y: 24}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                isPointInRectangle({x: 262, y: 39}, {x: 262, y: 50}, {x: 273, y: 39}, {
+                    x: column,
+                    y: row
+                }) ? rowMap[column] = 0 : null;
+                isPointInCircle({x: 236, y: 16}, 5, {x: column, y: row}) ? rowMap[column] = 0 : null;
 ///////////////////////////////////////////////////////////////////////////////////
 
+            }
+            map[row] = rowMap;
         }
-        map[row] = rowMap;
     }
 
     //Recorremos la lista de beacons, poniendo un 7 en las posiciones del mapa que ocupan las mismas para ponerlas en negro
