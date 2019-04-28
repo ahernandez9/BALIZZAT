@@ -32,7 +32,7 @@ export const downloadMap = () => async (dispatch, getState) => {
     }
 
     function isPointInCircle(center, radius, point) {
-        return ((point.x - center.x) ^ 2 + (point.y - center.y) ^ 2) ^ 2 <= radius ^ 2
+        return Math.pow(Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2), 2) <= Math.pow(radius, 2)
     }
 
 
@@ -54,7 +54,6 @@ export const downloadMap = () => async (dispatch, getState) => {
     }
 
     let map = [];
-    console.log("PERO QUE COJONES");
     for (let row = 116; row >= 0; row--) {
         let rowMap = [];
         for (let column = 0; column < 275; column++) {
@@ -70,7 +69,7 @@ export const downloadMap = () => async (dispatch, getState) => {
                 y: row
             }) ? rowMap[column] = 0 : null;
             //Tercero de arriba a abajo
-            isPointInRectangle({x: 10, y: 36}, {x: 10, y: 45}, {x: 36, y: 61}, {
+            isPointInRectangle({x: 10, y: 36}, {x: 10, y: 45}, {x: 61, y: 36}, {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
@@ -256,18 +255,17 @@ export const downloadMap = () => async (dispatch, getState) => {
 
         }
         map[row] = rowMap;
-
-        //Recorremos la lista de beacons, poniendo un 7 en las posiciones del mapa que ocupan las mismas para ponerlas en negro
-        let beaconlist = getState().MapReducer.beaconsList;
-        for (const [beaconKey, beacon] of Object.entries(beaconlist)) {
-            map[beacon.x][beacon.y] = 7;
-        }
-
-        dispatch({
-            type: 'DOWNLOAD_MAP',
-            payload: map
-        })
     }
+    //Recorremos la lista de beacons, poniendo un 7 en las posiciones del mapa que ocupan las mismas para ponerlas en negro
+    let beaconlist = getState().MapReducer.beaconsList;
+    for (const [beaconKey, beacon] of Object.entries(beaconlist)) {
+        map[beacon.x][beacon.y] = 7;
+    }
+
+    dispatch({
+        type: 'DOWNLOAD_MAP',
+        payload: map
+    })
 };
 
 
@@ -277,27 +275,33 @@ export const downloadBeaconList = () => async (dispatch) => {
         "BlueUp-04-025410": {
             x: 29, y: 9,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025411"]},
+            nearbyBeacons: ["BlueUp-04-025411"]
+        },
         "BlueUp-04-025411": {
             x: 40, y: 9,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025412"]},
+            nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025412"]
+        },
         "BlueUp-04-025412": {
             x: 46, y: 20,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025411", "BlueUp-04-025413"]},
+            nearbyBeacons: ["BlueUp-04-025411", "BlueUp-04-025413"]
+        },
         "BlueUp-04-025413": {
             x: 53, y: 20,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025412", "BlueUp-04-025414"]},
+            nearbyBeacons: ["BlueUp-04-025412", "BlueUp-04-025414"]
+        },
         "BlueUp-04-025414": {
             x: 59, y: 9,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025413", "BlueUp-04-025415"]},
+            nearbyBeacons: ["BlueUp-04-025413", "BlueUp-04-025415"]
+        },
         "BlueUp-04-025415": {
             x: 71, y: 9,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416"]},
+            nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416"]
+        },
         // "BlueUp-04-025416": {
         //     x: 50,
         //     y: 30,

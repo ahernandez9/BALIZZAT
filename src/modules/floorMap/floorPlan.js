@@ -10,7 +10,8 @@ import {
     TextInput,
     SafeAreaView,
     Alert,
-    ActivityIndicator
+    ActivityIndicator,
+    Dimensions
 } from 'react-native';
 import {
     downloadMap,
@@ -27,6 +28,7 @@ import Orientation from 'react-native-orientation';
 import Map from "./element/Map";
 import Population from "../pathFinder/beaconRoute/Population";
 import RenderRoute from "../pathFinder/mapRoute/RenderRoute";
+import util from "../pathFinder/mapRoute/RenderUtilities";
 
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
@@ -159,9 +161,19 @@ class FloorPlan extends Component {
         this.pollas.scrollTo(2000, 700, true)
     };
 
+    getClosestBeaconsFromPosition(position) {
+        let beacons = this.props.mapRedux.beaconsList;
+        let closest, shortestDistance = 100000;
+        for (let beacon of beacons) {
+            let distance = this.manhattanDistance(beacon, position);
+            if(distance < shortestDistance) distance = shortestDistance; closest = beacon;
+        }
+        return closest
+    }
+
     //RENDER OPTIMISED ROUTE
     renderRoute = (populationFittest) => {
-        console.log('popFIt', populationFittest);
+        console.log(populationFittest);
         let optimalRoute = [];
         //Render del 16 al 17
         for (let i = 0; i < populationFittest.length - 1; i++) {
@@ -176,7 +188,6 @@ class FloorPlan extends Component {
             optimalRoute.push.apply(optimalRoute, route.positions);
             //this.props.colorPositions(route.positions, 4);
         }
-        console.log("PUTA");
         this.props.updateOptimalRoute(optimalRoute);
         this.setState({loading: false, showRoute: true});
     };
@@ -184,9 +195,10 @@ class FloorPlan extends Component {
     //GENETIC ALGORITHM FOR BEACONS
     tryGenetic = () => {
         this.setState({loading: true});
+        let closestBeacon = this.getClosestBeaconsFromPosition(this.props.mapRedux.currentPosition);
         let population = new Population(
-            this.props.mapRedux.beaconsList["BlueUp-04-025410"],
-            this.props.mapRedux.beaconsList["BlueUp-04-025411"],
+            closestBeacon,
+            this.props.mapRedux.beaconsList["BlueUp-04-025415"],
             this.props.mapRedux.beaconsList,
             0.1, 50
         );
@@ -208,7 +220,12 @@ class FloorPlan extends Component {
             population.evaluate();
         }
         console.log("Heeeeecho", population.best);
-
+        let beacons = population.best.beacons;
+        let position = this.props.mapRedux.currentPosition;
+        console.log("Population.bestBeacons: ", beacons);
+        console.log("position: ", position);
+        console.log("Añadimos currentPosition: ", beacons.unshift(position));
+        console.log("Añadimos currentPosition: ", beacons);
         this.renderRoute(population.best.beacons)
 
     };
@@ -219,6 +236,7 @@ class FloorPlan extends Component {
 // />
     //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
+        console.log("RENDER");
         return (
             <SafeAreaView style={styles.containerScrollView}>
                 <Map
@@ -260,7 +278,7 @@ class FloorPlan extends Component {
                 </View>
                 {this.state.loading &&
                     <View style={styles.containerLoading}>
-                        <Text style={styles.loadingText}>Realizado la petición de registro, por favor espere</Text>
+                        <Text style={styles.loadingText}>Calculando la mejor ruta,{'\n'}por favor espere</Text>
                         <ActivityIndicator size="large"/>
                     </View>
                 }
@@ -357,6 +375,10 @@ const styles = StyleSheet.create({
     },
     containerLoading: {
         alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        top: Dimensions.get('window').height/2,
+        left: Dimensions.get('window').width/2,
         margin: 15,
     },
     loadingText: {

@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
-import type {Row, Cell} from './data';
 import {connect} from "react-redux";
 
 class MapContent extends Component {
 
     renderRouteInMap = (color) => {
         let optimalRoute = this.props.mapRedux.optimalRoute;
-        console.log("caodoooooooo");
         return (
             optimalRoute.map((position) => {
                 return (
@@ -32,7 +30,7 @@ class MapContent extends Component {
     render() {
         let currentPosition = this.props.mapRedux.currentPosition;
         let optimalRoute = this.props.mapRedux.optimalRoute;
-
+        let map = this.props.mapRedux;
         /*
             Lo que vamos a hacer es meter un showRoute que nos dice si queremos mostrar la ruta o no
             Luego con el optimalRoute.length > 0 && showRoute sabemos que queremos mostrar la ruta
@@ -41,6 +39,11 @@ class MapContent extends Component {
         console.log('position: ', currentPosition);
         console.log('route: ', optimalRoute);
         console.log('showRoute: ', this.props.showRoute);
+
+        let optionalCurrentPosition = map[currentPosition.x - 5] && map[currentPosition.x - 5][currentPosition.y - 2] ?
+            map[currentPosition.x - 5][currentPosition.y - 2] : currentPosition;
+
+
         return (
             <View>
                 <Image
@@ -48,9 +51,9 @@ class MapContent extends Component {
                     resizeMode={'contain'}
                     //style={{flex:1}}
                 />
-                { currentPosition &&
+                { optionalCurrentPosition &&
                     <View style={{flex: 1, backgroundColor: 'transparent', width: 50, height: 50,
-                        position: 'absolute', top: currentPosition.x * 10, left: currentPosition.y * 10}}>
+                        position: 'absolute', top: optionalCurrentPosition.x * 10, left: optionalCurrentPosition.y * 10}}>
                         <Image source={require('../../../../assets/images/placeholder.png')}
                                style={{flex: 1, height: undefined, width: undefined}}/>
                     </View>

@@ -25,11 +25,11 @@ const utils = {
 
     getPosibilities: function(map, position) {
         let posibilities = [];
-        // Arriba
-        (map[position.x + 1] !== undefined && map[position.x + 1][position.y] !== undefined && map[position.y + 1][position.x] !== 0) ?
-            posibilities.push({x: position.x + 1, y: position.y}) : null;
         // Abajo
-        (map[position.x - 1] !== undefined && map[position.x - 1][position.y] !== undefined  && map[position.x + 1][position.y] !== 0) ?
+        (map[position.x + 1] !== undefined && map[position.x + 1][position.y] !== undefined && map[position.x + 1][position.y] !== 0) ?
+            posibilities.push({x: position.x + 1, y: position.y}) : null;
+        // Arriba
+        (map[position.x - 1] !== undefined && map[position.x - 1][position.y] !== undefined  && map[position.x - 1][position.y] !== 0) ?
             posibilities.push({x: position.x - 1, y: position.y}) : null;
         // Derecha
         (map[position.x] !== undefined && map[position.x][position.y + 1] !== undefined && map[position.x][position.y + 1] !== 0) ?
@@ -58,15 +58,18 @@ const utils = {
         //Elegimos la que mas nos acerque al objetivo
         let distance = 10000000;
         let nextPosition = {};
-        console.log("positions: ", posibilities);
+        let selected;
+        console.log("posibilidades: ", posibilities);
         for (let posibility of posibilities) {
             let newDistance = this.manhattanDistance(posibility, target);
-            console.log("posibility: ", posibility, 'distance: ', newDistance);
+            console.log("Posibilidad: ", posibility, 'distancia: ', newDistance);
             if (newDistance < distance) {
                 distance = newDistance;
+                selected = posibility;
                 nextPosition = posibility
             }
         }
+        console.log("Hemos elegido la posibilidad: ", selected, 'con distancia: ', distance);
         return nextPosition;
     },
 
