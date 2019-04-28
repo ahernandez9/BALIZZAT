@@ -48,7 +48,8 @@ class FloorPlan extends Component {
         super(props);
 
         this.state = {
-            loading: false
+            loading: false,
+            showRoute: false
         }
     }
 
@@ -138,7 +139,8 @@ class FloorPlan extends Component {
         console.log("position: ", x, y);
         await this.props.updateCurrentPosition(this.flipaManito);
         //await this.props.updatePosition([[x,y]], null);
-        this.setState()
+        this.props.updateOptimalRoute([]);
+        this.setState({showRoute: false})
     };
 
     setReference = (reference) => {
@@ -153,7 +155,7 @@ class FloorPlan extends Component {
 
     //RENDER OPTIMISED ROUTE
     renderRoute = (populationFittest) => {
-        console.log(populationFittest);
+        console.log('popFIt', populationFittest);
         let optimalRoute = [];
         //Render del 16 al 17
         for (let i = 0; i < populationFittest.length - 1; i++) {
@@ -165,20 +167,20 @@ class FloorPlan extends Component {
                 target,
                 true
             );
-            console.log('route', route);
             optimalRoute.push.apply(optimalRoute, route.positions);
             //this.props.colorPositions(route.positions, 4);
         }
+        console.log("PUTA");
         this.props.updateOptimalRoute(optimalRoute);
-        this.setState({loading: false});
+        this.setState({loading: false, showRoute: true});
     };
 
     //GENETIC ALGORITHM FOR BEACONS
     tryGenetic = () => {
         this.setState({loading: true});
         let population = new Population(
-            this.props.mapRedux.beaconsList["BlueUp-04-025412"],
-            this.props.mapRedux.beaconsList["BlueUp-04-025417"],
+            this.props.mapRedux.beaconsList["BlueUp-04-025410"],
+            this.props.mapRedux.beaconsList["BlueUp-04-025411"],
             this.props.mapRedux.beaconsList,
             0.1, 50
         );
@@ -213,7 +215,9 @@ class FloorPlan extends Component {
     render() {
         return (
             <SafeAreaView style={styles.containerScrollView}>
-                <Map/>
+                <Map
+                    showRoute={this.state.showRoute}
+                />
                 <View style={styles.buttonGroup}>
                     <TouchableOpacity
                         style={[styles.circle, {marginBottom: 2}]}
@@ -345,7 +349,6 @@ const
         return {
             mapRedux: state.MapReducer,
             scanner: state.RangeReducer
-
         }
     };
 

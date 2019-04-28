@@ -54,6 +54,7 @@ export const downloadMap = () => async (dispatch, getState) => {
     }
 
     let map = [];
+    console.log("PERO QUE COJONES");
     for (let row = 116; row >= 0; row--) {
         let rowMap = [];
         for (let column = 0; column < 275; column++) {
@@ -275,65 +276,67 @@ export const downloadMap = () => async (dispatch, getState) => {
 export const downloadBeaconList = () => async (dispatch) => {
     let beaconsList = {
         "BlueUp-04-025410": {
-            x: 19,
-            y: 7,
+            x: 29, y: 9,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025411", "BlueUp-04-025412", "BlueUp-04-025413"]
-        },
-        "BlueUp-04-025411": {x: 7, y: 21, distance: NaN, nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025412"]},
-        "BlueUp-04-025412": {x: 17, y: 35, distance: NaN, nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025411"]},
-        //Nuevos de pasillo y tal
-        "BlueUp-04-025413": {x: 24, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025414"]},
+            nearbyBeacons: ["BlueUp-04-025411"]},
+        "BlueUp-04-025411": {
+            x: 40, y: 9,
+            distance: NaN,
+            nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025412"]},
+        "BlueUp-04-025412": {
+            x: 46, y: 20,
+            distance: NaN,
+            nearbyBeacons: ["BlueUp-04-025411", "BlueUp-04-025413"]},
+        "BlueUp-04-025413": {
+            x: 53, y: 20,
+            distance: NaN,
+            nearbyBeacons: ["BlueUp-04-025412", "BlueUp-04-025414"]},
         "BlueUp-04-025414": {
-            x: 26,
-            y: 20,
+            x: 59, y: 9,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025413", "BlueUp-04-025415", "BlueUp-04-025422"]
-        },
+            nearbyBeacons: ["BlueUp-04-025413", "BlueUp-04-025415"]},
         "BlueUp-04-025415": {
-            x: 35,
-            y: 34,
+            x: 71, y: 9,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416", "BlueUp-04-025417", "BlueUp-04-025422", "BlueUp-04-025418"]
-        },
-        "BlueUp-04-025416": {
-            x: 50,
-            y: 30,
-            distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025417", "BlueUp-04-025418"]
-        },
-        "BlueUp-04-025417": {x: 43, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025416"]},
-        //Nuevo modulaso 2.0 pa mujeres
-        "BlueUp-04-025418": {
-            x: 47,
-            y: 40,
-            distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025416", "BlueUp-04-025419", "BlueUp-04-025420"]
-        },
-        "BlueUp-04-025419": {
-            x: 41,
-            y: 50,
-            distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025420", "BlueUp-04-025421"]
-        },
-        "BlueUp-04-025420": {
-            x: 48,
-            y: 70,
-            distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025419", "BlueUp-04-025421"]
-        },
-        "BlueUp-04-025421": {
-            x: 30,
-            y: 70,
-            distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025419", "BlueUp-04-025420", "BlueUp-04-025422"]
-        },
-        "BlueUp-04-025422": {
-            x: 26,
-            y: 50,
-            distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025421", "BlueUp-04-025415", "BlueUp-04-025414"]
-        }
+            nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416"]},
+        // "BlueUp-04-025416": {
+        //     x: 50,
+        //     y: 30,
+        //     distance: NaN,
+        //     nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025417", "BlueUp-04-025418"]
+        // },
+        // "BlueUp-04-025417": {x: 43, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025416"]},
+        // //Nuevo modulaso 2.0 pa mujeres
+        // "BlueUp-04-025418": {
+        //     x: 47,
+        //     y: 40,
+        //     distance: NaN,
+        //     nearbyBeacons: ["BlueUp-04-025416", "BlueUp-04-025419", "BlueUp-04-025420"]
+        // },
+        // "BlueUp-04-025419": {
+        //     x: 41,
+        //     y: 50,
+        //     distance: NaN,
+        //     nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025420", "BlueUp-04-025421"]
+        // },
+        // "BlueUp-04-025420": {
+        //     x: 48,
+        //     y: 70,
+        //     distance: NaN,
+        //     nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025419", "BlueUp-04-025421"]
+        // },
+        // "BlueUp-04-025421": {
+        //     x: 30,
+        //     y: 70,
+        //     distance: NaN,
+        //     nearbyBeacons: ["BlueUp-04-025419", "BlueUp-04-025420", "BlueUp-04-025422"]
+        // },
+        // "BlueUp-04-025422": {
+        //     x: 26,
+        //     y: 50,
+        //     distance: NaN,
+        //     nearbyBeacons: ["BlueUp-04-025421", "BlueUp-04-025415", "BlueUp-04-025414"]
+        // }
     };
 
     console.log("BeaconsList: ", beaconsList);

@@ -30,7 +30,9 @@ class Map extends Component {
                 ref={ref => { this.reference = ref}}
             >
                 <ScrollViewChild scrollDirection={'both'}>
-                    <MapContent/>
+                    <MapContent
+                        showRoute={this.props.showRoute}
+                    />
                 </ScrollViewChild>
             </ScrollView>
         );

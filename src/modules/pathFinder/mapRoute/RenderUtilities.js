@@ -58,8 +58,10 @@ const utils = {
         //Elegimos la que mas nos acerque al objetivo
         let distance = 10000000;
         let nextPosition = {};
+        console.log("positions: ", posibilities);
         for (let posibility of posibilities) {
             let newDistance = this.manhattanDistance(posibility, target);
+            console.log("posibility: ", posibility, 'distance: ', newDistance);
             if (newDistance < distance) {
                 distance = newDistance;
                 nextPosition = posibility
@@ -74,6 +76,10 @@ const utils = {
 
     manhattanDistance: function(from, to) {
         return Math.abs(from.x - to.x) + Math.abs(from.y - to.y);
+    },
+
+    typicalDistance: function(from, to) {
+        return Math.sqrt(Math.pow((to.y - from.y), 2) + Math.pow((to.x - from.x), 2))
     }
 };
 

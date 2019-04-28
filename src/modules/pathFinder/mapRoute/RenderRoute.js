@@ -7,8 +7,8 @@ import utils from './RenderUtilities';
  */
 
 class RenderRoute {
-    constructor(map, origin, target){
 
+    constructor(map, origin, target){
         // Positions of the route
         this.positions = this.generateRoute(map, origin, target);
     }

@@ -5,18 +5,46 @@ import {connect} from "react-redux";
 
 class MapContent extends Component {
 
+    renderRouteInMap = (color) => {
+        let optimalRoute = this.props.mapRedux.optimalRoute;
+        console.log("caodoooooooo");
+        return (
+            optimalRoute.map((position) => {
+                return (
+                    <View key={position.id}
+                          style={{
+                              flex: 1,
+                              backgroundColor: color,
+                              width: 10,
+                              height: 10,
+                              borderRadius: 5,
+                              position: 'absolute',
+                              top: position.x * 10,
+                              left: position.y * 10
+                          }}
+                    />
+                )
+            })
+        )
+
+    };
+
     render() {
         let currentPosition = this.props.mapRedux.currentPosition;
         let optimalRoute = this.props.mapRedux.optimalRoute;
-        //Prev optimal route === optimalRoute entonces pintamos de transparente
-        //Luego prev = null
-        //SI prev = null eliminamos ruta
+
+        /*
+            Lo que vamos a hacer es meter un showRoute que nos dice si queremos mostrar la ruta o no
+            Luego con el optimalRoute.length > 0 && showRoute sabemos que queremos mostrar la ruta
+            Y con el optimalRoute.length > 0 && !showRoute sabemos que queremos eliminar la ruta
+         */
         console.log('position: ', currentPosition);
         console.log('route: ', optimalRoute);
+        console.log('showRoute: ', this.props.showRoute);
         return (
             <View>
                 <Image
-                    source={require('../../../../assets/images/cropped_cordial_map.png')}
+                    source={require('../../../../assets/images/better_cropped_cordial_map.png')}
                     resizeMode={'contain'}
                     //style={{flex:1}}
                 />
@@ -27,23 +55,11 @@ class MapContent extends Component {
                                style={{flex: 1, height: undefined, width: undefined}}/>
                     </View>
                 }
-                { optimalRoute.length > 0 &&
-                    optimalRoute.map((position) => {
-                        return (
-                            <View key={position.id}
-                                style={{
-                                    flex: 1,
-                                    backgroundColor: 'black',
-                                    width: 10,
-                                    height: 10,
-                                    //try border-radius: 5,
-                                    position: 'absolute',
-                                    top: position.x * 10,
-                                    left: position.y * 10
-                                }}
-                            />
-                            )
-                    })
+                { this.props.showRoute && optimalRoute.length > 0 &&
+                    this.renderRouteInMap('black')
+                }
+                { !this.props.showRoute && optimalRoute.length > 0 &&
+                this.renderRouteInMap('transparent')
                 }
             </View>
         )
