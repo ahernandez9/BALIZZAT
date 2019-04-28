@@ -70,7 +70,7 @@ export const downloadMap = () => async (dispatch, getState) => {
                 y: row
             }) ? rowMap[column] = 0 : null;
             //Tercero de arriba a abajo
-            isPointInRectangle({x: 10, y: 36}, {x: 10, y: 45}, {x: 10, y: 61}, {
+            isPointInRectangle({x: 10, y: 36}, {x: 10, y: 45}, {x: 36, y: 61}, {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
@@ -256,19 +256,18 @@ export const downloadMap = () => async (dispatch, getState) => {
 
         }
         map[row] = rowMap;
+
+        //Recorremos la lista de beacons, poniendo un 7 en las posiciones del mapa que ocupan las mismas para ponerlas en negro
+        let beaconlist = getState().MapReducer.beaconsList;
+        for (const [beaconKey, beacon] of Object.entries(beaconlist)) {
+            map[beacon.x][beacon.y] = 7;
+        }
+
+        dispatch({
+            type: 'DOWNLOAD_MAP',
+            payload: map
+        })
     }
-
-    //Recorremos la lista de beacons, poniendo un 7 en las posiciones del mapa que ocupan las mismas para ponerlas en negro
-    let beaconlist = getState().MapReducer.beaconsList;
-    for (const [beaconKey, beacon] of Object.entries(beaconlist)) {
-        map[beacon.x][beacon.y] = 7;
-    }
-
-    dispatch({
-        type: 'DOWNLOAD_MAP',
-        payload: map
-    })
-
 };
 
 
