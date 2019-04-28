@@ -6,16 +6,43 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Image
+    Image,
+    Dimensions
 } from 'react-native';
+import {Avatar} from "react-native-elements";
+
+let viewWidth = 0;
+
 
 export class TopPlaceHeader extends Component {
+
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            imageWidth: 0
+        }
+    }
+
+    componentWillMount() {
+        this.width = Dimensions.get('window').width / 4;
+    }
+
+    componentDidMount() {
+        console.log(this.width);
+    }
+
+
     render() {
         return (
             <View>
-                {!this.props.isActive ?
                     <View style={styles.mainContainer}>
-                        <View style={styles.imageContainer}>
+                        <View style={styles.imageContainer} onLayout={(event) => {
+                            let {x, y, width, height} = event.nativeEvent.layout;
+                            // viewWidth = width;
+                            this.width = width;
+                            console.log("Creeema", width);
+                        }}>
                             <Image
                                 source={this.props.section.image}
                                 style={styles.image}
@@ -31,30 +58,21 @@ export class TopPlaceHeader extends Component {
                                 style={{height: 20, width: 20}}
                             />
                         </View>
-                    </View> :
-                    <View style={[styles.mainContainerCollapsed, {flex: 3}]}>
-                            <Text style={styles.titleCollapsed}>{this.props.section.title}</Text>
-                            <View style={[styles.iconContainer, {alignSelf: 'flex-end',justifyContent: 'flex-end', marginBottom: 5}]}>
-                                <Image
-                                    source={require("../../../../assets/images/up-arrow.png")}
-                                    style={{height: 15, width: 15}}
-                                />
-                            </View>
                     </View>
-                }
             </View>
         )
     }
-};
+}
+
 
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 4,
         flexDirection: 'row',
-        height: 70,
+        height: 100,
         borderRadius: 5,
-        borderWidth: 2,
-        borderColor: '#ff8a00',
+        borderBottomWidth: 2,
+        borderBottomColor: 'grey',
         marginTop: 1,
         marginBottom: 1
     },
@@ -62,24 +80,25 @@ const styles = StyleSheet.create({
         flex: 4,
         flexDirection: 'row',
         height: 30,
-        borderRadius: 5,
-        borderWidth: 2,
-        borderColor: '#ff8a00',
+        borderBottomWidth: 2,
+        borderBottomColor: 'grey',
         marginTop: 1,
         marginBottom: 1,
-        alignItems:'center'
+        alignItems: 'center'
     },
     imageContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     image: {
-        height: '90%',
-        width: '90%',
-        paddingTop: 2,
-        paddingBottom: 2,
-        paddingLeft: 1
+        height: Dimensions.get('window').width / 4 * 0.9,
+        width: Dimensions.get('window').width / 4 * 0.9,
+        borderRadius: Dimensions.get('window').width / 4 * 0.9 / 2,
+        // paddingTop: 2,
+        // paddingBottom: 2,
+        // paddingLeft: 1
+        //resizeMode: 'stretch'
 
     },
     textContainer: {
@@ -90,15 +109,18 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize: 10
-    }, titleCollapsed: {
-        flex:2,
+        fontSize: 20
+    },
+    titleCollapsed: {
+        flex: 2,
         fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 15
     },
     floorText: {
-        color: 'grey'
+        color: 'grey',
+        marginLeft: 10,
+        fontSize: 15
     },
     iconContainer: {
         flex: 1,

@@ -400,3 +400,10 @@ export const colorPositions = (positions, color) => async (dispatch, getState) =
         payload: newMap
     })
 };
+
+export const updateTargetPosition = (position) => (dispatch) => {
+    dispatch({
+        type: 'TARGET_POSITION',
+        payload: position
+    })
+}
