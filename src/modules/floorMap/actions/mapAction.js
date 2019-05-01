@@ -272,74 +272,355 @@ export const downloadMap = () => async (dispatch, getState) => {
 // Descarga las posiciones absolutas de las balizas en el mapa. Cualquier modificación en nombre o posición HACERLA AQUI
 export const downloadBeaconList = () => async (dispatch) => {
     let beaconsList = {
-        "BlueUp-04-025410": {
-            x: 29, y: 9,
+        //PARTE ALBERTO
+        //PRIMER BLOQUE - ARRIBA
+        "Beacon-008": {
+            x: 9, y: 129,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025411"]
+            nearbyBeacons: ["Beacon-007", 'Beacon-028', 'Beacon-009']
         },
-        "BlueUp-04-025411": {
-            x: 40, y: 9,
+        "Beacon-009": {
+            x: 9, y: 140,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025412"]
+            nearbyBeacons: ["Beacon-008", 'Beacon-010']
         },
-        "BlueUp-04-025412": {
-            x: 46, y: 20,
+        "Beacon-010": {
+            x: 9, y: 151,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025411", "BlueUp-04-025413"]
+            nearbyBeacons: ["Beacon-009", 'Beacon-011']
         },
-        "BlueUp-04-025413": {
-            x: 53, y: 20,
+        "Beacon-011": {
+            x: 9, y: 162,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025412", "BlueUp-04-025414"]
+            nearbyBeacons: ["Beacon-010", 'Beacon-012']
         },
-        "BlueUp-04-025414": {
-            x: 59, y: 9,
+        "Beacon-012": {
+            x: 9, y: 173,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025413", "BlueUp-04-025415"]
+            nearbyBeacons: ["Beacon-011", 'Beacon-013']
         },
-        "BlueUp-04-025415": {
-            x: 71, y: 9,
+        "Beacon-013": {
+            x: 9, y: 187,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416"]
+            nearbyBeacons: ["Beacon-012", 'Beacon-014', 'Beacon-033']
         },
-        // "BlueUp-04-025416": {
-        //     x: 50,
-        //     y: 30,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025417", "BlueUp-04-025418"]
-        // },
-        // "BlueUp-04-025417": {x: 43, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025416"]},
-        // //Nuevo modulaso 2.0 pa mujeres
-        // "BlueUp-04-025418": {
-        //     x: 47,
-        //     y: 40,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025416", "BlueUp-04-025419", "BlueUp-04-025420"]
-        // },
-        // "BlueUp-04-025419": {
-        //     x: 41,
-        //     y: 50,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025420", "BlueUp-04-025421"]
-        // },
-        // "BlueUp-04-025420": {
-        //     x: 48,
-        //     y: 70,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025419", "BlueUp-04-025421"]
-        // },
-        // "BlueUp-04-025421": {
-        //     x: 30,
-        //     y: 70,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025419", "BlueUp-04-025420", "BlueUp-04-025422"]
-        // },
-        // "BlueUp-04-025422": {
-        //     x: 26,
-        //     y: 50,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025421", "BlueUp-04-025415", "BlueUp-04-025414"]
-        // }
+        "Beacon-014": {
+            x: 7, y: 194,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-013", 'Beacon-015', 'Beacon-033']
+        },
+        "Beacon-015": {
+            x: 12, y: 202,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-014", 'Beacon-034', 'Beacon-016']
+        },
+        //PISCINA CIRCULAR
+        "Beacon-016": {
+            x: 11, y: 236,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-015", 'Beacon-054', 'Beacon-053']
+        },
+
+        //TODO meter 17-28
+
+        "Beacon-029": {
+            x: 21, y: 129,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-028", 'Beacon-045', 'Beacon-030', 'Beacon-027']
+        },
+        "Beacon-030": {
+            x: 21, y: 140,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-029", 'Beacon-031']
+        },
+        "Beacon-031": {
+            x: 21, y: 156,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-030", 'Beacon-032', 'Beacon-047', 'Beacon-048']
+        },
+        "Beacon-032": {
+            x: 21, y: 167,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-031", 'Beacon-033']
+        },
+        "Beacon-033": {
+            x: 21, y: 188,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-013", 'Beacon-032', 'Beacon-049']
+        },
+        "Beacon-034": {
+            x: 21, y: 202,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-015", 'Beacon-016', 'Beacon-051']
+        },
+        "Beacon-045": {
+            x: 27, y: 123,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-028", 'Beacon-027', 'Beacon-044', 'Beacon-046', 'Beacon-065', 'Beacon-029']
+        },
+        "Beacon-046": {
+            x: 33, y: 129,
+            distance: NaN,
+            nearbyBeacons: ['Beacon-044', 'Beacon-045', 'Beacon-065', 'Beacon-047', 'Beacon-067']
+        },
+        "Beacon-047": {
+            x: 33, y: 140,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-046", 'Beacon-067', 'Beacon-069', 'Beacon-031', 'Beacon-048']
+        },
+        "Beacon-048": {
+            x: 33, y: 173,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-031", 'Beacon-069', 'Beacon-047', 'Beacon-049', 'Beacon-048']
+        },
+        "Beacon-049": {
+            x: 33, y: 188,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-048", 'Beacon-050', 'Beacon-033', 'Beacon-031', 'Beacon-048']
+        },
+        "Beacon-050": {
+            x: 36, y: 194,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-049", 'Beacon-051', 'Beacon-052']
+        },
+        "Beacon-051": {
+            x: 30, y: 202,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-034", 'Beacon-050', 'Beacon-052']
+        },
+        "Beacon-052": {
+            x: 38, y: 206,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-051", 'Beacon-053', 'Beacon-050']
+        },
+        "Beacon-053": {
+            x: 38, y: 212,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-052", 'Beacon-054', 'Beacon-016']
+        },
+        "Beacon-054": {
+            x: 23, y: 236,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-015", 'Beacon-016', 'Beacon-051', 'Beacon-053', 'Beacon-055']
+        },
+        "Beacon-055": {
+            x: 38, y: 267,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-056", 'Beacon-054', 'Beacon-016']
+        },
+        "Beacon-056": {
+            x: 38, y: 273,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-015", 'Beacon-055', 'Beacon-148']
+        },
+        //PALMERITAS
+        "Beacon-065": {
+            x: 40, y: 128,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-044", 'Beacon-046', 'Beacon-067', 'Beacon-066', 'Beacon-068', 'Beacon-064']
+        },
+        "Beacon-066": {
+            x: 50, y: 128,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-110", 'Beacon-111', 'Beacon-079', 'Beacon-068', 'Beacon-067', 'Beacon-065', 'Beacon-064']
+        },
+        "Beacon-067": {
+            x: 40, y: 136,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-046", 'Beacon-065', 'Beacon-066', 'Beacon-068', 'Beacon-070', 'Beacon-069', 'Beacon-047']
+        },
+        "Beacon-068": {
+            x: 50, y: 136,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-066", 'Beacon-065', 'Beacon-067', 'Beacon-069', 'Beacon-070', 'Beacon-079', 'Beacon-080']
+        },
+        "Beacon-069": {
+            x: 40, y: 144,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-047", 'Beacon-067', 'Beacon-068', 'Beacon-070', 'Beacon-048']
+        },
+        "Beacon-070": {
+            x: 50, y: 144,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-067", 'Beacon-068', 'Beacon-097', 'Beacon-079', 'Beacon-080', 'Beacon-081']
+        },
+        //SEGUNDO BLOQUE - ABAJO
+        "Beacon-111": {
+            x: 61, y: 123,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-110", 'Beacon-132', 'Beacon-066', 'Beacon-079', 'Beacon-112', 'Beacon-064']
+        },
+        "Beacon-079": {
+            x: 56, y: 135,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-066", 'Beacon-068', 'Beacon-070', 'Beacon-080', 'Beacon-111']
+        },
+        "Beacon-080": {
+            x: 56, y: 146,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-079", 'Beacon-081', 'Beacon-113', 'Beacon-114', 'Beacon-090']
+        },
+        "Beacon-081": {
+            x: 56, y: 164,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-080", 'Beacon-082', 'Beacon-114', 'Beacon-115']
+        },
+        "Beacon-082": {
+            x: 56, y: 173,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-081", 'Beacon-083']
+        },
+        "Beacon-083": {
+            x: 56, y: 187,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-082", 'Beacon-084', 'Beacon-117']
+        },
+        "Beacon-084": {
+            x: 53, y: 194,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-083", 'Beacon-117', 'Beacon-085', 'Beacon-118']
+        },
+        "Beacon-085": {
+            x: 53, y: 202,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-084", 'Beacon-086', 'Beacon-118']
+        },
+        "Beacon-086": {
+            x: 56, y: 212,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-085", 'Beacon-087']
+        },
+        "Beacon-087": {
+            x: 56, y: 229,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-086", 'Beacon-088']
+        },
+        "Beacon-088": {
+            x: 56, y: 243,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-147", 'Beacon-089', 'Beacon-087']
+        },
+        "Beacon-089": {
+            x: 59, y: 269,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-090", 'Beacon-148', 'Beacon-147', 'Beacon-088']
+        },
+        "Beacon-112": {
+            x: 68, y: 134,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-113", 'Beacon-111', 'Beacon-132']
+        },
+        "Beacon-113": {
+            x: 68, y: 145,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-080", 'Beacon-114', 'Beacon-112']
+        },
+        "Beacon-114": {
+            x: 68, y: 156,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-113", 'Beacon-080', 'Beacon-081', 'Beacon-115']
+        },
+        "Beacon-115": {
+            x: 68, y: 167,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-114", 'Beacon-116', 'Beacon-081']
+        },
+        "Beacon-116": {
+            x: 68, y: 179,
+            distance: NaN,
+            nearbyBeacons: ['Beacon-115', 'Beacon-117', 'Beacon-138']
+        },
+        "Beacon-117": {
+            x: 59, y: 188,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-084", 'Beacon-083', 'Beacon-138', 'Beacon-116']
+        },
+        "Beacon-118": {
+            x: 60, y: 202,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-085", 'Beacon-141', 'Beacon-084']
+        },
+        "Beacon-133": {
+            x: 80, y: 133,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-132", 'Beacon-131', 'Beacon-134']
+        },
+        "Beacon-134": {
+            x: 80, y: 144,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-133", 'Beacon-135']
+        },
+        "Beacon-135": {
+            x: 80, y: 155,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-134", 'Beacon-136']
+        },
+        "Beacon-136": {
+            x: 80, y: 166,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-137", 'Beacon-135']
+        },
+        "Beacon-137": {
+            x: 80, y: 177,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-138", 'Beacon-139', 'Beacon-136']
+        },
+        "Beacon-138": {
+            x: 73, y: 188,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-139", 'Beacon-117', 'Beacon-137', 'Beacon-116', 'Beacon-055']
+        },
+        "Beacon-139": {
+            x: 81, y: 188,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-140", 'Beacon-137', 'Beacon-138']
+        },
+        "Beacon-140": {
+            x: 81, y: 200,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-139", 'Beacon-141', 'Beacon-142']
+        },
+        "Beacon-141": {
+            x: 71, y: 202,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-140", 'Beacon-118', 'Beacon-142']
+        },
+        "Beacon-142": {
+            x: 75, y: 212,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-141", 'Beacon-140', 'Beacon-143']
+        },
+        "Beacon-143": {
+            x: 75, y: 223,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-142", 'Beacon-144']
+        },
+        "Beacon-144": {
+            x: 78, y: 238,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-143", 'Beacon-145']
+        },
+        "Beacon-145": {
+            x: 81, y: 250,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-144", 'Beacon-146']
+        },
+        "Beacon-146": {
+            x: 79, y: 270,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-090", 'Beacon-145']
+        },
+        "Beacon-147": {
+            x: 50, y: 267,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-088", 'Beacon-089', 'Beacon-148']
+        },
+        "Beacon-148": {
+            x: 5, y: 273,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-056", 'Beacon-147', 'Beacon-089', 'Beacon-090']
+        }
+        //THE END
     };
 
     console.log("BeaconsList: ", beaconsList);
