@@ -1,17 +1,11 @@
 import React, {Component} from 'react'
 import {
-    Switch,
-    ScrollView,
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
     Image,
     Dimensions
 } from 'react-native';
-import {Avatar} from "react-native-elements";
-
-let viewWidth = 0;
 
 
 export class TopPlaceHeader extends Component {
@@ -37,12 +31,7 @@ export class TopPlaceHeader extends Component {
         return (
             <View>
                     <View style={styles.mainContainer}>
-                        <View style={styles.imageContainer} onLayout={(event) => {
-                            let {x, y, width, height} = event.nativeEvent.layout;
-                            // viewWidth = width;
-                            this.width = width;
-                            console.log("Creeema", width);
-                        }}>
+                        <View style={styles.imageContainer}>
                             <Image
                                 source={this.props.section.image}
                                 style={styles.image}
