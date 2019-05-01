@@ -31,6 +31,7 @@ class MapContent extends Component {
         let currentPosition = this.props.mapRedux.currentPosition;
         let optimalRoute = this.props.mapRedux.optimalRoute;
         let map = this.props.mapRedux;
+        let beaconList = this.props.mapRedux.beaconsList;
         /*
             Lo que vamos a hacer es meter un showRoute que nos dice si queremos mostrar la ruta o no
             Luego con el optimalRoute.length > 0 && showRoute sabemos que queremos mostrar la ruta
@@ -67,6 +68,27 @@ class MapContent extends Component {
         )
     }
 }
+/*
+Render beacons
+{
+    Object.entries(beaconList).map((beacon, key) => {
+        console.log('beacon: ', beacon[1], 'key', beacon[0]);
+        return (
+            <View key={key}
+                  style={{
+                      flex: 1,
+                      backgroundColor: 'green',
+                      width: 10,
+                      height: 10,
+                      position: 'absolute',
+                      top: beacon[1].x * 10,
+                      left: beacon[1].y * 10
+                  }}
+            />
+        )
+    })
+}
+ */
 
 const styles = StyleSheet.create({
     rowContainer: {

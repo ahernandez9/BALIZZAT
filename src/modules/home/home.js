@@ -11,8 +11,21 @@ class Home extends Component {
         console.log("Descargando lista de beacons");
         await this.props.downloadBeaconList();
         await this.props.downloadMap();
+        this.showMap();
         SplashScreen.hide();
     }
+
+    showMap = () => {
+        let mapita = [];
+        for (let row of this.props.mapRedux.plan) {
+            let show = [];
+            for (let i = 100; i < 275; i++) {
+                show.push(row[i]);
+            }
+            mapita.push(show);
+        }
+        console.log(mapita);
+    };
 
     render() {
         return (

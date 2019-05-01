@@ -132,12 +132,12 @@ class FloorPlan extends Component {
     async colorRandomPosition() {
         let x = Math.floor(Math.random() * 58);
         let y = Math.floor(Math.random() * 138);
-        this.flipaManito = {x: x, y: y};
-        while (this.props.mapRedux.plan[this.flipaManito.x][this.flipaManito.y] === 0) {
-            let x = Math.floor(Math.random() * 58);
-            let y = Math.floor(Math.random() * 138);
-            this.flipaManito = {x: x, y: y};
-        }
+        this.flipaManito = {x: 9, y: 75};
+        // while (this.props.mapRedux.plan[this.flipaManito.x][this.flipaManito.y] === 0) {
+        //     let x = Math.floor(Math.random() * 58);
+        //     let y = Math.floor(Math.random() * 138);
+        //     this.flipaManito = {x: x, y: y};
+        // }
         console.log("position: ", x, y);
         await this.props.updateCurrentPosition(this.flipaManito);
         //await this.props.updatePosition([[x,y]], null);
@@ -166,7 +166,6 @@ class FloorPlan extends Component {
         console.log("beacons: ", beacons);
         let closest = null, shortestDistance = 100000;
         for (let [key, beacon] of Object.entries(beacons)) {
-            console.log("dentro del for", beacon, position);
             let distance = util.manhattanDistance(beacon, position);
             if (distance < shortestDistance) {
                 shortestDistance = distance;
@@ -202,16 +201,15 @@ class FloorPlan extends Component {
     tryGenetic = () => {
         this.setState({loading: true});
         let closestBeacon = this.getClosestBeaconsFromPosition(this.props.mapRedux.currentPosition);
-        console.log("Closest: ", closestBeacon, 'shouldBe', this.props.mapRedux.beaconsList["BlueUp-04-025415"] );
         let population = new Population(
             closestBeacon,
-            this.props.mapRedux.beaconsList["BlueUp-04-025415"],
+            this.props.mapRedux.beaconsList["Beacon-131"],
             this.props.mapRedux.beaconsList,
             0.1, 50
         );
 
         //Nos resta iterar sobre la poblacion con seleccion natural, mutacion y crossovers
-        let iterationLimit = 1;
+        let iterationLimit = 20;
 
         // Generate weighed mating pool with the fittest members
         population.naturalSelection();

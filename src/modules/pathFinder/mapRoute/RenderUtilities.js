@@ -59,17 +59,14 @@ const utils = {
         let distance = 10000000;
         let nextPosition = {};
         let selected;
-        console.log("posibilidades: ", posibilities);
         for (let posibility of posibilities) {
             let newDistance = this.manhattanDistance(posibility, target);
-            console.log("Posibilidad: ", posibility, 'distancia: ', newDistance);
             if (newDistance < distance) {
                 distance = newDistance;
                 selected = posibility;
                 nextPosition = posibility
             }
         }
-        console.log("Hemos elegido la posibilidad: ", selected, 'con distancia: ', distance);
         return nextPosition;
     },
 

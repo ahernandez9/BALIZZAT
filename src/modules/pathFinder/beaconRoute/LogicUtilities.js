@@ -43,10 +43,10 @@ const util = {
             route.push(nextBeacon);
             currentBeacon = nextBeacon;
             visitedBeacons = [];
-
             if(route.length === beaconList.length && this.compareBeacons(currentBeacon, target)) {
                 return null
             }
+
         }
 
         return route;

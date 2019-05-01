@@ -59,7 +59,7 @@ export const downloadMap = () => async (dispatch, getState) => {
         for (let column = 0; column < 275; column++) {
             //Izquierda
             //Primero de arriba a abajo
-            isPointInRectangle({x: 0, y: 0}, {x: 0, y: 15}, {x: 61, y: 0}, {
+            isPointInRectangle({x: 0, y: 0}, {x: 0, y: 9}, {x: 61, y: 0}, {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
@@ -74,22 +74,22 @@ export const downloadMap = () => async (dispatch, getState) => {
                 y: row
             }) ? rowMap[column] = 0 : null;
             //Cuarto de arriba a abajo
-            isPointInRectangle({x: 10, y: 54}, {x: 10, y: 64}, {x: 61, y: 54}, {
+            isPointInRectangle({x: 10, y: 54}, {x: 10, y: 64}, {x: 49, y: 54}, {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
             //Quinto de arriba a abajo
-            isPointInRectangle({x: 10, y: 66}, {x: 10, y: 76}, {x: 61, y: 66}, {
+            isPointInRectangle({x: 10, y: 66}, {x: 10, y: 76}, {x: 49, y: 66}, {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
             //Sexto de arriba a abajo
-            isPointInRectangle({x: 10, y: 85}, {x: 10, y: 95}, {x: 61, y: 85}, {
+            isPointInRectangle({x: 10, y: 85}, {x: 10, y: 95}, {x: 49, y: 85}, {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
             //Septimo de arriba a abajo
-            isPointInRectangle({x: 10, y: 97}, {x: 10, y: 106}, {x: 61, y: 97}, {
+            isPointInRectangle({x: 10, y: 97}, {x: 10, y: 106}, {x: 49, y: 97}, {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
@@ -187,17 +187,19 @@ export const downloadMap = () => async (dispatch, getState) => {
                 y: row
             }) ? rowMap[column] = 0 : null;
             //Tercero de arriba a abajo
+            /*
             isPointInRectangle({x: 147, y: 53}, {x: 147, y: 57}, {x: 164, y: 53}, {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
-
+*/
             //Derecha
             //Primero de arriba a abajo
+            /*
             isPointInRectangle({x: 147, y: 32}, {x: 147, y: 35}, {x: 164, y: 32}, {
                 x: column,
                 y: row
-            }) ? rowMap[column] = 0 : null;
+            }) ? rowMap[column] = 0 : null;*/
             //Segundo de arriba a abajo
             isPointInRectangle({x: 189, y: 7}, {x: 189, y: 35}, {x: 199, y: 7}, {
                 x: column,
@@ -275,17 +277,16 @@ export const downloadBeaconList = () => async (dispatch) => {
         "Beacon-001": {
             x: 16, y: 3,
             distance: NaN,
-            nearbyBeacons: ["Beacon-018, Beacon-017, Beacon-002"]
-            //TODO Acordarse de poner el dos joder
-        }, "Beacon-002": {
-            x: 16, y: 3,
-            distance: NaN,
             nearbyBeacons: ["Beacon-018", "Beacon-017", "Beacon-002"]
-        }, "Beacon-003": {
-            x: 5, y: 62,
+        }, "Beacon-002": {
+            x: 10, y: 16,
             distance: NaN,
-            nearbyBeacons: ["Beacon-004", "Beacon-021", "Beacon-022", "Beacon-023"]
-        }, "Beacon-04": {
+            nearbyBeacons: ["Beacon-018", "Beacon-019", "Beacon-020", "Beacon-021", "Beacon-003", "Beacon-001"]
+        }, "Beacon-003": {
+            x: 15, y: 62,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-004", "Beacon-021", "Beacon-022", "Beacon-023", "Beacon-002"]
+        }, "Beacon-004": {
             x: 9, y: 73,
             distance: NaN,
             nearbyBeacons: ["Beacon-003", "Beacon-005"]
@@ -294,7 +295,7 @@ export const downloadBeaconList = () => async (dispatch) => {
             distance: NaN,
             nearbyBeacons: ["Beacon-004", "Beacon-006", "Beacon-025"]
         }, "Beacon-006": {
-            x: 9, y: 104,
+            x: 9, y: 103,
             distance: NaN,
             nearbyBeacons: ["Beacon-005", "Beacon-025", "Beacon-007"]
         }, "Beacon-007": {
@@ -302,29 +303,29 @@ export const downloadBeaconList = () => async (dispatch) => {
             distance: NaN,
             nearbyBeacons: ["Beacon-006", "Beacon-008", "Beacon-028"]
         }, "Beacon-017": {
-            x: 9, y: 26,
+            x: 29, y: 9,
             distance: NaN,
             nearbyBeacons: ["Beacon-001", "Beacon-018", "Beacon-036", "Beacon-035"]
         }, "Beacon-018": {
             x: 23, y: 15,
             distance: NaN,
-            nearbyBeacons: ["Beacon-001", "Beacon-017", "Beacon-019"]
+            nearbyBeacons: ["Beacon-001", "Beacon-017", "Beacon-019", "Beacon-002"]
         }, "Beacon-019": {
             x: 23, y: 25,
             distance: NaN,
-            nearbyBeacons: ["Beacon-020", "Beacon-018"]
+            nearbyBeacons: ["Beacon-020", "Beacon-018", "Beacon-002"]
         }, "Beacon-020": {
             x: 23, y: 35,
             distance: NaN,
-            nearbyBeacons: ["Beacon-021", "Beacon-019"]
+            nearbyBeacons: ["Beacon-021", "Beacon-019", "Beacon-002"]
         }, "Beacon-021": {
             x: 23, y: 45,
             distance: NaN,
-            nearbyBeacons: ["Beacon-020", "Beacon-003", "Beacon-022", "Beacon-023"]
+            nearbyBeacons: ["Beacon-020", "Beacon-003", "Beacon-022", "Beacon-023", "Beacon-002"]
         }, "Beacon-022": {
             x: 27, y: 62,
             distance: NaN,
-            nearbyBeacons: ["Beacon-003", "Beacon-021", "Beacon-023", "Beacon-39", "Beacon-040"]
+            nearbyBeacons: ["Beacon-003", "Beacon-021", "Beacon-023", "Beacon-039", "Beacon-040"]
         }, "Beacon-023": {
             x: 21, y: 73,
             distance: NaN,
@@ -333,8 +334,12 @@ export const downloadBeaconList = () => async (dispatch) => {
             x: 21, y: 83,
             distance: NaN,
             nearbyBeacons: ["Beacon-023", "Beacon-025", "Beacon-026", "Beacon-042"]
+        }, "Beacon-025": {
+            x: 15, y: 92,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-005", "Beacon-006", "Beacon-026", "Beacon-024", 'Beacon-042']
         }, "Beacon-026": {
-            x: 21, y: 104,
+            x: 21, y: 103,
             distance: NaN,
             nearbyBeacons: ["Beacon-024", "Beacon-025", "Beacon-027", "Beacon-042"]
         }, "Beacon-027": {
@@ -401,6 +406,10 @@ export const downloadBeaconList = () => async (dispatch) => {
             x: 46, y: 50,
             distance: NaN,
             nearbyBeacons: ["Beacon-059", "Beacon-061", "Beacon-074", "Beacon-075", "Beacon-076"]
+        }, "Beacon-061": {
+            x: 40, y: 62,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-039", "Beacon-022", "Beacon-040", "Beacon-062", "Beacon-060", "Beacon-077"]
         }, "Beacon-062": {
             x: 40, y: 68,
             distance: NaN,
@@ -470,7 +479,7 @@ export const downloadBeaconList = () => async (dispatch) => {
             distance: NaN,
             nearbyBeacons: ["Beacon-075", "Beacon-076", "Beacon-077", "Beacon-095", "Beacon-105", "Beacon-097", "Beacon-106"]
         }, "Beacon-097": {
-            x: 55, y: 68,
+            x: 71, y: 68,
             distance: NaN,
             nearbyBeacons: ["Beacon-076", "Beacon-078", "Beacon-077", "Beacon-106", "Beacon-096", "Beacon-107"]
         }, "Beacon-098": {
@@ -518,7 +527,7 @@ export const downloadBeaconList = () => async (dispatch) => {
             distance: NaN,
             nearbyBeacons: ["Beacon-078", "Beacon-107", "Beacon-109", "Beacon-129"]
         }, "Beacon-109": {
-            x: 68, y: 105,
+            x: 66, y: 105,
             distance: NaN,
             nearbyBeacons: ["Beacon-078", "Beacon-064", "Beacon-108", "Beacon-110"]
         }, "Beacon-110": {
@@ -554,7 +563,7 @@ export const downloadBeaconList = () => async (dispatch) => {
             distance: NaN,
             nearbyBeacons: ["Beacon-123", "Beacon-124", "Beacon-126"]
         }, "Beacon-126": {
-            x: 104, y: 69,
+            x: 102, y: 69,
             distance: NaN,
             nearbyBeacons: ["Beacon-123", "Beacon-125", "Beacon-127"]
         }, "Beacon-127": {
@@ -626,7 +635,7 @@ export const downloadBeaconList = () => async (dispatch) => {
         },
         //PISCINA CIRCULAR
         "Beacon-016": {
-            x: 11, y: 236,
+            x: 9, y: 236,
             distance: NaN,
             nearbyBeacons: ["Beacon-015", 'Beacon-054', 'Beacon-053']
         },
@@ -646,7 +655,7 @@ export const downloadBeaconList = () => async (dispatch) => {
             nearbyBeacons: ["Beacon-030", 'Beacon-032', 'Beacon-047', 'Beacon-048']
         },
         "Beacon-032": {
-            x: 21, y: 167,
+            x: 21, y: 172,
             distance: NaN,
             nearbyBeacons: ["Beacon-031", 'Beacon-033']
         },
@@ -701,7 +710,7 @@ export const downloadBeaconList = () => async (dispatch) => {
             nearbyBeacons: ["Beacon-051", 'Beacon-053', 'Beacon-050']
         },
         "Beacon-053": {
-            x: 38, y: 212,
+            x: 38, y: 216,
             distance: NaN,
             nearbyBeacons: ["Beacon-052", 'Beacon-054', 'Beacon-016']
         },
@@ -711,23 +720,23 @@ export const downloadBeaconList = () => async (dispatch) => {
             nearbyBeacons: ["Beacon-015", 'Beacon-016', 'Beacon-051', 'Beacon-053', 'Beacon-055']
         },
         "Beacon-055": {
-            x: 38, y: 267,
+            x: 38, y: 256,
             distance: NaN,
             nearbyBeacons: ["Beacon-056", 'Beacon-054', 'Beacon-016']
         },
         "Beacon-056": {
-            x: 38, y: 273,
+            x: 38, y: 267,
             distance: NaN,
             nearbyBeacons: ["Beacon-015", 'Beacon-055', 'Beacon-148']
         },
         //PALMERITAS
         "Beacon-065": {
-            x: 40, y: 128,
+            x: 40, y: 126,
             distance: NaN,
             nearbyBeacons: ["Beacon-044", 'Beacon-046', 'Beacon-067', 'Beacon-066', 'Beacon-068', 'Beacon-064']
         },
         "Beacon-066": {
-            x: 50, y: 128,
+            x: 50, y: 126,
             distance: NaN,
             nearbyBeacons: ["Beacon-110", 'Beacon-111', 'Beacon-079', 'Beacon-068', 'Beacon-067', 'Beacon-065', 'Beacon-064']
         },
@@ -773,12 +782,12 @@ export const downloadBeaconList = () => async (dispatch) => {
             nearbyBeacons: ["Beacon-080", 'Beacon-082', 'Beacon-114', 'Beacon-115']
         },
         "Beacon-082": {
-            x: 56, y: 173,
+            x: 56, y: 174,
             distance: NaN,
             nearbyBeacons: ["Beacon-081", 'Beacon-083']
         },
         "Beacon-083": {
-            x: 56, y: 187,
+            x: 56, y: 185,
             distance: NaN,
             nearbyBeacons: ["Beacon-082", 'Beacon-084', 'Beacon-117']
         },
@@ -788,12 +797,12 @@ export const downloadBeaconList = () => async (dispatch) => {
             nearbyBeacons: ["Beacon-083", 'Beacon-117', 'Beacon-085', 'Beacon-118']
         },
         "Beacon-085": {
-            x: 53, y: 202,
+            x: 53, y: 207,
             distance: NaN,
             nearbyBeacons: ["Beacon-084", 'Beacon-086', 'Beacon-118']
         },
         "Beacon-086": {
-            x: 56, y: 212,
+            x: 56, y: 217,
             distance: NaN,
             nearbyBeacons: ["Beacon-085", 'Beacon-087']
         },
@@ -808,9 +817,14 @@ export const downloadBeaconList = () => async (dispatch) => {
             nearbyBeacons: ["Beacon-147", 'Beacon-089', 'Beacon-087']
         },
         "Beacon-089": {
-            x: 59, y: 269,
+            x: 58, y: 256,
             distance: NaN,
             nearbyBeacons: ["Beacon-090", 'Beacon-148', 'Beacon-147', 'Beacon-088']
+        },
+        "Beacon-090": {
+            x: 59, y: 271,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-089", 'Beacon-146', 'Beacon-148']
         },
         "Beacon-112": {
             x: 68, y: 134,
@@ -838,7 +852,7 @@ export const downloadBeaconList = () => async (dispatch) => {
             nearbyBeacons: ['Beacon-115', 'Beacon-117', 'Beacon-138']
         },
         "Beacon-117": {
-            x: 59, y: 188,
+            x: 62, y: 188,
             distance: NaN,
             nearbyBeacons: ["Beacon-084", 'Beacon-083', 'Beacon-138', 'Beacon-116']
         },
@@ -893,17 +907,17 @@ export const downloadBeaconList = () => async (dispatch) => {
             nearbyBeacons: ["Beacon-140", 'Beacon-118', 'Beacon-142']
         },
         "Beacon-142": {
-            x: 75, y: 212,
+            x: 74, y: 212,
             distance: NaN,
             nearbyBeacons: ["Beacon-141", 'Beacon-140', 'Beacon-143']
         },
         "Beacon-143": {
-            x: 75, y: 223,
+            x: 74, y: 223,
             distance: NaN,
             nearbyBeacons: ["Beacon-142", 'Beacon-144']
         },
         "Beacon-144": {
-            x: 78, y: 238,
+            x: 77, y: 238,
             distance: NaN,
             nearbyBeacons: ["Beacon-143", 'Beacon-145']
         },
@@ -913,22 +927,20 @@ export const downloadBeaconList = () => async (dispatch) => {
             nearbyBeacons: ["Beacon-144", 'Beacon-146']
         },
         "Beacon-146": {
-            x: 79, y: 270,
+            x: 79, y: 271,
             distance: NaN,
             nearbyBeacons: ["Beacon-090", 'Beacon-145']
         },
         "Beacon-147": {
-            x: 50, y: 267,
+            x: 50, y: 256,
             distance: NaN,
             nearbyBeacons: ["Beacon-088", 'Beacon-089', 'Beacon-148']
         },
         "Beacon-148": {
-            x: 5, y: 273,
+            x: 50, y: 267,
             distance: NaN,
             nearbyBeacons: ["Beacon-056", 'Beacon-147', 'Beacon-089', 'Beacon-090']
         }
-        //THE END
-
     };
 
     console.log("BeaconsList: ", beaconsList);

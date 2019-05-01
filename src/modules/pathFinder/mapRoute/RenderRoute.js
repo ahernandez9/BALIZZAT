@@ -18,7 +18,6 @@ class RenderRoute {
         while (routeTrial == null) {
             routeTrial = utils.newRoute(map, origin, target);
         }
-        console.log(routeTrial);
         return routeTrial;
     }
 }
