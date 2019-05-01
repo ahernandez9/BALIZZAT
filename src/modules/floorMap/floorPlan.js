@@ -163,15 +163,21 @@ class FloorPlan extends Component {
 
     getClosestBeaconsFromPosition(position) {
         let beacons = this.props.mapRedux.beaconsList;
-        let closest, shortestDistance = 100000;
-        for (let beacon of beacons) {
-            let distance = this.manhattanDistance(beacon, position);
-            if(distance < shortestDistance) distance = shortestDistance; closest = beacon;
+        console.log("beacons: ", beacons);
+        let closest = null, shortestDistance = 100000;
+        for (let [key, beacon] of Object.entries(beacons)) {
+            console.log("dentro del for", beacon, position);
+            let distance = util.manhattanDistance(beacon, position);
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+                closest = beacon;
+            }
         }
+
         return closest
     }
 
-    //RENDER OPTIMISED ROUTE
+//RENDER OPTIMISED ROUTE
     renderRoute = (populationFittest) => {
         console.log(populationFittest);
         let optimalRoute = [];
@@ -192,10 +198,11 @@ class FloorPlan extends Component {
         this.setState({loading: false, showRoute: true});
     };
 
-    //GENETIC ALGORITHM FOR BEACONS
+//GENETIC ALGORITHM FOR BEACONS
     tryGenetic = () => {
         this.setState({loading: true});
         let closestBeacon = this.getClosestBeaconsFromPosition(this.props.mapRedux.currentPosition);
+        console.log("Closest: ", closestBeacon, 'shouldBe', this.props.mapRedux.beaconsList["BlueUp-04-025415"] );
         let population = new Population(
             closestBeacon,
             this.props.mapRedux.beaconsList["BlueUp-04-025415"],
@@ -230,11 +237,11 @@ class FloorPlan extends Component {
 
     };
 
-    //<Scanner/>
+//<Scanner/>
 // <Map
-    //callbackFromParent={(reference) => this.setReference(reference)}
+//callbackFromParent={(reference) => this.setReference(reference)}
 // />
-    //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
         console.log("RENDER");
         return (
@@ -277,10 +284,10 @@ class FloorPlan extends Component {
                     />
                 </View>
                 {this.state.loading &&
-                    <View style={styles.containerLoading}>
-                        <Text style={styles.loadingText}>Calculando la mejor ruta,{'\n'}por favor espere</Text>
-                        <ActivityIndicator size="large"/>
-                    </View>
+                <View style={styles.containerLoading}>
+                    <Text style={styles.loadingText}>Calculando la mejor ruta,{'\n'}por favor espere</Text>
+                    <ActivityIndicator size="large"/>
+                </View>
                 }
             </SafeAreaView>
         )
@@ -377,8 +384,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        top: Dimensions.get('window').height/2,
-        left: Dimensions.get('window').width/2,
+        top: Dimensions.get('window').height / 2,
+        left: Dimensions.get('window').width / 2,
         margin: 15,
     },
     loadingText: {

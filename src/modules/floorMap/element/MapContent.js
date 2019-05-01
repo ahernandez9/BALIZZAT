@@ -43,7 +43,6 @@ class MapContent extends Component {
         let optionalCurrentPosition = map[currentPosition.x - 5] && map[currentPosition.x - 5][currentPosition.y - 2] ?
             map[currentPosition.x - 5][currentPosition.y - 2] : currentPosition;
 
-
         return (
             <View>
                 <Image

@@ -1,12 +1,8 @@
-/* @flow */
-
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import ScrollView, { ScrollViewChild } from 'react-native-directed-scrollview';
 import MapContent from './MapContent';
-import { getCellsByRow } from './data';
 import {connect} from "react-redux";
-import MapCordial from '../../../../assets/images/cropped_cordial_map.png'
 
 class Map extends Component {
 
