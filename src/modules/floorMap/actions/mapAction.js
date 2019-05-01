@@ -272,74 +272,317 @@ export const downloadMap = () => async (dispatch, getState) => {
 // Descarga las posiciones absolutas de las balizas en el mapa. Cualquier modificación en nombre o posición HACERLA AQUI
 export const downloadBeaconList = () => async (dispatch) => {
     let beaconsList = {
-        "BlueUp-04-025410": {
-            x: 29, y: 9,
+        "Beacon-001": {
+            x: 16, y: 3,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025411"]
-        },
-        "BlueUp-04-025411": {
+            nearbyBeacons: ["Beacon-018, Beacon-017, Beacon-002"]
+            //TODO Acordarse de poner el dos joder
+        }, "Beacon-002": {
+            x: 16, y: 3,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-018", "Beacon-017", "Beacon-002"]
+        }, "Beacon-003": {
+            x: 5, y: 62,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-004", "Beacon-021", "Beacon-022", "Beacon-023"]
+        }, "Beacon-04": {
+            x: 9, y: 73,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-003", "Beacon-005"]
+        }, "Beacon-005": {
+            x: 9, y: 83,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-004", "Beacon-006", "Beacon-025"]
+        }, "Beacon-006": {
+            x: 9, y: 104,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-005", "Beacon-025", "Beacon-007"]
+        }, "Beacon-007": {
+            x: 9, y: 114,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-006", "Beacon-008", "Beacon-028"]
+        }, "Beacon-017": {
+            x: 9, y: 26,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-001", "Beacon-018", "Beacon-036", "Beacon-035"]
+        }, "Beacon-018": {
+            x: 23, y: 15,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-001", "Beacon-017", "Beacon-019"]
+        }, "Beacon-019": {
+            x: 23, y: 25,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-020", "Beacon-018"]
+        }, "Beacon-020": {
+            x: 23, y: 35,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-021", "Beacon-019"]
+        }, "Beacon-021": {
+            x: 23, y: 45,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-020", "Beacon-003", "Beacon-022", "Beacon-023"]
+        }, "Beacon-022": {
+            x: 27, y: 62,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-003", "Beacon-021", "Beacon-023", "Beacon-39", "Beacon-040"]
+        }, "Beacon-023": {
+            x: 21, y: 73,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-003", "Beacon-021", "Beacon-022", "Beacon-024"]
+        }, "Beacon-024": {
+            x: 21, y: 83,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-023", "Beacon-025", "Beacon-026", "Beacon-042"]
+        }, "Beacon-026": {
+            x: 21, y: 104,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-024", "Beacon-025", "Beacon-027", "Beacon-042"]
+        }, "Beacon-027": {
+            x: 21, y: 114,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-026", "Beacon-028", "Beacon-029", "Beacon-045"]
+        }, "Beacon-028": {
+            x: 15, y: 123,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-007", "Beacon-008", "Beacon-027", "Beacon-029", "Beacon-045"]
+        }, "Beacon-035": {
             x: 40, y: 9,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025410", "BlueUp-04-025412"]
-        },
-        "BlueUp-04-025412": {
+            nearbyBeacons: ["Beacon-017", "Beacon-036", "Beacon-057", "Beacon-070"]
+        }, "Beacon-036": {
+            x: 35, y: 21,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-017", "Beacon-035", "Beacon-037"]
+        }, "Beacon-037": {
+            x: 35, y: 33,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-036", "Beacon-038"]
+        }, "Beacon-038": {
+            x: 35, y: 44,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-037", "Beacon-039"]
+        }, "Beacon-039": {
+            x: 35, y: 55,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-038", "Beacon-022", "Beacon-061", "Beacon-040"]
+        }, "Beacon-040": {
+            x: 33, y: 73,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-022", "Beacon-039", "Beacon-061", "Beacon-062", "Beacon-063", "Beacon-041"]
+        }, "Beacon-041": {
+            x: 33, y: 83,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-040", "Beacon-042", "Beacon-043", "Beacon-063"]
+        }, "Beacon-042": {
+            x: 27, y: 93,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-024", "Beacon-025", "Beacon-026", "Beacon-041", "Beacon-043"]
+        }, "Beacon-043": {
+            x: 33, y: 101,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-041", "Beacon-042", "Beacon-044", "Beacon-069"]
+        }, "Beacon-044": {
+            x: 33, y: 111,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-043", "Beacon-045", "Beacon-046", "Beacon-069", "Beacon-065"]
+        }, "Beacon-057": {
             x: 46, y: 20,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025411", "BlueUp-04-025413"]
-        },
-        "BlueUp-04-025413": {
-            x: 53, y: 20,
+            nearbyBeacons: ["Beacon-035", "Beacon-072", "Beacon-058", "Beacon-073"]
+        }, "Beacon-058": {
+            x: 46, y: 30,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025412", "BlueUp-04-025414"]
-        },
-        "BlueUp-04-025414": {
+            nearbyBeacons: ["Beacon-057", "Beacon-059", "Beacon-072", "Beacon-073", "Beacon-074"]
+        }, "Beacon-059": {
+            x: 46, y: 40,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-058", "Beacon-060", "Beacon-073", "Beacon-074"]
+        }, "Beacon-060": {
+            x: 46, y: 50,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-059", "Beacon-061", "Beacon-074", "Beacon-075", "Beacon-076"]
+        }, "Beacon-062": {
+            x: 40, y: 68,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-061", "Beacon-040", "Beacon-063", "Beacon-076", "Beacon-077", "Beacon-078"]
+        }, "Beacon-063": {
+            x: 41, y: 85,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-041", "Beacon-042", "Beacon-043", "Beacon-062", "Beacon-040", "Beacon-064", "Beacon-077", "Beacon-078"]
+        }, "Beacon-064": {
+            x: 48, y: 110,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-063", "Beacon-043", "Beacon-065", "Beacon-066", "Beacon-109", "Beacon-110", "Beacon-111", "Beacon-078"]
+        }, "Beacon-071": {
             x: 59, y: 9,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025413", "BlueUp-04-025415"]
-        },
-        "BlueUp-04-025415": {
+            nearbyBeacons: ["Beacon-035", "Beacon-072", "Beacon-091", "Beacon-092"]
+        }, "Beacon-072": {
+            x: 53, y: 20,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-057", "Beacon-058", "Beacon-071", "Beacon-073"]
+        }, "Beacon-073": {
+            x: 53, y: 30,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-057", "Beacon-058", "Beacon-059", "Beacon-072", "Beacon-074"]
+        }, "Beacon-074": {
+            x: 53, y: 40,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-058", "Beacon-059", "Beacon-060", "Beacon-073", "Beacon-075"]
+        }, "Beacon-075": {
+            x: 59, y: 50,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-074", "Beacon-076", "Beacon-094", "Beacon-095"]
+        }, "Beacon-076": {
+            x: 56, y: 58,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-055", "Beacon-060", "Beacon-077", "Beacon-095", "Beacon-096", "Beacon-097"]
+        }, "Beacon-077": {
+            x: 56, y: 68,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-076", "Beacon-078", "Beacon-061", "Beacon-062", "Beacon-096", "Beacon-097"]
+        }, "Beacon-078": {
+            x: 56, y: 85,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-062", "Beacon-063", "Beacon-077", "Beacon-097", "Beacon-107", "Beacon-108", "Beacon-109"]
+        }, "Beacon-091": {
             x: 71, y: 9,
             distance: NaN,
-            nearbyBeacons: ["BlueUp-04-025414", "BlueUp-04-025416"]
+            nearbyBeacons: ["Beacon-071", "Beacon-092", "Beacon-098", "Beacon-101"]
+        }, "Beacon-092": {
+            x: 65, y: 20,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-071", "Beacon-091", "Beacon-093"]
+        }, "Beacon-093": {
+            x: 65, y: 30,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-092", "Beacon-094"]
+        }, "Beacon-094": {
+            x: 65, y: 40,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-093", "Beacon-095"]
+        }, "Beacon-095": {
+            x: 71, y: 50,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-075", "Beacon-094", "Beacon-100", "Beacon-105", "Beacon-096"]
+        }, "Beacon-096": {
+            x: 71, y: 58,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-075", "Beacon-076", "Beacon-077", "Beacon-095", "Beacon-105", "Beacon-097", "Beacon-106"]
+        }, "Beacon-097": {
+            x: 55, y: 68,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-076", "Beacon-078", "Beacon-077", "Beacon-106", "Beacon-096", "Beacon-107"]
+        }, "Beacon-098": {
+            x: 77, y: 20,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-091", "Beacon-099", "Beacon-102", "Beacon-103"]
+        }, "Beacon-099": {
+            x: 77, y: 30,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-098", "Beacon-100", "Beacon-102", "Beacon-103", "Beacon-104"]
+        }, "Beacon-100": {
+            x: 77, y: 40,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-099", "Beacon-095", "Beacon-103", "Beacon-104", "Beacon-105"]
+        }, "Beacon-101": {
+            x: 90, y: 9,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-091", "Beacon-102", "Beacon-119"]
+        }, "Beacon-102": {
+            x: 84, y: 20,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-098", "Beacon-099", "Beacon-103", "Beacon-101"]
+        }, "Beacon-103": {
+            x: 84, y: 30,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-098", "Beacon-099", "Beacon-100", "Beacon-102", "Beacon-104"]
+        }, "Beacon-104": {
+            x: 84, y: 40,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-099", "Beacon-100", "Beacon-105", "Beacon-103"]
+        }, "Beacon-105": {
+            x: 80, y: 55,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-095", "Beacon-096", "Beacon-100", "Beacon-104", "Beacon-106", "Beacon-124" ]
+        }, "Beacon-106": {
+            x: 76, y: 69,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-096", "Beacon-097", "Beacon-107", "Beacon-105", "Beacon-124"]
+        }, "Beacon-107": {
+            x: 73, y: 80,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-097", "Beacon-098", "Beacon-106", "Beacon-108"]
+        }, "Beacon-108": {
+            x: 71, y: 91,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-078", "Beacon-107", "Beacon-109", "Beacon-129"]
+        }, "Beacon-109": {
+            x: 68, y: 105,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-078", "Beacon-064", "Beacon-108", "Beacon-110"]
+        }, "Beacon-110": {
+            x: 62, y: 116,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-109", "Beacon-064", "Beacon-066", "Beacon-111"]
+        }, "Beacon-119": {
+            x: 101, y: 9,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-101", "Beacon-120"]
+        }, "Beacon-120": {
+            x: 107, y: 20,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-119", "Beacon-121"]
+        }, "Beacon-121": {
+            x: 107, y: 30,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-120", "Beacon-122"]
+        }, "Beacon-122": {
+            x: 107, y: 40,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-121", "Beacon-123"]
+        }, "Beacon-123": {
+            x: 106, y: 55,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-122", "Beacon-125", "Beacon-126"]
+        }, "Beacon-124": {
+            x: 85, y: 62,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-105", "Beacon-106", "Beacon-125"]
+        }, "Beacon-125": {
+            x: 96, y: 62,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-123", "Beacon-124", "Beacon-126"]
+        }, "Beacon-126": {
+            x: 104, y: 69,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-123", "Beacon-125", "Beacon-127"]
+        }, "Beacon-127": {
+            x: 98, y: 80,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-126", "Beacon-128"]
+        }, "Beacon-128": {
+            x: 95, y: 91,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-127", "Beacon-129", "Beacon-130"]
+        }, "Beacon-129": {
+            x: 81, y: 93,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-108", "Beacon-128"]
+        }, "Beacon-130": {
+            x: 91, y: 105,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-128", "Beacon-131"]
+        }, "Beacon-131": {
+            x: 87, y: 116,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-130", "Beacon-132", "Beacon-133"]
+        }, "Beacon-132": {
+            x: 74, y: 122,
+            distance: NaN,
+            nearbyBeacons: ["Beacon-111", "Beacon-112", "Beacon-131", "Beacon-133"]
         },
-        // "BlueUp-04-025416": {
-        //     x: 50,
-        //     y: 30,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025417", "BlueUp-04-025418"]
-        // },
-        // "BlueUp-04-025417": {x: 43, y: 0, distance: NaN, nearbyBeacons: ["BlueUp-04-025415", "BlueUp-04-025416"]},
-        // //Nuevo modulaso 2.0 pa mujeres
-        // "BlueUp-04-025418": {
-        //     x: 47,
-        //     y: 40,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025416", "BlueUp-04-025419", "BlueUp-04-025420"]
-        // },
-        // "BlueUp-04-025419": {
-        //     x: 41,
-        //     y: 50,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025420", "BlueUp-04-025421"]
-        // },
-        // "BlueUp-04-025420": {
-        //     x: 48,
-        //     y: 70,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025418", "BlueUp-04-025419", "BlueUp-04-025421"]
-        // },
-        // "BlueUp-04-025421": {
-        //     x: 30,
-        //     y: 70,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025419", "BlueUp-04-025420", "BlueUp-04-025422"]
-        // },
-        // "BlueUp-04-025422": {
-        //     x: 26,
-        //     y: 50,
-        //     distance: NaN,
-        //     nearbyBeacons: ["BlueUp-04-025421", "BlueUp-04-025415", "BlueUp-04-025414"]
-        // }
+
     };
 
     console.log("BeaconsList: ", beaconsList);
