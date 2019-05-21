@@ -11,7 +11,8 @@ import {
     SafeAreaView,
     Alert,
     ActivityIndicator,
-    Dimensions
+    Dimensions,
+    PanResponder
 } from 'react-native';
 import {
     downloadMap,
@@ -29,6 +30,7 @@ import Map from "./element/Map";
 import Population from "../pathFinder/beaconRoute/Population";
 import RenderRoute from "../pathFinder/mapRoute/RenderRoute";
 import util from "../pathFinder/mapRoute/RenderUtilities";
+import GeneticAlgorithm from "../pathFinder/beaconRoute/geneticAlgorithm";
 
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
@@ -49,9 +51,15 @@ class FloorPlan extends Component {
     constructor(props) {
         super(props);
 
+        // this.panResponder = null;
+
         this.state = {
             loading: false,
-            showRoute: false
+            showRoute: false,
+            optimalRoute: null,
+            // locationX: 0,
+            // locationY: 0,
+            // enablePanHandlers: false
         }
     }
 
@@ -70,6 +78,23 @@ class FloorPlan extends Component {
     }
 
     componentWillMount(): void {
+        // this.panResponder = PanResponder.create(
+        //     {
+        //         onStartShouldSetPanResponder: (event, gestureState) => true,
+        //         onStartShouldSetPanResponderCapture: (event, gestureState) => true,
+        //         onMoveShouldSetPanResponder: (event, gestureState) => false,
+        //         onMoveShouldSetPanResponderCapture: (event, gestureState) => false,
+        //         onPanResponderGrant: (event, gestureState) => false,
+        //         onPanResponderMove: (event, gestureState) => false,
+        //         onPanResponderRelease: (event, gestureState) =>
+        //         {
+        //             this.setState({
+        //                 locationX: event.nativeEvent.locationX.toFixed(2),
+        //                 locationY: event.nativeEvent.locationY.toFixed(2),
+        //                 enablePanHandlers: false
+        //             });
+        //         }
+        //     });
         // this.interval = setInterval(async () => {
         //     console.log("Beacons en rango", this.props.scanner.beaconsOnRange);
         //     if (this.props.scanner.beaconsOnRange.length > 0) {
@@ -132,17 +157,18 @@ class FloorPlan extends Component {
     async colorRandomPosition() {
         let x = Math.floor(Math.random() * 58);
         let y = Math.floor(Math.random() * 138);
-        this.flipaManito = {x: 9, y: 75};
-        // while (this.props.mapRedux.plan[this.flipaManito.x][this.flipaManito.y] === 0) {
-        //     let x = Math.floor(Math.random() * 58);
-        //     let y = Math.floor(Math.random() * 138);
-        //     this.flipaManito = {x: x, y: y};
-        // }
+        this.flipaManito = {x: 0, y: 0};
+        while (this.props.mapRedux.plan[this.flipaManito.x][this.flipaManito.y] === 0) {
+            let x = Math.floor(Math.random() * 58);
+            let y = Math.floor(Math.random() * 138);
+            this.flipaManito = {x: x, y: y};
+        }
         console.log("position: ", x, y);
         await this.props.updateCurrentPosition(this.flipaManito);
-        //await this.props.updatePosition([[x,y]], null);
+        // await this.props.updatePosition([[x,y]], null);
         this.props.updateOptimalRoute([]);
-        this.setState({showRoute: false})
+        // console.log(this.state);
+        this.setState({showRoute: false, optimalRoute: null/*, enablePanHandlers: true*/})
     };
 
     _renderButton = (text, onPress) => (
@@ -155,15 +181,14 @@ class FloorPlan extends Component {
         this.pollas = reference;
     };
 
-    scrollToPosition = () => {
-        console.log("estas pasando flaco?", this.pollas);
-        //Esta es la mierda que nos ocupa ahora
-        this.pollas.scrollTo(2000, 700, true)
-    };
+    // scrollToPosition = () => {
+    //     console.log("estas pasando flaco?", this.pollas);
+    //     Esta es la mierda que nos ocupa ahora
+        // this.pollas.scrollTo(2000, 700, true)
+    // };
 
     getClosestBeaconsFromPosition(position) {
         let beacons = this.props.mapRedux.beaconsList;
-        console.log("beacons: ", beacons);
         let closest = null, shortestDistance = 100000;
         for (let [key, beacon] of Object.entries(beacons)) {
             let distance = util.manhattanDistance(beacon, position);
@@ -198,41 +223,41 @@ class FloorPlan extends Component {
     };
 
 //GENETIC ALGORITHM FOR BEACONS
-    tryGenetic = () => {
+    tryGenetic = async () => {
         this.setState({loading: true});
         let closestBeacon = this.getClosestBeaconsFromPosition(this.props.mapRedux.currentPosition);
-        let population = new Population(
+        let nonEvolvedPopulation = new Population(
             closestBeacon,
             this.props.mapRedux.beaconsList["Beacon-131"],
             this.props.mapRedux.beaconsList,
-            0.1, 50
-        );
+            0.3, 500, true);
 
-        //Nos resta iterar sobre la poblacion con seleccion natural, mutacion y crossovers
-        let iterationLimit = 20;
-
-        // Generate weighed mating pool with the fittest members
-        population.naturalSelection();
-
-        for (let i = 0; i < iterationLimit; i++) {
-            // Generate new population of children from parents in the mating pool
-            population.generate();
-
-            // Calculate fitness score of the new population
-            population.calcPopulationFitness();
-
-            // Get the best route in the population
-            population.evaluate();
+        let firstGenetic = new GeneticAlgorithm(nonEvolvedPopulation, 5);
+        for(let i = 0; i < 1000; i++) {
+            firstGenetic.evolvePopulation();
         }
-        console.log("Heeeeecho", population.best);
-        let beacons = population.best.beacons;
-        let position = this.props.mapRedux.currentPosition;
-        console.log("Population.bestBeacons: ", beacons);
-        console.log("position: ", position);
-        console.log("Añadimos currentPosition: ", beacons.unshift(position));
-        console.log("Añadimos currentPosition: ", beacons);
-        this.renderRoute(population.best.beacons)
+        let firstFittest = firstGenetic.population.getFittest();
 
+            // let secondGenetic = new GeneticAlgorithm(firstGenetic.population, 5);
+            // for(let i = 0; i < 1000; i++) {
+            //     secondGenetic.evolvePopulation();
+            // }
+        // let fittest = secondGenetic.population.getFittest();
+        let fittest = firstFittest;
+        if(this.state.optimalRoute === null) {
+            await this.setState({optimalRoute: fittest});
+        } else if (this.state.optimalRoute.fitness > fittest.fitness) {
+            await this.setState({optimalRoute: fittest});
+        }
+
+        let currentPosition = this.props.mapRedux.currentPosition;
+        let beacons = this.state.optimalRoute.beacons;
+        if (!(this.state.optimalRoute.beacons[0].x === currentPosition.x && this.state.optimalRoute.beacons[0].y === currentPosition.y)) {
+            beacons.unshift(currentPosition);
+        }
+        console.log("Heeeeecho", this.state.optimalRoute);
+
+        this.renderRoute(beacons)
     };
 
 //<Scanner/>
@@ -247,6 +272,9 @@ class FloorPlan extends Component {
                 <Map
                     showRoute={this.state.showRoute}
                 />
+                {this.state.enablePanHandlers &&
+                    <View style = {{ flex: 1, backgroundColor: 'transparent' }}  { ...this.panResponder.panHandlers } />
+                }
                 <View style={styles.buttonGroup}>
                     <TouchableOpacity
                         style={[styles.circle, {marginBottom: 2}]}
@@ -282,10 +310,16 @@ class FloorPlan extends Component {
                     />
                 </View>
                 {this.state.loading &&
-                <View style={styles.containerLoading}>
-                    <Text style={styles.loadingText}>Calculando la mejor ruta,{'\n'}por favor espere</Text>
-                    <ActivityIndicator size="large"/>
-                </View>
+                    <View style={styles.containerLoading}>
+                        <View style={styles.loadingView}>
+                            <View style={styles.loadingTextView}>
+                                <Text style={styles.loadingText}>Calculando la mejor ruta, por favor espere</Text>
+                            </View>
+                            <View style={{justifyContent: 'center', alignContent: 'center'}}>
+                                <ActivityIndicator size="large"/>
+                            </View>
+                        </View>
+                    </View>
                 }
             </SafeAreaView>
         )
@@ -382,13 +416,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        top: Dimensions.get('window').height / 2,
-        left: Dimensions.get('window').width / 2,
-        margin: 15,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        height: '110%',
+        width: '100%',
+    },
+    loadingView: {
+        backgroundColor: 'rgba(255,255,255,0.95)',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.5)',
+        width: '73%',
+    },
+    loadingTextView: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     loadingText: {
-        fontSize: 18,
-        fontWeight: '700',
+        fontSize: 19,
+        marginTop: 15,
+        marginRight: 5,
+        marginLeft: 5,
+        paddingBottom: 0,
+        textAlign: 'center',
+        width: '90%',
     },
 });
 

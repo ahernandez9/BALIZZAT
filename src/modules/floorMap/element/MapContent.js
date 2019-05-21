@@ -42,7 +42,8 @@ class MapContent extends Component {
         console.log('showRoute: ', this.props.showRoute);
 
         let optionalCurrentPosition = map[currentPosition.x - 5] && map[currentPosition.x - 5][currentPosition.y - 2] ?
-            map[currentPosition.x - 5][currentPosition.y - 2] : currentPosition;
+            {x: currentPosition.x - 5, y: currentPosition.y - 2} : currentPosition;
+        console.log('optinalPosition: ', optionalCurrentPosition);
 
         return (
             <View>

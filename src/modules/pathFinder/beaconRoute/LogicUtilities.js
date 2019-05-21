@@ -84,6 +84,10 @@ const util = {
 
     manhattanDistance: function(from, to) {
         return Math.abs(from.x - to.x) + Math.abs(from.y - to.y);
+    },
+
+    typicalDistance: function(from, to) {
+        return Math.sqrt(Math.pow((to.y - from.y), 2) + Math.pow((to.x - from.x), 2))
     }
 };
 
