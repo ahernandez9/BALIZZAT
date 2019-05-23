@@ -413,9 +413,9 @@ const styles = StyleSheet.create({
         width: 1080,
     },
     containerLoading: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // position: 'absolute',
         backgroundColor: 'rgba(0,0,0,0.5)',
         height: '110%',
         width: '100%',
@@ -426,6 +426,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'rgba(0,0,0,0.5)',
         width: '73%',
+        position: 'absolute',
+        left: '42%',
+        bottom: '45%'
     },
     loadingTextView: {
         justifyContent: 'center',
