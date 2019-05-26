@@ -1,12 +1,8 @@
 const utils = {
 
     newRoute: function(map, origin, target){
-        /**
-         * Localizamos las posiciones origen y destino, y a partir de ellas buscamos la ruta óptima recorriendo
-         * solo las posiciones colindantes transitables, eligiendo para cada paso la que nos acerca mas al
-         * objetivo.
-         **/
-            //Creamos la ruta vacia y añadimos el primer elemento
+
+        //Creamos la ruta vacia y añadimos el primer elemento
         let route = [];
         let currentPosition = origin;
         route.push(currentPosition);

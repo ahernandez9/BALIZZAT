@@ -54,7 +54,7 @@ class MapContent extends Component {
                     //style={{flex:1}}
                 />
                 { optionalCurrentPosition &&
-                    <View style={{flex: 1, backgroundColor: 'transparent', width: 50, height: 50,
+                    <View key={optionalCurrentPosition.id} style={{flex: 1, backgroundColor: 'transparent', width: 50, height: 50,
                         position: 'absolute', top: optionalCurrentPosition.x * 10, left: optionalCurrentPosition.y * 10}}>
                         <Image source={require('../../../../assets/images/placeholder.png')}
                                style={{flex: 1, height: undefined, width: undefined}}/>

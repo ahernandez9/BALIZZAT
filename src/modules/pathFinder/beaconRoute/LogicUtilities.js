@@ -61,8 +61,9 @@ const util = {
         for (let i = 0; i < mutationPoint; i++) {
             mutatedPath[i] = beacons[i];
         }
-        for (let i = mutationPoint; i < beacons.length; i++) {
-            mutatedPath[i] = newPathFromMutationPoint[i-mutationPoint];
+        let j = mutationPoint;
+        for (let i = 0; i < newPathFromMutationPoint.length; i++) {
+            mutatedPath[j++] = newPathFromMutationPoint[i];
         }
         return mutatedPath;
     },

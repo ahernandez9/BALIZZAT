@@ -4,22 +4,21 @@ import Route from "./Route";
 
 class GeneticAlgorithm {
 
-    constructor(population, subsetSize) {
-        this.population = population;
+    constructor(subsetSize) {
         this.subsetSize = subsetSize;
     }
 
     //BARGIELA CODE
 
-    evolvePopulation() {
-        let nextGen = new Population(this.population.origin, this.population.target, this.population.beaconList,
-            this.population.mutationRate, this.population.size, false);
-        nextGen.setRoute(0, this.population.getFittest());
+    evolvePopulation(population) {
+        let nextGen = new Population(population.origin, population.target, population.beaconList,
+            population.mutationRate, population.size, false);
+        nextGen.setRoute(0, population.getFittest());
 
         //Crossover
-        for (let i = 1; i < this.population.size; i++) {
-            let parent1 = this.routeSelector(this.population);
-            let parent2 = this.routeSelector(this.population);
+        for (let i = 1; i < population.size; i++) {
+            let parent1 = this.routeSelector(population);
+            let parent2 = this.routeSelector(population);
 
             //Generate child from parents
             let child = this.crossover(parent1, parent2);
@@ -27,16 +26,19 @@ class GeneticAlgorithm {
         }
         //Mutation
         for (let i = 1; i < nextGen.size; i++) {
-            this.mutate(nextGen.population[i], nextGen.beaconList, nextGen.mutationRate);
+            let route = this.mutate(nextGen.population[i], nextGen.beaconList, nextGen.mutationRate);
+            nextGen.setRoute(i, route);
         }
-        //We return the offspring of the initial set
+        //Calculate every member's fitness
+        nextGen.calcPopulationFitness();
 
+        //We return the offspring of the initial set
         return nextGen;
     }
 
     routeSelector(origin) {
-        let routeSelection = new Population(this.population.origin, this.population.target, this.population.beaconList,
-            this.population.mutationRate, this.subsetSize, false);
+        let routeSelection = new Population(origin.origin, origin.target, origin.beaconList,
+            origin.mutationRate, this.subsetSize, false);
         let fittest;
         for (let i = 0; i < this.subsetSize; i++) {
             let r = util.randomInt(0, origin.size - 1);
@@ -75,17 +77,38 @@ class GeneticAlgorithm {
 
     // The mutation method uses mutationRate to decide if a position of the route is
     // swapped with another random position in the route.
-    mutate (route, mutationRate) {
-        for (let i = 0; i < route.beacons.length; i++) {
-            if (Math.random() < mutationRate) {
-                let p = util.randomInt(0, route.beacons.length - 1);
-                let beacon1 = route.beacons[i];
-                let beacon2 = route.beacons[p];
-                //Mutation
-                route.setRoute(i, beacon2);
-                route.setRoute(p, beacon1);
+    // mutate (route, mutationRate) {
+    //     for (let i = 0; i < route.beacons.length; i++) {
+    //         if (Math.random() < mutationRate) {
+    //             let p = util.randomInt(0, route.beacons.length - 1);
+    //             let beacon1 = route.beacons[i];
+    //             let beacon2 = route.beacons[p];
+                Mutation
+                // route.setRoute(i, beacon2);
+                // route.setRoute(p, beacon1);
+            // }
+        // }
+    // }
+    // Mutamos la ruta en funcion de una probabilidad, elegimos una posicion de la ruta y reconstruimos la misma hasta el destino
+    mutate(route, beaconList, mutationRate) {
+        if (Math.random(0, 1) < mutationRate) {
+            let mutationPoint;
+            if (Math.random(0,1) < 0.50) {
+                mutationPoint = 1;
+                console.log("CHAAAAAAAAAAAAAAAAAAAAACHO")
+            } else {
+                mutationPoint = util.randomInt(0, route.beacons.length - 1);
             }
+            let newBeacons = route.beacons.slice();
+            let newRoute = new Route(null, null, null, false);
+            newRoute.beacons = util.mutateRoute(beaconList, newBeacons, mutationPoint);
+            return newRoute
+
+        } else {
+
+            return route;
         }
+
     }
 }
 

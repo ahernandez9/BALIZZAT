@@ -187,7 +187,7 @@ class FloorPlan extends Component {
         // this.pollas.scrollTo(2000, 700, true)
     // };
 
-    getClosestBeaconsFromPosition(position) {
+    getClosestBeaconsFromPosition(position, target) {
         let beacons = this.props.mapRedux.beaconsList;
         let closest = null, shortestDistance = 100000;
         for (let [key, beacon] of Object.entries(beacons)) {
@@ -197,8 +197,22 @@ class FloorPlan extends Component {
                 closest = beacon;
             }
         }
+        let shortestDistanceToTarget = 100000;
+        let startingBeacon = null;
+        console.log(closest.nearbyBeacons);
+        for (let beaconName of closest.nearbyBeacons) {
+            // console.log(this.props.mapRedux.beaconsList[beaconName])
+            let distanceToTarget = util.manhattanDistance(this.props.mapRedux.beaconsList[beaconName], target);
+            console.log(beaconName, this.props.mapRedux.beaconsList[beaconName]);
+            console.log(distanceToTarget);
 
-        return closest
+            if (distanceToTarget < shortestDistanceToTarget) {
+                shortestDistanceToTarget = distanceToTarget;
+                startingBeacon = this.props.mapRedux.beaconsList[beaconName];
+            }
+        }
+
+        return startingBeacon
     }
 
 //RENDER OPTIMISED ROUTE
@@ -224,19 +238,22 @@ class FloorPlan extends Component {
 
 //GENETIC ALGORITHM FOR BEACONS
     tryGenetic = async () => {
-        this.setState({loading: true});
-        let closestBeacon = this.getClosestBeaconsFromPosition(this.props.mapRedux.currentPosition);
+        // await this.setState({loading: true});
+
+        let closestBeacon = this.getClosestBeaconsFromPosition(this.props.mapRedux.currentPosition, this.props.mapRedux.beaconsList["Beacon-131"]);
+        console.log(closestBeacon)
         let nonEvolvedPopulation = new Population(
             closestBeacon,
             this.props.mapRedux.beaconsList["Beacon-131"],
             this.props.mapRedux.beaconsList,
-            0.3, 500, true);
+            0.1, 200, true);
 
-        let firstGenetic = new GeneticAlgorithm(nonEvolvedPopulation, 5);
-        for(let i = 0; i < 1000; i++) {
-            firstGenetic.evolvePopulation();
+        let firstGenetic = new GeneticAlgorithm(5);
+        let evolution = nonEvolvedPopulation;
+        for(let i = 0; i < 500; i++) {
+            evolution = firstGenetic.evolvePopulation(evolution);
         }
-        let fittest = firstGenetic.population.getFittest();
+        let fittest = evolution.getFittest();
 
         if(this.state.optimalRoute === null) {
             await this.setState({optimalRoute: fittest});

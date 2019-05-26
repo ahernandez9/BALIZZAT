@@ -38,17 +38,19 @@ export const downloadMap = () => async (dispatch, getState) => {
 
     // ===============================================================================================================================
     // Fórmula general para poner RECTANGULOS en el mapa: Debemos localizar tres puntos del rectangulo , como en la siguiente figura:
-    // punto A|---------------| Punto C
+    //
+    //      A |---------------| C
+    //        |   P           |
+    //        |   ·           |             RECORDAR QUE EL EJE Y ESTA AL REVES, EMPIEZA EN EL PUNTO MÁS GRANDE Y ACABA EN [0,0]
     //        |               |
-    //        |               |     RECORDAR QUE EL EJE Y ESTA AL REVES, EMPIEZA EN EL PUNTO MÁS GRANDE Y ACABA EN [0,0]
-    //        |               |
-    // punto B|---------------|
+    //      B |---------------|
     //
     // Una vez tenemos esos punto podemos la siguiente condición if en el constructor del mapa:
     //
     // X = COLUMNAS
     // Y = FILAS
     // ===========================================================================================================================
+
     function isPointInRectangle(apexA, apexB, apexC, point) {
         return (apexA.y <= point.y) && (point.y <= apexB.y) && (point.x >= apexA.x) && (point.x <= apexC.x);
     }
@@ -93,7 +95,6 @@ export const downloadMap = () => async (dispatch, getState) => {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
-
 
             //Segunda bloque de dos + escalerita
             //Primero de arriba izq
@@ -239,6 +240,7 @@ export const downloadMap = () => async (dispatch, getState) => {
                 x: column,
                 y: row
             }) ? rowMap[column] = 0 : null;
+
             isPointInCircle({x: 236, y: 16}, 5, {x: column, y: row}) ? rowMap[column] = 0 : null;
 
             //CUADRAO GIGANTE DE ABAJO
@@ -248,6 +250,7 @@ export const downloadMap = () => async (dispatch, getState) => {
             }) ? rowMap[column] = 0 : null;
 
             //TRIANGULO DE ABAJO
+
             isPointInTriangle({x: 116, y: 49}, {x: 116, y: 121}, {x: 94, y: 121}, {
                 x: row,
                 y: column
