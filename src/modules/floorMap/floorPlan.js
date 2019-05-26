@@ -159,8 +159,8 @@ class FloorPlan extends Component {
         let y = Math.floor(Math.random() * 138);
         this.flipaManito = {x: 0, y: 0};
         while (this.props.mapRedux.plan[this.flipaManito.x][this.flipaManito.y] === 0) {
-            let x = Math.floor(Math.random() * 58);
-            let y = Math.floor(Math.random() * 138);
+            let x = Math.floor(Math.random() * 115);
+            let y = Math.floor(Math.random() * 274);
             this.flipaManito = {x: x, y: y};
         }
         console.log("position: ", x, y);
@@ -236,14 +236,8 @@ class FloorPlan extends Component {
         for(let i = 0; i < 1000; i++) {
             firstGenetic.evolvePopulation();
         }
-        let firstFittest = firstGenetic.population.getFittest();
+        let fittest = firstGenetic.population.getFittest();
 
-            // let secondGenetic = new GeneticAlgorithm(firstGenetic.population, 5);
-            // for(let i = 0; i < 1000; i++) {
-            //     secondGenetic.evolvePopulation();
-            // }
-        // let fittest = secondGenetic.population.getFittest();
-        let fittest = firstFittest;
         if(this.state.optimalRoute === null) {
             await this.setState({optimalRoute: fittest});
         } else if (this.state.optimalRoute.fitness > fittest.fitness) {
@@ -256,6 +250,7 @@ class FloorPlan extends Component {
             beacons.unshift(currentPosition);
         }
         console.log("Heeeeecho", this.state.optimalRoute);
+        console.log("Beacons", beacons);
 
         this.renderRoute(beacons)
     };
@@ -315,7 +310,7 @@ class FloorPlan extends Component {
                             <View style={styles.loadingTextView}>
                                 <Text style={styles.loadingText}>Calculando la mejor ruta, por favor espere</Text>
                             </View>
-                            <View style={{justifyContent: 'center', alignContent: 'center'}}>
+                            <View style={{justifyContent: 'center', alignContent: 'center', marginBottom: 15}}>
                                 <ActivityIndicator size="large"/>
                             </View>
                         </View>
@@ -417,7 +412,7 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // position: 'absolute',
         backgroundColor: 'rgba(0,0,0,0.5)',
-        height: '110%',
+        height: '100%',
         width: '100%',
     },
     loadingView: {
@@ -427,8 +422,8 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0,0,0,0.5)',
         width: '73%',
         position: 'absolute',
-        left: '42%',
-        bottom: '45%'
+        left: '13.5%',
+        bottom: '40%'
     },
     loadingTextView: {
         justifyContent: 'center',
@@ -439,7 +434,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         marginRight: 5,
         marginLeft: 5,
-        paddingBottom: 0,
+        marginBottom: 15,
         textAlign: 'center',
         width: '90%',
     },

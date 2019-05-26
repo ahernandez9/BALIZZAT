@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {downloadBeaconList, downloadMap} from "../floorMap/actions/mapAction";
+import {downloadBeaconList, downloadMap, updateCurrentPosition} from "../floorMap/actions/mapAction";
 import {connect} from "react-redux";
 import SplashScreen from 'react-native-splash-screen'
 import {Actions} from 'react-native-router-flux'
@@ -11,6 +11,7 @@ class Home extends Component {
         console.log("Descargando lista de beacons");
         await this.props.downloadBeaconList();
         await this.props.downloadMap();
+        this.props.updateCurrentPosition({x: 17, y: 20});
         // this.showMap();
         SplashScreen.hide();
     }
@@ -73,6 +74,6 @@ const mapStateToProps = state => {
     }
 };
 
-const mapStateToPropsAction = {downloadMap, downloadBeaconList};
+const mapStateToPropsAction = {downloadMap, downloadBeaconList, updateCurrentPosition};
 
 export default connect(mapStateToProps, mapStateToPropsAction)(Home);

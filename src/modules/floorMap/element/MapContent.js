@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import {connect} from "react-redux";
+import {updateCurrentPosition} from "../actions/mapAction";
 
 class MapContent extends Component {
 
@@ -31,7 +32,6 @@ class MapContent extends Component {
         let currentPosition = this.props.mapRedux.currentPosition;
         let optimalRoute = this.props.mapRedux.optimalRoute;
         let map = this.props.mapRedux;
-        let beaconList = this.props.mapRedux.beaconsList;
         /*
             Lo que vamos a hacer es meter un showRoute que nos dice si queremos mostrar la ruta o no
             Luego con el optimalRoute.length > 0 && showRoute sabemos que queremos mostrar la ruta
@@ -42,8 +42,9 @@ class MapContent extends Component {
         console.log('showRoute: ', this.props.showRoute);
 
         let optionalCurrentPosition = map[currentPosition.x - 5] && map[currentPosition.x - 5][currentPosition.y - 2] ?
-            {x: currentPosition.x - 5, y: currentPosition.y - 2} : currentPosition;
-        console.log('optinalPosition: ', optionalCurrentPosition);
+                {x: currentPosition.x - 5, y: currentPosition.y - 2} : currentPosition;
+
+        console.log('optionalPosition: ', optionalCurrentPosition);
 
         return (
             <View>
@@ -59,10 +60,10 @@ class MapContent extends Component {
                                style={{flex: 1, height: undefined, width: undefined}}/>
                     </View>
                 }
-                { this.props.showRoute && optimalRoute.length > 0 &&
+                { this.props.showRoute && optimalRoute && optimalRoute.length > 0 &&
                     this.renderRouteInMap('black')
                 }
-                { !this.props.showRoute && optimalRoute.length > 0 &&
+                { !this.props.showRoute && optimalRoute && optimalRoute.length > 0 &&
                 this.renderRouteInMap('transparent')
                 }
             </View>
@@ -112,4 +113,4 @@ const mapStateToProps = state => {
 };
 
 
-export default connect(mapStateToProps)(MapContent);
+export default connect(mapStateToProps, {updateCurrentPosition})(MapContent);

@@ -62,7 +62,9 @@ const styles = StyleSheet.create({
     },
     logo: {
         height: '80%',
-        width: '80%'
+        width: '80%',
+        marginBottom: 10,
+        marginTop: 10
     },
     containerEnd: {
         flex: 1,

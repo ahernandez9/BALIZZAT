@@ -30,8 +30,10 @@ class GeneticAlgorithm {
             this.mutate(nextGen.population[i], nextGen.beaconList, nextGen.mutationRate);
         }
         //We return the offspring of the initial set
+
         return nextGen;
     }
+
     routeSelector(origin) {
         let routeSelection = new Population(this.population.origin, this.population.target, this.population.beaconList,
             this.population.mutationRate, this.subsetSize, false);

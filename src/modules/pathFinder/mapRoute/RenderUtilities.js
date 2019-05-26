@@ -15,7 +15,6 @@ const utils = {
         //Vamos añadiendo beacons a la ruta hasta llegar al beacon target
         while (!this.comparePositions(currentPosition, target)) {
             nextPosition = this.nextPosition(map, currentPosition, target);
-            if (nextPosition === {}) return null; // Por que no funciona con los ternarios?
             route.push(nextPosition);
             currentPosition = nextPosition;
         }
