@@ -5,7 +5,7 @@ import FloorPlan from "../floorMap/floorPlan"
 import TopPlaces from "../topPlaces/topPlaces"
 import DrawerComponent from "./elements/DrawerComponent";
 import {version} from '../../../app.json';
-import icon from '../../../assets/images/icon.png';
+import icon from '../../../assets/images/icono_final.png';
 import {Actions} from 'react-native-router-flux';
 
 class NavigationDrawer extends Component {
@@ -55,14 +55,14 @@ class NavigationDrawer extends Component {
 const styles = StyleSheet.create({
     overlay: {
         flexDirection: 'column',
-        paddingTop: '5%',
-        paddingBottom: '5%',
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 0.3
+        width:'100%',
+        height:'25%'
     },
     logo: {
-        height: '9%'
+        height: '80%',
+        width: '80%'
     },
     containerEnd: {
         flex: 1,

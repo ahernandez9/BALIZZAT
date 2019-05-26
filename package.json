@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "devmenu":"adb shell input keyevent 82",
+    "devmenu": "adb shell input keyevent 82",
     "android-build": "cd android && gradlew assembleDebug && cd ..",
     "android-build-release": "cd android && gradlew assembleRelease && cd ..",
     "android-link-assets": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --reset-cache --assets-dest android/app/src/main/res",
