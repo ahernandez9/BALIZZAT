@@ -24,25 +24,29 @@ const CONTENT = [
         title: 'Bar Tiki-Tiki',
         content: BACON_IPSUM,
         image: require('../../../assets/images/bar_tiki.jpg'),
-        floor: '2º Planta'
+        floor: '2º Planta',
+        schedule: 'Todos los días 10:00-20:00'
     },
     {
         title: 'Piscina',
         content: BACON_IPSUM,
         image: require('../../../assets/images/piscina-hotel.jpg'),
-        floor: '1º Planta'
+        floor: '1º Planta',
+        schedule: 'Todos los días 10:00-20:00'
     },
     {
         title: 'Parque Infantil',
         content: BACON_IPSUM,
         image: require('../../../assets/images/parque-infantil.jpg'),
-        floor: '3º Planta'
+        floor: '3º Planta',
+        schedule: 'Todos los días 10:00-20:00'
     },
     {
         title: 'Restaurante',
         content: BACON_IPSUM,
         image: require('../../../assets/images/restaurante-panoramico.jpg'),
-        floor: '1º Planta'
+        floor: '1º Planta',
+        schedule: 'Todos los días 10:00-20:00'
     },
 
 ];
@@ -77,34 +81,19 @@ class TopPlaces extends Component {
 
         );
     };
-// <Animatable.View
-    //     duration={400}
-    //     style={[styles.header, isActive ? styles.active : styles.inactive]}
-    //     transition="backgroundColor"
-    // >
-    //     <Text style={styles.headerText}>{section.title}</Text>
-    // </Animatable.View>
     renderContent =(section, _, isActive) => {
         return (
             <TopPlaceContent section={section} isActive={isActive}/>
         );
     };
-// <Animatable.View
-// duration={400}
-// style={[styles.content, isActive ? styles.active : styles.inactive]}
-// transition="backgroundColor"
-// >
-// <Animatable.Text animation={isActive ? 'bounceIn' : undefined}>
-// {section.content}
-// </Animatable.Text>
-// </Animatable.View>
+
     render() {
         const { multipleSelect, activeSections } = this.state;
 
         return (
             <View style={styles.container}>
                 <ScrollView contentContainerStyle={{ paddingTop: 30 }}>
-                    <Text style={styles.title}>Here you will find the best places of our hotel</Text>
+                    <Text style={styles.title}>Aqui encontrarás los mejores lugares de nuestro hotel</Text>
 
                     <Accordion
                         activeSections={activeSections}

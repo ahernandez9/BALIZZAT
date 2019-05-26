@@ -26,3 +26,6 @@ export const downloadTopPlaces = () => async (dispatch) => {
         payload: topPlaces
     })
 };
+export const loader = () => (dispatch) => {
+
+}
