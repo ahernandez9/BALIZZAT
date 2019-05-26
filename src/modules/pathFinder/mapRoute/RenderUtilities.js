@@ -55,7 +55,7 @@ const utils = {
         let nextPosition = {};
         let selected;
         for (let posibility of posibilities) {
-            let newDistance = this.manhattanDistance(posibility, target);
+            let newDistance = this.typicalDistance(posibility, target);
             if (newDistance < distance) {
                 distance = newDistance;
                 selected = posibility;

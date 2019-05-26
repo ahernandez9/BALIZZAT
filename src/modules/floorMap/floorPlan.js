@@ -30,6 +30,7 @@ import Map from "./element/Map";
 import Population from "../pathFinder/beaconRoute/Population";
 import RenderRoute from "../pathFinder/mapRoute/RenderRoute";
 import util from "../pathFinder/mapRoute/RenderUtilities";
+import utils from "../pathFinder/beaconRoute/LogicUtilities";
 import GeneticAlgorithm from "../pathFinder/beaconRoute/geneticAlgorithm";
 
 
@@ -155,19 +156,18 @@ class FloorPlan extends Component {
     };
 
     async colorRandomPosition() {
-        let x = Math.floor(Math.random() * 58);
-        let y = Math.floor(Math.random() * 138);
+        let x = Math.floor(utils.randomInt(0, 115));
+        let y = Math.floor(utils.randomInt(0, 274));
         this.flipaManito = {x: 0, y: 0};
         while (this.props.mapRedux.plan[this.flipaManito.x][this.flipaManito.y] === 0) {
-            let x = Math.floor(Math.random() * 115);
-            let y = Math.floor(Math.random() * 274);
+            let x = Math.floor(utils.randomInt(0, 115));
+            let y = Math.floor(utils.randomInt(0, 274));
             this.flipaManito = {x: x, y: y};
         }
         console.log("position: ", x, y);
         await this.props.updateCurrentPosition(this.flipaManito);
-        // await this.props.updatePosition([[x,y]], null);
+
         this.props.updateOptimalRoute([]);
-        // console.log(this.state);
         this.setState({showRoute: false, optimalRoute: null/*, enablePanHandlers: true*/})
     };
 
@@ -199,13 +199,8 @@ class FloorPlan extends Component {
         }
         let shortestDistanceToTarget = 100000;
         let startingBeacon = null;
-        console.log(closest.nearbyBeacons);
         for (let beaconName of closest.nearbyBeacons) {
-            // console.log(this.props.mapRedux.beaconsList[beaconName])
             let distanceToTarget = util.manhattanDistance(this.props.mapRedux.beaconsList[beaconName], target);
-            console.log(beaconName, this.props.mapRedux.beaconsList[beaconName]);
-            console.log(distanceToTarget);
-
             if (distanceToTarget < shortestDistanceToTarget) {
                 shortestDistanceToTarget = distanceToTarget;
                 startingBeacon = this.props.mapRedux.beaconsList[beaconName];
@@ -241,17 +236,16 @@ class FloorPlan extends Component {
         // await this.setState({loading: true});
 
         let closestBeacon = this.getClosestBeaconsFromPosition(this.props.mapRedux.currentPosition, this.props.mapRedux.beaconsList["Beacon-131"]);
-        console.log(closestBeacon)
         let nonEvolvedPopulation = new Population(
             closestBeacon,
             this.props.mapRedux.beaconsList["Beacon-131"],
             this.props.mapRedux.beaconsList,
-            0.1, 200, true);
+            0.2, 200, true);
 
-        let firstGenetic = new GeneticAlgorithm(5);
+        let genetic = new GeneticAlgorithm(5);
         let evolution = nonEvolvedPopulation;
         for(let i = 0; i < 500; i++) {
-            evolution = firstGenetic.evolvePopulation(evolution);
+            evolution = genetic.evolvePopulation(evolution);
         }
         let fittest = evolution.getFittest();
 
@@ -314,12 +308,6 @@ class FloorPlan extends Component {
                         />
                         <Text>Go</Text>
                     </TouchableOpacity>
-                </View>
-                <View style={styles.searcherContainer}>
-                    <TextInput
-                        style={[{height: 40, borderColor: 'gray', borderWidth: 1}, styles.searcher]}
-                        placeholder={"Search your room here.  Eg: 101"}
-                    />
                 </View>
                 {this.state.loading &&
                     <View style={styles.containerLoading}>

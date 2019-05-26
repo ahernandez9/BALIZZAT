@@ -75,37 +75,15 @@ class GeneticAlgorithm {
         return child;
     }
 
-    // The mutation method uses mutationRate to decide if a position of the route is
-    // swapped with another random position in the route.
-    // mutate (route, mutationRate) {
-    //     for (let i = 0; i < route.beacons.length; i++) {
-    //         if (Math.random() < mutationRate) {
-    //             let p = util.randomInt(0, route.beacons.length - 1);
-    //             let beacon1 = route.beacons[i];
-    //             let beacon2 = route.beacons[p];
-                Mutation
-                // route.setRoute(i, beacon2);
-                // route.setRoute(p, beacon1);
-            // }
-        // }
-    // }
     // Mutamos la ruta en funcion de una probabilidad, elegimos una posicion de la ruta y reconstruimos la misma hasta el destino
     mutate(route, beaconList, mutationRate) {
         if (Math.random(0, 1) < mutationRate) {
-            let mutationPoint;
-            if (Math.random(0,1) < 0.50) {
-                mutationPoint = 1;
-                console.log("CHAAAAAAAAAAAAAAAAAAAAACHO")
-            } else {
-                mutationPoint = util.randomInt(0, route.beacons.length - 1);
-            }
+            let mutationPoint = util.randomInt(0, route.beacons.length - 1);
             let newBeacons = route.beacons.slice();
             let newRoute = new Route(null, null, null, false);
             newRoute.beacons = util.mutateRoute(beaconList, newBeacons, mutationPoint);
             return newRoute
-
         } else {
-
             return route;
         }
 
