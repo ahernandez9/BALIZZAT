@@ -75,7 +75,8 @@ class GeneticAlgorithm {
         return child;
     }
 
-    // Mutamos la ruta en funcion de una probabilidad, elegimos una posicion de la ruta y reconstruimos la misma hasta el destino
+    // Mutamos la ruta en funcion de una probabilidad, elegimos una posicion de la ruta y
+    // reconstruimos la misma hasta el destino
     mutate(route, beaconList, mutationRate) {
         if (Math.random(0, 1) < mutationRate) {
             let mutationPoint = util.randomInt(0, route.beacons.length - 1);

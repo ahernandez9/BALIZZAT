@@ -79,6 +79,7 @@ class FloorPlan extends Component {
     }
 
     componentWillMount(): void {
+        //TODO meter los panhandlers para obtener la posicion del touch y trasladarla al mapa logico
         // this.panResponder = PanResponder.create(
         //     {
         //         onStartShouldSetPanResponder: (event, gestureState) => true,
@@ -233,9 +234,13 @@ class FloorPlan extends Component {
 
 //GENETIC ALGORITHM FOR BEACONS
     tryGenetic = async () => {
-        // await this.setState({loading: true});
 
-        let closestBeacon = this.getClosestBeaconsFromPosition(this.props.mapRedux.currentPosition, this.props.mapRedux.beaconsList["Beacon-131"]);
+        //TODO to esto tiene que ser asincrono para no parar el resto de la ejecución
+        // await this.setState({loading: true});
+        let closestBeacon = this.getClosestBeaconsFromPosition(
+            this.props.mapRedux.currentPosition,
+            this.props.mapRedux.beaconsList["Beacon-131"]
+        );
         let nonEvolvedPopulation = new Population(
             closestBeacon,
             this.props.mapRedux.beaconsList["Beacon-131"],
@@ -244,7 +249,7 @@ class FloorPlan extends Component {
 
         let genetic = new GeneticAlgorithm(5);
         let evolution = nonEvolvedPopulation;
-        for(let i = 0; i < 500; i++) {
+        for(let i = 0; i < 50; i++) {
             evolution = genetic.evolvePopulation(evolution);
         }
         let fittest = evolution.getFittest();
@@ -263,13 +268,11 @@ class FloorPlan extends Component {
         console.log("Heeeeecho", this.state.optimalRoute);
         console.log("Beacons", beacons);
 
+        //TODO peta en algunas posiciones de la derecha, cerca de la piscina, ver pq?
         this.renderRoute(beacons)
     };
 
 //<Scanner/>
-// <Map
-//callbackFromParent={(reference) => this.setReference(reference)}
-// />
 //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
         console.log("RENDER");
