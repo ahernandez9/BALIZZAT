@@ -1,10 +1,17 @@
 package com.pruebalocationbeacon;
-
+import android.os.Bundle;
 import com.facebook.react.ReactActivity;
+import org.devio.rn.splashscreen.SplashScreen;
 import android.content.Intent; // <--- import
 import android.content.res.Configuration; // <--- import
 
 public class MainActivity extends ReactActivity {
+
+    @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            SplashScreen.show(this);  // here
+            super.onCreate(savedInstanceState);
+        }
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -23,3 +30,4 @@ public class MainActivity extends ReactActivity {
             this.sendBroadcast(intent);
         }
 }
+

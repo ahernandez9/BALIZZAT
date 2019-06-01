@@ -9,7 +9,7 @@ import storage from 'redux-persist/lib/storage';
 const config = {
     key: 'root',
     storage,
-   // blacklist: [],
+    // blacklist: ['MapReducer'],
     whitelist: ['MapReducer']
 };
 
@@ -35,7 +35,6 @@ export default function configureStore() {
     let persistor = persistStore(store);
 
     return {persistor, store};
-
 
 }
 

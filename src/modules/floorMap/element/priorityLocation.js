@@ -11,25 +11,18 @@ export const PriorityLocation = (Props) => {
         let result = [];
         let areasPriority1 = areas.priority1[0];
         console.log("areasPriority1: ", areasPriority1);
-        for (let i = 0; i < areas.priority2.length; i++) {
-            for (let j = 0; j < areas.priority2[i].length; j++) {
-                // areasPriority1.includes(areas.priority2[i][j]) ?
-                //     !result.includes(areas.priority2[i][j]) ? result.push(areas.priority2[i][j]) : null : null;
+
+        if (areas.priority2.length > 0) {
+            for (let j = 0; j < areas.priority2[0].length; j++) {
                 areasPriority1.some((element) => {
-                    return element[0] === areas.priority2[i][j][0] && element[1] === areas.priority2[i][j][1]
-                }) ?
-                    !result.some((element) => {
-                        //console.log("2: ", element[0] === areas.priority2[i][j][0] || element[1] === areas.priority2[i][j][1]);
-                        return element[0] === areas.priority2[i][j][0] && element[1] === areas.priority2[i][j][1]
-                    }) ? result.push(areas.priority2[i][j]) : null : null;
+                    return element[0] === areas.priority2[0][j][0] && element[1] === areas.priority2[0][j][1]
+                }) ? result.push(areas.priority2[0][j]) : null;
+            }
+            console.log("Result: ", result);
+            if (result.length > 0) {
+                return result;
             }
         }
-
-        console.log("Result: ", result);
-        if (result.length > 0) {
-            return result;
-        }
-
         return areasPriority1;
 
     }
@@ -37,19 +30,33 @@ export const PriorityLocation = (Props) => {
     function calculateAreaWithPriority2() {
         let result = [];
 
-        if (areas.priority2.length === 1) {
-            return areas.priority2[0];
-        }
-        let adder = 1;
-        for (let i = 0; i < areas.priority2.length - 1; i++) {
-            for (let j = 0; j < areas.priority2[i + adder].length; j++) {
-                areas.priority2[i].some((element) => {
-                    return element[0] === areas.priority2[i + adder][j][0] && element[1] === areas.priority2[i + adder][j][1]
-                }) ? result.push(areas.priority2[i + adder][j]) : null;
+        if (areas.priority2.length > 0) {
+            if (areas.priority2.length === 1) {
+                return areas.priority2[0];
             }
-            adder++;
+            //Comparamos las dos primeras areas.
+            areas.priority2[1].map((position) => {
+                areas.priority2[0].some((element) => {
+                    return element[0] === position[0] && element[1] === position[1]
+                }) ? result.push(position) : null;
+            });
+
+            //Comparamos la interseccion de las dos primeras con el resto.
+            if (areas.priority2.length > 2) {
+                for (let j = 2; j < areas.priority2.length; j++) {
+                    let finalResult = [];
+                    areas.priority2[j].map((position) => {
+                        result.some((element) => {
+                            return element[0] === position[0] && element[1] === position[1]
+                        }) ? finalResult.push(position) : null;
+                    });
+                    result = finalResult;
+                }
+            }
         }
+
         return result;
+
     }
 
     function calculateArea() {
@@ -73,7 +80,7 @@ export const centerAreaCalculator = (Props) => {
     } = Props;
 
     function centerFinder() {
-        if(area.length > 1) {
+        if (area.length > 1) {
             let minX = area[0][0], maxX = area[0][0], minY = area[0][1], maxY = area[0][1];
             area.map((point) => {
                 point[0] > maxX ? maxX = point[0] : null;
@@ -91,7 +98,7 @@ export const centerAreaCalculator = (Props) => {
             console.log("Point", [X, Y]);
             return [X, Y]
         }
-        return [area[0][0],area[0][1]];
+        return [area[0][0], area[0][1]];
     }
 
     return centerFinder();

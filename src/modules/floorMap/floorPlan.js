@@ -1,45 +1,116 @@
 import React, {Component} from 'react'
 import {connect} from "react-redux";
-import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
-import {downloadMap, downloadBeaconList, updatePosition} from "./actions/mapAction";
+import {
+    StyleSheet,
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    PermissionsAndroid,
+    TextInput,
+    SafeAreaView,
+    Alert,
+    ActivityIndicator,
+    Dimensions,
+    PanResponder
+} from 'react-native';
+import {
+    downloadMap,
+    downloadBeaconList,
+    colorPositions,
+    updateCurrentPosition,
+    updateOptimalRoute
+} from "./actions/mapAction";
 import {PriorityLocation, centerAreaCalculator} from "./element/priorityLocation";
 import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
-import {resetScan, startScan, currentlyScanning} from "../auxModule/auxModule";
-import AuxModule from "../auxModule/auxModule";
+import {resetScan, startScan, currentlyScanning} from "../scanner/scanner";
+import Scanner from "../scanner/scanner";
 import Orientation from 'react-native-orientation';
+import Map from "./element/Map";
+import Population from "../pathFinder/beaconRoute/Population";
+import RenderRoute from "../pathFinder/mapRoute/RenderRoute";
+import util from "../pathFinder/mapRoute/RenderUtilities";
+import utils from "../pathFinder/beaconRoute/LogicUtilities";
+import GeneticAlgorithm from "../pathFinder/beaconRoute/geneticAlgorithm";
+
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
 // valor 1 = Camino transitable. (Azul)
 // valor 0 = Camino no transitable. (Rojo)
 // valor 2 = Escaleras o ascensores
+
+// valor 7 = balizas
+
 class FloorPlan extends Component {
 
     interval;
     reset;
+    beacons3 = [];
+    pollas = {};
+    flipaManito = {};
 
     constructor(props) {
         super(props);
-        this.state = {
-            beaconsToShow: []
-        }
 
+        // this.panResponder = null;
+
+        this.state = {
+            loading: false,
+            showRoute: false,
+            optimalRoute: null,
+            // locationX: 0,
+            // locationY: 0,
+            // enablePanHandlers: false
+        }
     }
 
-    componentDidMount(): void {
-        Orientation.lockToLandscape();
-        this.interval = setInterval(async () => {
-            if (this.props.scanner.beaconsOnRange.length > 0) {
-                let area = this._calculatePosition();
-                let center = centerAreaCalculator({area: area});
-                await this.props.updatePosition(area, center);
-                this.setState();
-            }
-        }, 2000);
-        this.reset = setInterval(() => {
-            resetScan();
-            this.setState({});
-        }, 7000);
+    async componentDidMount(): void {
+        //Orientation.lockToLandscape();
+        // try {
+        //     await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH,
+        //         {
+        //             'title': 'Bluetooth',
+        //             'message': 'Beacon Scanner needs access to your bluetooth ' +
+        //                 'so you we are able to find the beacons.'
+        //         })
+        // }catch (err) {
+        //     console.warn(err)
+        // }
+    }
 
+    componentWillMount(): void {
+        //TODO meter los panhandlers para obtener la posicion del touch y trasladarla al mapa logico
+        // this.panResponder = PanResponder.create(
+        //     {
+        //         onStartShouldSetPanResponder: (event, gestureState) => true,
+        //         onStartShouldSetPanResponderCapture: (event, gestureState) => true,
+        //         onMoveShouldSetPanResponder: (event, gestureState) => false,
+        //         onMoveShouldSetPanResponderCapture: (event, gestureState) => false,
+        //         onPanResponderGrant: (event, gestureState) => false,
+        //         onPanResponderMove: (event, gestureState) => false,
+        //         onPanResponderRelease: (event, gestureState) =>
+        //         {
+        //             this.setState({
+        //                 locationX: event.nativeEvent.locationX.toFixed(2),
+        //                 locationY: event.nativeEvent.locationY.toFixed(2),
+        //                 enablePanHandlers: false
+        //             });
+        //         }
+        //     });
+        // this.interval = setInterval(async () => {
+        //     console.log("Beacons en rango", this.props.scanner.beaconsOnRange);
+        //     if (this.props.scanner.beaconsOnRange.length > 0) {
+        //         let area = this._calculatePosition();
+        //         let center = null;
+        //         area.length > 0 ? center = centerAreaCalculator({area: area}) : null;
+        //         await this.props.updatePosition(area, center);
+        //         this.setState();
+        //     }
+        // }, 2000);
+        // this.reset = setInterval(() => {
+        //     resetScan();
+        //     this.setState({});
+        // }, 8000);
     }
 
     componentWillUnmount(): void {
@@ -48,91 +119,57 @@ class FloorPlan extends Component {
         clearInterval(this.reset);
     }
 
-    renderRow = (row, index) => {
-        if (index < 8) {
-            return null;
-        }
-        let iconWidth, iconHeight;
-        return (
-            <View style={{flex: 1, flexDirection: 'row'}}>
-                {
-                    row.map((x, index) => {
-                    switch (x) {
-                        case 1: //Camino transitable
-                            return (<View key={index} style={{flex: 1, backgroundColor: '#f0f3fd'}}/>);
-                        case 0: // Camino no transitable
-                            return (<View key={index} style={{flex: 1, backgroundColor: '#7c7d8d'}}/>);
-                        // Posición actual
-                        case 5:
-                            return (<View key={index} style={{flex: 1, backgroundColor: 'yellow'}}/>);
-                        case 6:
-                            return (
-                                <View onLayout={(event) => {
-                                    iconWidth  = event.nativeEvent.layout.width;
-                                    iconHeight = event.nativeEvent.layout.height;
-                                    console.log("height :", iconHeight , "width: ",iconWidth);
-                                }} key={index} style={{flex: 1, backgroundColor: 'f0f3fd'}}>
-                                    <Image source={require('../../../assets/images/placeholder.png')}
-                                           resizeMode={"center"}
-                                           resizeMethod={"resize"}
-                                           style={{flex:1, height: undefined, width: undefined}}
-
-                                    />
-
-                                </View>);
-                    }
-                })}
-            </View>
-        )
-    };
-
-
     _getBeaconsOnPriority = () => {
         let result = [];
         this.props.scanner.beaconsOnRange.forEach((beacon) => {
-            10 ** ((-50 - beacon.rssi) / 35) <= 10 ? result.push(beacon) : null;
+            10 ** ((-68 - beacon.rssi) / 35) < 8 ? result.push(beacon) : null;
         });
         return result;
     };
 
     _calculatePosition = () => {
-
         let beacons = this._getBeaconsOnPriority();
-        console.log("Beaacons to show: ", beacons);
-        this.setState({
-            beaconsToShow: beacons
-        });
-        let finder = [];
+        console.log("Beacons to show: ", beacons);
+        this.beacons3 = [];
+        let beaconFinder = [];
         for (let i = 0; i < beacons.length; i++) {
-            // distance : Formula para calcular distancia entre beacon y movil a partir de el rssi esperado a un metro ( -50) y una
-            //constante en 20 y 40 ( 35 ). Los valores dados salen después de calcular varias posibilidades.
-            let distance = Math.round(10 ** ((-50 - beacons[i].rssi) / 35));
-            //Si la distancia es 0.algo la redondeamos a 1 para que los calculos funcionen. A efectos prácticos es lo mismo
-            distance === 0 ? distance = 1 : null;
-            let beaconPosition = this.props.mapRedux.beaconsList[beacons[i].name];
-            finder[i] = {x: beaconPosition.x, y: beaconPosition.y, distance: distance};
+
+            let beaconPosition = this.props.mapRedux.beaconsList[beacons[i].address];
+            beaconFinder.push({x: beaconPosition.x, y: beaconPosition.y, rssi: beacons[i].rssi});
+            this.beacons3.push({name: beacons[i].address, distance: 10 ** ((-68 - beacons[i].rssi) / 35)})
+
         }
-        console.log("Finder: ", finder);
+        console.log("beaconFinder: ", beaconFinder);
         let areas = PriorityAreaCalculator({
-            beaconsOnPriority: finder,
+            beaconsOnPriority: beaconFinder,
             plan: this.props.mapRedux.plan
         });
         console.log("These are the areas: ", areas);
-        return PriorityLocation({
-            areas: areas
-        })
+        if (areas.priority1.length > 0 || areas.priority2.length > 0) {
+            return PriorityLocation({
+                areas: areas
+            })
+        } else {
+            return [];
+        }
 
 
     };
 
-    _showBeaconsForCalculation = () => {
-        if (this.state.beaconsToShow.length > 0) {
-            return this.state.beaconsToShow.map((beacon) => {
-                return <Text>{beacon.name} --- {10 ** ((-50 - beacon.rssi) / 35)}</Text>
-            })
-        } else {
-            return null;
+    async colorRandomPosition() {
+        let x = Math.floor(utils.randomInt(0, 115));
+        let y = Math.floor(utils.randomInt(0, 274));
+        this.flipaManito = {x: 0, y: 0};
+        while (this.props.mapRedux.plan[this.flipaManito.x][this.flipaManito.y] === 0) {
+            let x = Math.floor(utils.randomInt(0, 115));
+            let y = Math.floor(utils.randomInt(0, 274));
+            this.flipaManito = {x: x, y: y};
         }
+        console.log("position: ", x, y);
+        await this.props.updateCurrentPosition(this.flipaManito);
+
+        this.props.updateOptimalRoute([]);
+        this.setState({showRoute: false, optimalRoute: null/*, enablePanHandlers: true*/})
     };
 
     _renderButton = (text, onPress) => (
@@ -141,25 +178,165 @@ class FloorPlan extends Component {
         </TouchableOpacity>
     );
 
-    //Poner el auxmodule de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    setReference = (reference) => {
+        this.pollas = reference;
+    };
+
+    // scrollToPosition = () => {
+    //     console.log("estas pasando flaco?", this.pollas);
+    //     Esta es la mierda que nos ocupa ahora
+        // this.pollas.scrollTo(2000, 700, true)
+    // };
+
+    getClosestBeaconsFromPosition(position, target) {
+        let beacons = this.props.mapRedux.beaconsList;
+        let closest = null, shortestDistance = 100000;
+        for (let [key, beacon] of Object.entries(beacons)) {
+            let distance = util.manhattanDistance(beacon, position);
+            if (distance < shortestDistance) {
+                shortestDistance = distance;
+                closest = beacon;
+            }
+        }
+        let shortestDistanceToTarget = 100000;
+        let startingBeacon = null;
+        for (let beaconName of closest.nearbyBeacons) {
+            let distanceToTarget = util.manhattanDistance(this.props.mapRedux.beaconsList[beaconName], target);
+            if (distanceToTarget < shortestDistanceToTarget) {
+                shortestDistanceToTarget = distanceToTarget;
+                startingBeacon = this.props.mapRedux.beaconsList[beaconName];
+            }
+        }
+
+        return startingBeacon
+    }
+
+//RENDER OPTIMISED ROUTE
+    renderRoute = (populationFittest) => {
+        console.log(populationFittest);
+        let optimalRoute = [];
+        //Render del 16 al 17
+        for (let i = 0; i < populationFittest.length - 1; i++) {
+            let start = {x: populationFittest[i].x, y: populationFittest[i].y};
+            let target = {x: populationFittest[i + 1].x, y: populationFittest[i + 1].y};
+            let route = new RenderRoute(
+                this.props.mapRedux.plan,
+                start,
+                target,
+                true
+            );
+            optimalRoute.push.apply(optimalRoute, route.positions);
+            //this.props.colorPositions(route.positions, 4);
+        }
+        this.props.updateOptimalRoute(optimalRoute);
+        this.setState({loading: false, showRoute: true});
+    };
+
+//GENETIC ALGORITHM FOR BEACONS
+    tryGenetic = async () => {
+
+        //TODO to esto tiene que ser asincrono para no parar el resto de la ejecución
+        // await this.setState({loading: true});
+        let closestBeacon = this.getClosestBeaconsFromPosition(
+            this.props.mapRedux.currentPosition,
+            this.props.mapRedux.beaconsList["Beacon-131"]
+        );
+        let nonEvolvedPopulation = new Population(
+            closestBeacon,
+            this.props.mapRedux.beaconsList["Beacon-131"],
+            this.props.mapRedux.beaconsList,
+            0.2, 200, true);
+
+        let genetic = new GeneticAlgorithm(5);
+        let evolution = nonEvolvedPopulation;
+        for(let i = 0; i < 50; i++) {
+            evolution = genetic.evolvePopulation(evolution);
+        }
+        let fittest = evolution.getFittest();
+
+        if(this.state.optimalRoute === null) {
+            await this.setState({optimalRoute: fittest});
+        } else if (this.state.optimalRoute.fitness > fittest.fitness) {
+            await this.setState({optimalRoute: fittest});
+        }
+
+        let currentPosition = this.props.mapRedux.currentPosition;
+        let beacons = this.state.optimalRoute.beacons;
+        if (!(this.state.optimalRoute.beacons[0].x === currentPosition.x && this.state.optimalRoute.beacons[0].y === currentPosition.y)) {
+            beacons.unshift(currentPosition);
+        }
+        console.log("Heeeeecho", this.state.optimalRoute);
+        console.log("Beacons", beacons);
+
+        //TODO peta en algunas posiciones de la derecha, cerca de la piscina, ver pq?
+        this.renderRoute(beacons)
+    };
+
+//<Scanner/>
+//Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     render() {
+        console.log("RENDER");
         return (
-            <View style={{flex: 12, flexDirection: 'column'}}>
-                <AuxModule/>
-                <View style={{flex: 11}}>
-                    {this.props.mapRedux.plan.map((row, index) => {
-                        return this.renderRow(row, index)
-                    })}
+            <SafeAreaView style={styles.containerScrollView}>
+                <Map
+                    showRoute={this.state.showRoute}
+                />
+                {this.state.enablePanHandlers &&
+                    <View style = {{ flex: 1, backgroundColor: 'transparent' }}  { ...this.panResponder.panHandlers } />
+                }
+                <View style={styles.buttonGroup}>
+                    <TouchableOpacity
+                        style={[styles.circle, {marginBottom: 2}]}
+                        onPress={() => this.colorRandomPosition()}>
+                        <Image
+                            style={{
+                                width: 25,
+                                height: 25,
+                                justifyContent: "center"
+                            }}
+                            source={require('../../../assets/images/gps-fixed-indicator.png')}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.circle, {backgroundColor: '#FF9800', marginBottom: 5}]}
+                        onPress={() => this.tryGenetic()}
+                    >
+                        <Image
+                            style={{
+                                width: 15,
+                                height: 15,
+                                justifyContent: "center"
+                            }}
+                            source={require('../../../assets/images/forward-arrow.png')}
+                        />
+                        <Text>Go</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.buttonContainer}>
-                    {this._renderButton('Start scanning', startScan)}
-                </View>
-            </View>
+                {this.state.loading &&
+                    <View style={styles.containerLoading}>
+                        <View style={styles.loadingView}>
+                            <View style={styles.loadingTextView}>
+                                <Text style={styles.loadingText}>Calculando la mejor ruta, por favor espere</Text>
+                            </View>
+                            <View style={{justifyContent: 'center', alignContent: 'center', marginBottom: 15}}>
+                                <ActivityIndicator size="large"/>
+                            </View>
+                        </View>
+                    </View>
+                }
+            </SafeAreaView>
         )
     }
 }
 
-
+/*
+ <View style={styles.searcherContainer}>
+                    <TextInput
+                        style={[{height: 40, borderColor: 'gray', borderWidth: 1}, styles.searcher]}
+                        placeholder={"Search your room here.  Eg: 101"}
+                    />
+                </View>
+*/
 const styles = StyleSheet.create({
     button: {
         textAlign: 'center',
@@ -184,6 +361,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
 
     },
+    buttonGroup: {
+        flexDirection: 'column',
+        bottom: 1,
+        marginBottom: 85,
+        marginRight: 20,
+        position: 'absolute',
+        right: 0.5,
+    },
     iconContainer: {
         flex: 1,
         backgroundColor: '#f0f3fd',
@@ -194,6 +379,73 @@ const styles = StyleSheet.create({
         height: '50%',
         width: '50%'
     },
+    circle: {
+        padding: 2,
+        width: 50,
+        height: 50,
+        borderRadius: 50 / 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: 'gray',
+        borderWidth: 1
+    },
+    circleIcon: {},
+    searcherContainer: {
+        flex: 2,
+        flexDirection: 'row',
+        position: 'absolute',
+        bottom: 0.5,
+        width: "100%",
+        marginBottom: 36,
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    searcher: {
+        borderRadius: 10,
+        width: '90%',
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignSelf: 'center'
+    },
+    containerScrollView: {
+        flex: 1
+    },
+    contentContainer: {
+        height: 1080,
+        width: 1080,
+    },
+    containerLoading: {
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // position: 'absolute',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        height: '100%',
+        width: '100%',
+    },
+    loadingView: {
+        backgroundColor: 'rgba(255,255,255,0.95)',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.5)',
+        width: '73%',
+        position: 'absolute',
+        left: '13.5%',
+        bottom: '40%'
+    },
+    loadingTextView: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        fontSize: 19,
+        marginTop: 15,
+        marginRight: 5,
+        marginLeft: 5,
+        marginBottom: 15,
+        textAlign: 'center',
+        width: '90%',
+    },
 });
 
 const
@@ -201,11 +453,16 @@ const
         return {
             mapRedux: state.MapReducer,
             scanner: state.RangeReducer
-
         }
     };
 
-const mapStateToPropsAction = {downloadMap, downloadBeaconList, updatePosition};
+const mapStateToPropsAction = {
+    downloadMap,
+    downloadBeaconList,
+    colorPositions,
+    updateCurrentPosition,
+    updateOptimalRoute
+};
 
 
 export default connect(mapStateToProps, mapStateToPropsAction)(FloorPlan);

@@ -1,19 +1,18 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {Actions} from 'react-native-router-flux';
-import {downloadBeaconList, downloadMap} from "../floorMap/actions/mapAction";
+import {downloadBeaconList, downloadMap, updateCurrentPosition} from "../floorMap/actions/mapAction";
 import {connect} from "react-redux";
-
+import SplashScreen from 'react-native-splash-screen'
+import {Actions} from 'react-native-router-flux'
 
 class Home extends Component {
 
-    componentDidMount(): void {
-
+    async componentDidMount(): void {
         console.log("Descargando lista de beacons");
-        this.props.downloadBeaconList();
-        console.log("Chungo bro");
-        this.props.downloadMap();
-
+        await this.props.downloadBeaconList();
+        await this.props.downloadMap();
+        this.props.updateCurrentPosition({x: 17, y: 20});
+        SplashScreen.hide();
     }
 
     render() {
@@ -21,7 +20,7 @@ class Home extends Component {
             <View style={styles.container}>
                 {this.props.mapRedux.plan.length > 0 ? <Text> Todo ok </Text>: null}
 
-                <TouchableOpacity onPress={Actions.FloorPlan}>
+                <TouchableOpacity onPress={() => Actions.FloorPlan()}>
                     <View style={styles.circle}>
                         <Text style={styles.text}>
                             TAP TO PLAY
@@ -59,11 +58,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         mapRedux: state.MapReducer,
-
     }
 };
 
-const mapStateToPropsAction = {downloadMap, downloadBeaconList};
-
+const mapStateToPropsAction = {downloadMap, downloadBeaconList, updateCurrentPosition};
 
 export default connect(mapStateToProps, mapStateToPropsAction)(Home);
