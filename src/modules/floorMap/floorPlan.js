@@ -19,7 +19,7 @@ import {
     downloadBeaconList,
     colorPositions,
     updateCurrentPosition,
-    updateOptimalRoute
+    updateOptimalRoute, asyncGeneticAlgorithm
 } from "./actions/mapAction";
 import {PriorityLocation, centerAreaCalculator} from "./element/priorityLocation";
 import {PriorityAreaCalculator} from "./element/priorityAreaCalculator";
@@ -32,6 +32,7 @@ import RenderRoute from "../pathFinder/mapRoute/RenderRoute";
 import util from "../pathFinder/mapRoute/RenderUtilities";
 import utils from "../pathFinder/beaconRoute/LogicUtilities";
 import GeneticAlgorithm from "../pathFinder/beaconRoute/geneticAlgorithm";
+import {hideAlert, showAlert} from "../alerts/actions/AlertActions";
 
 
 //Leyenda : En el mapa habrá distintos valores según el terreno ...
@@ -188,88 +189,71 @@ class FloorPlan extends Component {
         // this.pollas.scrollTo(2000, 700, true)
     // };
 
-    getClosestBeaconsFromPosition(position, target) {
-        let beacons = this.props.mapRedux.beaconsList;
-        let closest = null, shortestDistance = 100000;
-        for (let [key, beacon] of Object.entries(beacons)) {
-            let distance = util.manhattanDistance(beacon, position);
-            if (distance < shortestDistance) {
-                shortestDistance = distance;
-                closest = beacon;
-            }
-        }
-        let shortestDistanceToTarget = 100000;
-        let startingBeacon = null;
-        for (let beaconName of closest.nearbyBeacons) {
-            let distanceToTarget = util.manhattanDistance(this.props.mapRedux.beaconsList[beaconName], target);
-            if (distanceToTarget < shortestDistanceToTarget) {
-                shortestDistanceToTarget = distanceToTarget;
-                startingBeacon = this.props.mapRedux.beaconsList[beaconName];
-            }
-        }
 
-        return startingBeacon
-    }
 
 //RENDER OPTIMISED ROUTE
-    renderRoute = (populationFittest) => {
-        console.log(populationFittest);
-        let optimalRoute = [];
-        //Render del 16 al 17
-        for (let i = 0; i < populationFittest.length - 1; i++) {
-            let start = {x: populationFittest[i].x, y: populationFittest[i].y};
-            let target = {x: populationFittest[i + 1].x, y: populationFittest[i + 1].y};
-            let route = new RenderRoute(
-                this.props.mapRedux.plan,
-                start,
-                target,
-                true
-            );
-            optimalRoute.push.apply(optimalRoute, route.positions);
-            //this.props.colorPositions(route.positions, 4);
-        }
-        this.props.updateOptimalRoute(optimalRoute);
-        this.setState({loading: false, showRoute: true});
-    };
+//     renderRoute = (populationFittest) => {
+//         console.log(populationFittest);
+//         let optimalRoute = [];
+//         //Render del 16 al 17
+//         for (let i = 0; i < populationFittest.length - 1; i++) {
+//             let start = {x: populationFittest[i].x, y: populationFittest[i].y};
+//             let target = {x: populationFittest[i + 1].x, y: populationFittest[i + 1].y};
+//             let route = new RenderRoute(
+//                 this.props.mapRedux.plan,
+//                 start,
+//                 target,
+//                 true
+//             );
+//             optimalRoute.push.apply(optimalRoute, route.positions);
+//             //this.props.colorPositions(route.positions, 4);
+//         }
+//         this.props.updateOptimalRoute(optimalRoute);
+//         this.setState({loading: false, showRoute: true});
+//     };
 
 //GENETIC ALGORITHM FOR BEACONS
-    tryGenetic = async () => {
+    performGenetic = () => {
 
         //TODO to esto tiene que ser asincrono para no parar el resto de la ejecución
-        // await this.setState({loading: true});
+
+        let target = this.props.mapRedux.beaconsList["Beacon-131"];
+
         let closestBeacon = this.getClosestBeaconsFromPosition(
             this.props.mapRedux.currentPosition,
-            this.props.mapRedux.beaconsList["Beacon-131"]
+            target
         );
-        let nonEvolvedPopulation = new Population(
-            closestBeacon,
-            this.props.mapRedux.beaconsList["Beacon-131"],
-            this.props.mapRedux.beaconsList,
-            0.2, 200, true);
+        // let nonEvolvedPopulation = new Population(
+        //     closestBeacon,
+        //     this.props.mapRedux.beaconsList["Beacon-131"],
+        //     this.props.mapRedux.beaconsList,
+        //     0.2, 200, true);
+        //
+        // let genetic = new GeneticAlgorithm(5);
+        // let evolution = nonEvolvedPopulation;
+        // for(let i = 0; i < 50; i++) {
+        //     evolution = genetic.evolvePopulation(evolution);
+        // }
+        // let fittest = evolution.getFittest();
+        this.props.asyncGeneticAlgorithm();
+        //this.setState({showRoute: true})
 
-        let genetic = new GeneticAlgorithm(5);
-        let evolution = nonEvolvedPopulation;
-        for(let i = 0; i < 50; i++) {
-            evolution = genetic.evolvePopulation(evolution);
-        }
-        let fittest = evolution.getFittest();
+        // if(this.state.optimalRoute === null) {
+        //     await this.setState({optimalRoute: fittest});
+        // } else if (this.state.optimalRoute.fitness > fittest.fitness) {
+        //     await this.setState({optimalRoute: fittest});
+        // }
 
-        if(this.state.optimalRoute === null) {
-            await this.setState({optimalRoute: fittest});
-        } else if (this.state.optimalRoute.fitness > fittest.fitness) {
-            await this.setState({optimalRoute: fittest});
-        }
-
-        let currentPosition = this.props.mapRedux.currentPosition;
-        let beacons = this.state.optimalRoute.beacons;
-        if (!(this.state.optimalRoute.beacons[0].x === currentPosition.x && this.state.optimalRoute.beacons[0].y === currentPosition.y)) {
-            beacons.unshift(currentPosition);
-        }
-        console.log("Heeeeecho", this.state.optimalRoute);
-        console.log("Beacons", beacons);
+        // let currentPosition = this.props.mapRedux.currentPosition;
+        // let beacons = this.state.optimalRoute.beacons;
+        // if (!(this.state.optimalRoute.beacons[0].x === currentPosition.x && this.state.optimalRoute.beacons[0].y === currentPosition.y)) {
+        //     beacons.unshift(currentPosition);
+        // }
+        // console.log("Heeeeecho", this.state.optimalRoute);
+        // console.log("Beacons", beacons);
 
         //TODO peta en algunas posiciones de la derecha, cerca de la piscina, ver pq?
-        this.renderRoute(beacons)
+        // this.renderRoute(beacons)
     };
 
 //<Scanner/>
@@ -278,9 +262,7 @@ class FloorPlan extends Component {
         console.log("RENDER");
         return (
             <SafeAreaView style={styles.containerScrollView}>
-                <Map
-                    showRoute={this.state.showRoute}
-                />
+                <Map/>
                 {this.state.enablePanHandlers &&
                     <View style = {{ flex: 1, backgroundColor: 'transparent' }}  { ...this.panResponder.panHandlers } />
                 }
@@ -299,7 +281,14 @@ class FloorPlan extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.circle, {backgroundColor: '#FF9800', marginBottom: 5}]}
-                        onPress={() => this.tryGenetic()}
+                        onPress={() => {
+                            //this.props.showAlert('LOADER', 'Vamoave');
+                            //setTimeout(() => {
+                            this.props.asyncGeneticAlgorithm();
+                            //}, 1)
+
+                            //this.hideAlert()
+                        }}
                     >
                         <Image
                             style={{
@@ -312,18 +301,6 @@ class FloorPlan extends Component {
                         <Text>Go</Text>
                     </TouchableOpacity>
                 </View>
-                {this.state.loading &&
-                    <View style={styles.containerLoading}>
-                        <View style={styles.loadingView}>
-                            <View style={styles.loadingTextView}>
-                                <Text style={styles.loadingText}>Calculando la mejor ruta, por favor espere</Text>
-                            </View>
-                            <View style={{justifyContent: 'center', alignContent: 'center', marginBottom: 15}}>
-                                <ActivityIndicator size="large"/>
-                            </View>
-                        </View>
-                    </View>
-                }
             </SafeAreaView>
         )
     }
@@ -461,7 +438,10 @@ const mapStateToPropsAction = {
     downloadBeaconList,
     colorPositions,
     updateCurrentPosition,
-    updateOptimalRoute
+    updateOptimalRoute,
+    asyncGeneticAlgorithm,
+    showAlert,
+    hideAlert
 };
 
 

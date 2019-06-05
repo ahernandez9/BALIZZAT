@@ -6,6 +6,8 @@ import FloorPlan from "../floorMap/floorPlan"
 import TopPlaces from "../topPlaces/topPlaces"
 import menuIcon from "./elements/MenuIcon";
 import NavigationDrawer from "./NavigationDrawer"
+import CustomAlert from "../alerts/alerts"
+
 
 class IndexNavigation extends Component {
     render() {
@@ -41,6 +43,7 @@ class IndexNavigation extends Component {
                         />
                     </Scene>
                 </Router>
+                <CustomAlert/>
             </View>
         );
     }

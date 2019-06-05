@@ -1,3 +1,8 @@
+import Population from "../../pathFinder/beaconRoute/Population";
+import GeneticAlgorithm from "../../pathFinder/beaconRoute/geneticAlgorithm";
+import RenderRoute from "../../pathFinder/mapRoute/RenderRoute";
+import util from "../../pathFinder/mapRoute/RenderUtilities";
+
 export const downloadMap = () => async (dispatch, getState) => {
 
     /*
@@ -1016,4 +1021,99 @@ export const updateTargetPosition = (position) => (dispatch) => {
         type: 'TARGET_POSITION',
         payload: position
     })
-}
+};
+
+const getClosestBeaconsFromPosition = (position, target) => (getState) => {
+    let mapRedux = getState().MapReducer;
+
+    let beacons = mapRedux.beaconsList;
+    let closest = null, shortestDistance = 100000;
+    for (let [key, beacon] of Object.entries(beacons)) {
+        let distance = util.manhattanDistance(beacon, position);
+        if (distance < shortestDistance) {
+            shortestDistance = distance;
+            closest = beacon;
+        }
+    }
+    let shortestDistanceToTarget = 100000;
+    let startingBeacon = null;
+    for (let beaconName of closest.nearbyBeacons) {
+        let distanceToTarget = util.manhattanDistance(mapRedux.beaconsList[beaconName], target);
+        if (distanceToTarget < shortestDistanceToTarget) {
+            shortestDistanceToTarget = distanceToTarget;
+            startingBeacon = mapRedux.beaconsList[beaconName];
+        }
+    }
+
+    return startingBeacon
+};
+
+export const asyncGeneticAlgorithm = () => async (dispatch, getState) => {
+
+    dispatch({
+        type: 'FILL_ALERT',
+        payload: {title: 'LOADER', description: "", enable: true}
+    });
+
+    let mapRedux = getState().MapReducer;
+
+    let target = mapRedux.beaconsList["Beacon-131"];
+
+    let closestBeacon = getClosestBeaconsFromPosition(
+        mapRedux.currentPosition,
+        target
+    );
+
+    let nonEvolvedPopulation = new Population(
+        closestBeacon,
+        target,
+        mapRedux.beaconsList,
+        0.2, 200, true);
+
+    let genetic = new GeneticAlgorithm(5);
+    let evolution = nonEvolvedPopulation;
+    for(let i = 0; i < 50; i++) {
+        evolution = genetic.evolvePopulation(evolution);
+    }
+    let fittest = evolution.getFittest();
+    let beacons = fittest.beacons;
+
+    dispatch({
+        type: 'UPDATE_BEACON_ROUTE',
+        payload: beacons
+    });
+
+    let currentPosition = mapRedux.currentPosition;
+
+    if (!(beacons[0].x === currentPosition.x && beacons[0].y === currentPosition.y)) {
+        beacons.unshift(currentPosition);
+    }
+
+    let optimalRoute = [];
+    //Render del 16 al 17
+    for (let i = 0; i < beacons.length - 1; i++) {
+        let start = {x: beacons[i].x, y: beacons[i].y};
+        let target = {x: beacons[i + 1].x, y: beacons[i + 1].y};
+        let route = new RenderRoute(
+            mapRedux.plan,
+            start,
+            target,
+            true
+        );
+        optimalRoute.push.apply(optimalRoute, route.positions);
+    }
+
+    dispatch(
+        updateOptimalRoute(optimalRoute)
+    );
+
+    dispatch({
+        type: 'FILL_ALERT',
+        payload: {title: "", description: "", enable: false}
+    });
+
+    dispatch({
+        type: 'SHOW_ROUTE',
+        payload: true
+    })
+};

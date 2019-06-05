@@ -32,11 +32,8 @@ class MapContent extends Component {
         let currentPosition = this.props.mapRedux.currentPosition;
         let optimalRoute = this.props.mapRedux.optimalRoute;
         let map = this.props.mapRedux.plan;
-        /*
-            Lo que vamos a hacer es meter un showRoute que nos dice si queremos mostrar la ruta o no
-            Luego con el optimalRoute.length > 0 && showRoute sabemos que queremos mostrar la ruta
-            Y con el optimalRoute.length > 0 && !showRoute sabemos que queremos eliminar la ruta
-         */
+        let showRoute = this.props.mapRedux.showRoute;
+
         let optionalCurrentPosition = map[currentPosition.x - 5] !== undefined && map[currentPosition.x - 5][currentPosition.y - 2] ?
                 {x: currentPosition.x - 5, y: currentPosition.y - 2} : currentPosition;
 
@@ -54,10 +51,10 @@ class MapContent extends Component {
                                style={{flex: 1, height: undefined, width: undefined}}/>
                     </View>
                 }
-                { this.props.showRoute && optimalRoute && optimalRoute.length > 0 &&
+                { showRoute && optimalRoute && optimalRoute.length > 0 &&
                     this.renderRouteInMap('black')
                 }
-                { !this.props.showRoute && optimalRoute && optimalRoute.length > 0 &&
+                { !showRoute && optimalRoute && optimalRoute.length > 0 &&
                 this.renderRouteInMap('transparent')
                 }
             </View>
