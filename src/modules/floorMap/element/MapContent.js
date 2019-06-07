@@ -38,7 +38,7 @@ class MapContent extends Component {
                 {x: currentPosition.x - 5, y: currentPosition.y - 2} : currentPosition;
 
         return (
-            <View>
+            <View key={map.id}>
                 <Image
                     source={require('../../../../assets/images/better_cropped_cordial_map.png')}
                     resizeMode={'contain'}
@@ -47,7 +47,7 @@ class MapContent extends Component {
                 { optionalCurrentPosition &&
                     <View key={optionalCurrentPosition.id} style={{flex: 1, backgroundColor: 'transparent', width: 50, height: 50,
                         position: 'absolute', top: optionalCurrentPosition.x * 10, left: optionalCurrentPosition.y * 10}}>
-                        <Image source={require('../../../../assets/images/placeholder.png')}
+                        <Image source={require('../../../../assets/images/black-placeholder.png')}
                                style={{flex: 1, height: undefined, width: undefined}}/>
                     </View>
                 }

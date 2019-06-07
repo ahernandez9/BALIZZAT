@@ -1023,7 +1023,7 @@ export const updateTargetPosition = (position) => (dispatch) => {
     })
 };
 
-const getClosestBeaconsFromPosition = (position, target) => (getState) => {
+export const getClosestBeaconsFromPosition = (position, target) => async (getState) => {
     let mapRedux = getState().MapReducer;
 
     let beacons = mapRedux.beaconsList;
@@ -1050,20 +1050,40 @@ const getClosestBeaconsFromPosition = (position, target) => (getState) => {
 
 export const asyncGeneticAlgorithm = () => async (dispatch, getState) => {
 
-    dispatch({
+    await dispatch({
         type: 'FILL_ALERT',
         payload: {title: 'LOADER', description: "", enable: true}
     });
 
     let mapRedux = getState().MapReducer;
 
+    let position = mapRedux.currentPosition;
     let target = mapRedux.beaconsList["Beacon-131"];
 
-    let closestBeacon = getClosestBeaconsFromPosition(
-        mapRedux.currentPosition,
-        target
-    );
+    let beaconList = mapRedux.beaconsList;
+    let closest = null, shortestDistance = 100000;
+    for (let [key, beacon] of Object.entries(beaconList)) {
+        let distance = util.manhattanDistance(beacon, position);
+        if (distance < shortestDistance) {
+            shortestDistance = distance;
+            closest = beacon;
+        }
+    }
 
+
+    let shortestDistanceToTarget = 100000;
+    let startingBeacon = null;
+    for (let beaconName of closest.nearbyBeacons) {
+        let distanceToTarget = util.manhattanDistance(mapRedux.beaconsList[beaconName], target);
+        if (distanceToTarget < shortestDistanceToTarget) {
+            shortestDistanceToTarget = distanceToTarget;
+            startingBeacon = mapRedux.beaconsList[beaconName];
+        }
+    }
+
+    let closestBeacon = startingBeacon;
+
+    console.log(closestBeacon);
     let nonEvolvedPopulation = new Population(
         closestBeacon,
         target,
@@ -1089,6 +1109,7 @@ export const asyncGeneticAlgorithm = () => async (dispatch, getState) => {
         beacons.unshift(currentPosition);
     }
 
+
     let optimalRoute = [];
     //Render del 16 al 17
     for (let i = 0; i < beacons.length - 1; i++) {
@@ -1102,6 +1123,13 @@ export const asyncGeneticAlgorithm = () => async (dispatch, getState) => {
         );
         optimalRoute.push.apply(optimalRoute, route.positions);
     }
+
+    // let start = new Date().getTime();
+    // for (let i = 0; i < 1e7; i++) {
+    //     if ((new Date().getTime() - start) > 3000){
+    //         break;
+    //     }
+    // }
 
     dispatch(
         updateOptimalRoute(optimalRoute)

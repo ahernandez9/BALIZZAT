@@ -53,15 +53,15 @@ class FloorPlan extends Component {
     constructor(props) {
         super(props);
 
-        // this.panResponder = null;
+        this.panResponder = null;
 
         this.state = {
             loading: false,
             showRoute: false,
             optimalRoute: null,
-            // locationX: 0,
-            // locationY: 0,
-            // enablePanHandlers: false
+            locationX: 0,
+            locationY: 0,
+            enablePanHandlers: false
         }
     }
 
@@ -81,6 +81,7 @@ class FloorPlan extends Component {
 
     componentWillMount(): void {
         //TODO meter los panhandlers para obtener la posicion del touch y trasladarla al mapa logico
+
         // this.panResponder = PanResponder.create(
         //     {
         //         onStartShouldSetPanResponder: (event, gestureState) => true,
@@ -94,7 +95,7 @@ class FloorPlan extends Component {
         //             this.setState({
         //                 locationX: event.nativeEvent.locationX.toFixed(2),
         //                 locationY: event.nativeEvent.locationY.toFixed(2),
-        //                 enablePanHandlers: false
+        //                 //enablePanHandlers: false
         //             });
         //         }
         //     });
@@ -167,6 +168,7 @@ class FloorPlan extends Component {
             this.flipaManito = {x: x, y: y};
         }
         console.log("position: ", x, y);
+        console.log(this.state);
         await this.props.updateCurrentPosition(this.flipaManito);
 
         this.props.updateOptimalRoute([]);
@@ -183,93 +185,29 @@ class FloorPlan extends Component {
         this.pollas = reference;
     };
 
-    // scrollToPosition = () => {
-    //     console.log("estas pasando flaco?", this.pollas);
-    //     Esta es la mierda que nos ocupa ahora
-        // this.pollas.scrollTo(2000, 700, true)
-    // };
-
-
-
-//RENDER OPTIMISED ROUTE
-//     renderRoute = (populationFittest) => {
-//         console.log(populationFittest);
-//         let optimalRoute = [];
-//         //Render del 16 al 17
-//         for (let i = 0; i < populationFittest.length - 1; i++) {
-//             let start = {x: populationFittest[i].x, y: populationFittest[i].y};
-//             let target = {x: populationFittest[i + 1].x, y: populationFittest[i + 1].y};
-//             let route = new RenderRoute(
-//                 this.props.mapRedux.plan,
-//                 start,
-//                 target,
-//                 true
-//             );
-//             optimalRoute.push.apply(optimalRoute, route.positions);
-//             //this.props.colorPositions(route.positions, 4);
-//         }
-//         this.props.updateOptimalRoute(optimalRoute);
-//         this.setState({loading: false, showRoute: true});
-//     };
 
 //GENETIC ALGORITHM FOR BEACONS
-    performGenetic = () => {
-
-        //TODO to esto tiene que ser asincrono para no parar el resto de la ejecución
-
-        let target = this.props.mapRedux.beaconsList["Beacon-131"];
-
-        let closestBeacon = this.getClosestBeaconsFromPosition(
-            this.props.mapRedux.currentPosition,
-            target
-        );
-        // let nonEvolvedPopulation = new Population(
-        //     closestBeacon,
-        //     this.props.mapRedux.beaconsList["Beacon-131"],
-        //     this.props.mapRedux.beaconsList,
-        //     0.2, 200, true);
-        //
-        // let genetic = new GeneticAlgorithm(5);
-        // let evolution = nonEvolvedPopulation;
-        // for(let i = 0; i < 50; i++) {
-        //     evolution = genetic.evolvePopulation(evolution);
-        // }
-        // let fittest = evolution.getFittest();
-        this.props.asyncGeneticAlgorithm();
-        //this.setState({showRoute: true})
-
-        // if(this.state.optimalRoute === null) {
-        //     await this.setState({optimalRoute: fittest});
-        // } else if (this.state.optimalRoute.fitness > fittest.fitness) {
-        //     await this.setState({optimalRoute: fittest});
-        // }
-
-        // let currentPosition = this.props.mapRedux.currentPosition;
-        // let beacons = this.state.optimalRoute.beacons;
-        // if (!(this.state.optimalRoute.beacons[0].x === currentPosition.x && this.state.optimalRoute.beacons[0].y === currentPosition.y)) {
-        //     beacons.unshift(currentPosition);
-        // }
-        // console.log("Heeeeecho", this.state.optimalRoute);
-        // console.log("Beacons", beacons);
-
+    performGeneticAlgorithm = () => {
         //TODO peta en algunas posiciones de la derecha, cerca de la piscina, ver pq?
-        // this.renderRoute(beacons)
+        this.props.asyncGeneticAlgorithm()
     };
 
 //<Scanner/>
 //Poner el scanner de nuevo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// <View style = {{ flex: 1, backgroundColor: 'transparent' }}  { ...this.panResponder.panHandlers } /> esto va bajo Map
     render() {
         console.log("RENDER");
         return (
             <SafeAreaView style={styles.containerScrollView}>
                 <Map/>
-                {this.state.enablePanHandlers &&
-                    <View style = {{ flex: 1, backgroundColor: 'transparent' }}  { ...this.panResponder.panHandlers } />
-                }
+
                 <View style={styles.buttonGroup}>
                     <TouchableOpacity
                         style={[styles.circle, {marginBottom: 2}]}
-                        onPress={() => this.colorRandomPosition()}>
+                        onPress={() =>
+                            // this.setState({enablePanHandlers: true});
+                            this.colorRandomPosition()
+                        }>
                         <Image
                             style={{
                                 width: 25,
@@ -281,14 +219,7 @@ class FloorPlan extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.circle, {backgroundColor: '#FF9800', marginBottom: 5}]}
-                        onPress={() => {
-                            //this.props.showAlert('LOADER', 'Vamoave');
-                            //setTimeout(() => {
-                            this.props.asyncGeneticAlgorithm();
-                            //}, 1)
-
-                            //this.hideAlert()
-                        }}
+                        onPress={() => this.props.asyncGeneticAlgorithm() }
                     >
                         <Image
                             style={{
@@ -315,6 +246,48 @@ class FloorPlan extends Component {
                 </View>
 */
 const styles = StyleSheet.create({
+    containerAlert: {
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        height: '110%',
+        width: '100%',
+
+    },
+    alert: {
+        backgroundColor: 'rgba(255,255,255,0.95)',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'rgba(0,0,0,0.5)',
+        width: '73%',
+    },
+    containerText: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    alertText: {
+        fontSize: 19,
+        fontWeight: 'bold',
+        color: 'black',
+        marginTop: 15,
+        marginRight: 5,
+        marginLeft: 5,
+        marginBottom: 5,
+        paddingBottom: 0,
+        textAlign: 'center',
+        width: '90%',
+    },
+    alertDescription: {
+        fontSize: 16,
+        color: 'black',
+        marginTop: 5,
+        marginRight: 5,
+        marginLeft: 5,
+        paddingBottom: 10,
+        textAlign: 'center',
+        width: '90%',
+    },
     button: {
         textAlign: 'center',
         alignItems: 'center',
