@@ -25,28 +25,32 @@ const CONTENT = [
         content: BACON_IPSUM,
         image: require('../../../assets/images/bar_tiki.jpg'),
         floor: '2º Planta',
-        schedule: 'Todos los días 10:00-20:00'
+        schedule: 'Todos los días 10:00-20:00',
+        position: 'Beacon-088'
     },
     {
         title: 'Piscina',
         content: BACON_IPSUM,
         image: require('../../../assets/images/piscina-hotel.jpg'),
         floor: '1º Planta',
-        schedule: 'Todos los días 10:00-20:00'
+        schedule: 'Todos los días 10:00-20:00',
+        position: 'Beacon-052'
     },
     {
         title: 'Parque Infantil',
         content: BACON_IPSUM,
         image: require('../../../assets/images/parque-infantil.jpg'),
         floor: '3º Planta',
-        schedule: 'Todos los días 10:00-20:00'
+        schedule: 'Todos los días 10:00-20:00',
+        position: 'Beacon-069'
     },
     {
         title: 'Restaurante',
         content: BACON_IPSUM,
         image: require('../../../assets/images/restaurante-panoramico.jpg'),
         floor: '1º Planta',
-        schedule: 'Todos los días 10:00-20:00'
+        schedule: 'Todos los días 10:00-20:00',
+        position: 'Beacon-142'
     },
 
 ];

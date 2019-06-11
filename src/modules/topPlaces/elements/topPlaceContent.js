@@ -14,7 +14,7 @@ import {
 import {manhattanDistance} from '../../pathFinder/mapRoute/RenderUtilities'
 import {downloadTopPlaces} from "../actions/topPlacesActions";
 import connect from "react-redux/es/connect/connect";
-import {updateTargetPosition} from "../../floorMap/actions/mapAction";
+import {asyncGeneticAlgorithm, updateTargetPosition} from "../../floorMap/actions/mapAction";
 
 export class TopPlaceContent extends Component {
 
@@ -48,7 +48,6 @@ export class TopPlaceContent extends Component {
     };
 
 
-
     render() {
         return (
             <View style={styles.mainContainer}>
@@ -72,7 +71,10 @@ export class TopPlaceContent extends Component {
                             </Text>
                         </View>
                         <View style={styles.buttonContainer}>
-                            <Button title={"Directions"} onPress={() => this.calculatePath()}/>
+                            <Button title={"Directions"} onPress={() => {
+                                this.props.asyncGeneticAlgorithm(this.props.section.position);
+                                Actions.FloorMap()
+                            }}/>
                         </View>
                     </View>
                 </View>
@@ -137,7 +139,7 @@ const mapStateToProps = state => {
     }
 };
 
-const mapStateToPropsAction = {updateTargetPosition};
+const mapStateToPropsAction = {updateTargetPosition, asyncGeneticAlgorithm};
 
 
 export default connect(mapStateToProps, mapStateToPropsAction)(TopPlaceContent);

@@ -521,7 +521,7 @@ export const downloadBeaconList = () => async (dispatch) => {
         }, "Beacon-105": {
             x: 80, y: 55,
             distance: NaN,
-            nearbyBeacons: ["Beacon-095", "Beacon-096", "Beacon-100", "Beacon-104", "Beacon-106", "Beacon-124" ]
+            nearbyBeacons: ["Beacon-095", "Beacon-096", "Beacon-100", "Beacon-104", "Beacon-106", "Beacon-124"]
         }, "Beacon-106": {
             x: 76, y: 69,
             distance: NaN,
@@ -1048,7 +1048,7 @@ export const getClosestBeaconsFromPosition = (position, target) => async (getSta
     return startingBeacon
 };
 
-export const asyncGeneticAlgorithm = () => async (dispatch, getState) => {
+export const asyncGeneticAlgorithm = (topPlace = '') => async (dispatch, getState) => {
 
     await dispatch({
         type: 'FILL_ALERT',
@@ -1058,7 +1058,12 @@ export const asyncGeneticAlgorithm = () => async (dispatch, getState) => {
     let mapRedux = getState().MapReducer;
 
     let position = mapRedux.currentPosition;
-    let target = mapRedux.beaconsList["Beacon-131"];
+    let target;
+    if (topPlace === '') {
+        target = mapRedux.beaconsList["Beacon-131"];
+    }else{
+        target = mapRedux.beaconsList[topPlace]
+    }
 
     let beaconList = mapRedux.beaconsList;
     let closest = null, shortestDistance = 100000;
@@ -1092,7 +1097,7 @@ export const asyncGeneticAlgorithm = () => async (dispatch, getState) => {
 
     let genetic = new GeneticAlgorithm(5);
     let evolution = nonEvolvedPopulation;
-    for(let i = 0; i < 50; i++) {
+    for (let i = 0; i < 50; i++) {
         evolution = genetic.evolvePopulation(evolution);
     }
     let fittest = evolution.getFittest();
