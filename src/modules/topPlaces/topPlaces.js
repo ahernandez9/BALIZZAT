@@ -13,7 +13,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import {downloadTopPlaces} from "./actions/topPlacesActions";
 import connect from "react-redux/es/connect/connect";
 import {TopPlaceHeader} from "./elements/topPlaceHeader";
-import {TopPlaceContent} from "./elements/topPlaceContent";
+import TopPlaceContent from "./elements/topPlaceContent";
 
 const BACON_IPSUM =
     'Bacon ipsum dolor amet chuck turducken landjaeger tongue spare ribs. Picanha beef prosciutto meatball turkey shoulder shank salami cupim doner jowl pork belly cow. Chicken shankle rump swine tail frankfurter meatloaf ground round flank ham hock tongue shank andouille boudin brisket. ';

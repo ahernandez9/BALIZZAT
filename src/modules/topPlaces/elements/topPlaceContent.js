@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {manhattanDistance} from '../../pathFinder/mapRoute/RenderUtilities'
 import {downloadTopPlaces} from "../actions/topPlacesActions";
+import {Actions} from 'react-native-router-flux';
 import connect from "react-redux/es/connect/connect";
 import {asyncGeneticAlgorithm, updateTargetPosition} from "../../floorMap/actions/mapAction";
 
@@ -72,8 +73,10 @@ export class TopPlaceContent extends Component {
                         </View>
                         <View style={styles.buttonContainer}>
                             <Button title={"Directions"} onPress={() => {
-                                this.props.asyncGeneticAlgorithm(this.props.section.position);
-                                Actions.FloorMap()
+                                let target = this.props.section.position;
+                                console.log(target);
+                                this.props.asyncGeneticAlgorithm(target);
+                                Actions.FloorPlan()
                             }}/>
                         </View>
                     </View>
